@@ -1,52 +1,12 @@
 {
-  "_doc": "Real positions to watch (read-only alerts, no trading). Levels are market cap in USD. See ROUTINE-NOTES.md on the box.",
-  "positions": [
+  "_doc": "Real positions to watch (read-only alerts, no trading). Levels are market cap in USD. See ROUTINE-NOTES.md on the box. 'reentry' = coins exited; pinned on the long watchlist, push (address, then details) only on a rules-based re-entry.",
+  "positions": [],
+  "reentry": [
     {
       "symbol": "FLOYD",
       "chain": "solana",
       "token": "Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump",
-      "cost_basis_mcap": 536000,
-      "note": "bought via Fomo; avg entry $0.000612 ($92.85 in, 113.7K FLOYD held); 25% sold at ~$1M",
-      "levels": [
-        {
-          "id": "STOP",
-          "below": 536000,
-          "action": "STOP hit (breakeven, entry $0.000612): sell the rest"
-        },
-        {
-          "id": "WARN",
-          "below": 640000,
-          "action": "WARNING: near breakeven stop ($536k / $0.000612). Get ready to sell"
-        },
-        {
-          "id": "TP_2.5M",
-          "above": 2500000,
-          "action": "Take profit: sell 25%"
-        },
-        {
-          "id": "RUN_5M",
-          "above": 5000000,
-          "action": "Runner: sell a quarter of what is left"
-        },
-        {
-          "id": "RUN_10M",
-          "above": 10000000,
-          "action": "Runner: sell a quarter of what is left"
-        },
-        {
-          "id": "RUN_20M",
-          "above": 20000000,
-          "action": "Runner: sell a quarter of what is left"
-        }
-      ],
-      "trail": {
-        "arm_above": 2500000,
-        "drop_pct": 35,
-        "action": "Trail stop: down 35% from the high, sell the rest"
-      },
-      "liquidity_drop_pct": 40,
-      "rugcheck": true,
-      "entry_price_usd": 0.000612
+      "note": "owner fully exited ~ $580k mcap 2026-10-13; ping only on rules-based re-entry (buy-back setup or floor-watch breakout)"
     }
   ]
 }

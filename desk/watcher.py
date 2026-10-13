@@ -472,6 +472,12 @@ def messages(rec):
              f"wallets {ev['wallets_signal']}/{ev['smart_money']}, 1h unique buyers/sellers {ev['wash'].get('h1_unique_buyers')}/{ev['wash'].get('h1_unique_sellers')}"
              + (f", floor {ev['floor']}" if ev.get("floor") else ""),
              rec["link"], rec["time_et"]]
+    fl = ev.get("floor")
+    if fl and fl.get("range_top"):
+        top = fl["range_top"]; px = fl.get("price") or top; m = (rec["mcap"] or 0) / px if px else 0
+        lo = top / 1.6
+        lines.insert(-2, f"Entry zone: up to {fmt_usd(rec['mcap'] * 1.10) if rec['mcap'] else '?'} mcap (breakout retest of {fmt_usd(top * m * 1.3)})")
+        lines.insert(-2, f"Stop: 15% below the floor (~{fmt_usd(lo * m * 0.85)} mcap); targets 2x/3x of entry, trail -35%, out near old peak ({fmt_usd(fl.get('peak_usd', 0) * m)})")
     return rec["token"], "\n".join(lines)
 
 def flag(st, rec):
@@ -517,7 +523,7 @@ def floor_daily(st, tok, L):
 
 def floor_watch(st, gates, budget_s=40):
     L = st.setdefault("long", {}); t = time.time(); t0 = t; flags = []
-    for k in [k for k, v in L.items() if t - v["added"] > LONG_DAYS * 86400]: L.pop(k)
+    for k in [k for k, v in L.items() if t - v["added"] > LONG_DAYS * 86400 and not v.get("pinned")]: L.pop(k)
     for tok, e in sorted(L.items(), key=lambda kv: kv[1]["next_daily"]):
         if time.time() - t0 > budget_s: break
         if e["next_daily"] <= t: floor_daily(st, tok, e)
@@ -617,6 +623,7 @@ def heartbeat(st, cyc_s, gates, survivors, err):
                         "by_chain": {c: sum(1 for e in L.values() if e["chain"] == c) for c in ("base", SOL)}}
     hb["watch_by_chain"] = {c: sum(1 for w in st["watch"].values() if w.get("chain", "base") == c) for c in ("base", SOL)}
     hb["positions"] = {"loaded": st.get("pos_loaded", []), **{k[:6]: {x: v.get(x) for x in ("mcap", "liq", "high", "fired")} for k, v in st.get("pos", {}).items()}}
+    hb["reentry"] = {"loaded": st.get("reentry_loaded", []), **{k[:6]: {x: v.get(x) for x in ("peak_mcap", "floor_mcap", "floor_days", "dd", "mcap", "why")} for k, v in st.get("reentry", {}).items()}}
     hb["watch_reasons"] = dict(sorted(why.items(), key=lambda kv: -kv[1])[:12])
     tmp = HEART_F + ".tmp"; json.dump(hb, open(tmp, "w"), indent=1); os.replace(tmp, HEART_F)
 
@@ -661,7 +668,7 @@ def main():
         cyc = time.time() - t0
         try:
             try:
-                import positions; positions.check(st, log)
+                import positions; positions.check(st, log); positions.reentry_check(st, log, None)
             except Exception as e:
                 log.warning("position watch: %s", f"{type(e).__name__}: {e}"[:200])
             save_state(st); heartbeat(st, cyc, gates, survivors, err)

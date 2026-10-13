@@ -70,3 +70,67 @@ def check(st, log):
             text = f"{p['symbol']} (REAL position, {ch})\nLevel hit: {lvl}\nMarket cap now: {fmt(mc)} | Liquidity: {fmt(liq)}\nSuggested: {action}\nCost basis: {fmt(p.get('cost_basis_mcap'))}\n{s.get('url') or ''}"
             res = push(text, f"{p['symbol']} {lid}", log)
             log.info("POSITION %s %s mcap=%s push=%s", p["symbol"], lid, round(mc), res)
+
+# ---------------------------------------------------------------- re-entry watch (coins the owner exited)
+def load_reentry():
+    try: return json.load(open(POS_FILE)).get("reentry") or []
+    except FileNotFoundError: return []
+
+def plan(floor, peak):
+    """Entry zone, stop and targets per paper-limits.md buy-back rules."""
+    return {"entry_zone": f"{fmt(floor)} - {fmt(floor * 1.15)} mcap", "stop": f"{fmt(floor * 0.85)} mcap (15% below floor)",
+            "targets": f"25% at 2x ({fmt(floor * 2)}), 25% at 3x ({fmt(floor * 3)}), rest trails -35% from high, all out near old peak ({fmt(peak)})"}
+
+def push_pair(addr, text, title, log):
+    a = push(addr, "", log, priority="high"); time.sleep(1)
+    return a + "/" + push(text, title, log, priority="high")
+
+def reentry_check(st, log, watcher):
+    R = st.setdefault("reentry", {}); items = load_reentry(); st["reentry_loaded"] = [x["symbol"] for x in items]
+    L = st.setdefault("long", {})
+    for it in items:
+        tok, ch = it["token"], it.get("chain", "solana")
+        s = R.setdefault(tok, {"fired": {}, "next": 0})
+        e = L.get(tok)
+        if not e:
+            pairs = desk.ds_token_pairs([tok], chain=ch)
+            if not pairs: continue
+            best = max(pairs, key=lambda x: desk.f((x.get("liquidity") or {}).get("usd"), 0))
+            L[tok] = e = {"chain": ch, "pair": best["pairAddress"], "sym": it["symbol"], "name": it["symbol"], "url": best.get("url"),
+                          "added": time.time(), "next_daily": 0, "next_check": 0, "holders": [], "state": "tracking"}
+        e["pinned"] = True; e["added"] = max(e["added"], time.time() - 86400)     # pinned: never ages out
+        if time.time() < s["next"]: continue
+        s["next"] = time.time() + 3600                                           # hourly
+        c = desk.gt_ohlcv(e["pair"], ch, tf="day", agg=1, limit=60, ttl=3 * 3600)
+        if not c or len(c) < 4: continue
+        peak = max(float(x[2]) for x in c); done = c[:-1]
+        floor_days = 0; floor = None
+        for x in reversed(done):                      # days since the last new low
+            lo = float(x[3])
+            if floor is None or lo >= floor * 0.97: floor = lo if floor is None else min(floor, lo); floor_days += 1
+            else: break
+        pairs = desk.ds_token_pairs([tok], chain=ch)
+        best = max(pairs, key=lambda x: desk.f((x.get("liquidity") or {}).get("usd"), 0)) if pairs else {}
+        price = desk.f(best.get("priceUsd")); mc = desk.f(best.get("marketCap")); liq = desk.f((best.get("liquidity") or {}).get("usd"), 0)
+        if not (price and mc and floor): continue
+        ratio = mc / price; dd = 1 - price / peak
+        s.update(peak_mcap=round(peak * ratio), floor_mcap=round(floor * ratio), floor_days=floor_days, dd=round(dd, 3), mcap=round(mc), at=int(time.time()))
+        if not (0.50 <= dd <= 0.90 and floor_days >= 3 and liq >= 50_000): s["why"] = "buy-back conditions not met"; continue
+        a = desk.sol_audit(tok, price) if ch == "solana" else None
+        if a and a["verdict"] != "PASS": s["why"] = "audit " + a["verdict"] + ":" + ",".join(a["because"]); continue
+        r = desk.rugcheck(tok) if ch == "solana" else None
+        known = (r or {}).get("knownAccounts") or {}
+        pools = {m.get("pubkey") for m in (r or {}).get("markets") or []} | {k for k, v in known.items() if (v or {}).get("type") in ("AMM", "LOCKER")}
+        bigs = [h for h in (r or {}).get("topHolders") or [] if h.get("owner") not in pools and desk.f(h.get("pct"), 0) >= 1.0]
+        w = desk.sol_wallets(tok) if ch == "solana" else {}
+        smart = (w.get("birdeye") or {}).get("smart_money")
+        if not (len(bigs) >= 3 and smart != "SELLING"):
+            s["why"] = f"big wallets not clearly in ({len(bigs)} holders >=1%, smart={smart})"; continue
+        key = f"BUYBACK_{int(s['floor_mcap'])}"
+        if s["fired"].get(key): continue
+        s["fired"][key] = int(time.time()); pl = plan(s["floor_mcap"], s["peak_mcap"])
+        text = (f"{it['symbol']} | {ch.upper()} | RE-ENTRY: buy-back setup (paper-limits.md)\n{tok}\n"
+                f"Peak {fmt(s['peak_mcap'])} -> now {fmt(mc)} (down {dd*100:.0f}%), floor {fmt(s['floor_mcap'])} held {floor_days} days\n"
+                f"Liquidity {fmt(liq)} | RugCheck + Jupiter sell PASS | {len(bigs)} wallets hold >=1% | smart money {smart}\n"
+                f"Entry zone: {pl['entry_zone']}\nStop: {pl['stop']}\nTargets: {pl['targets']}\nSize: 5% of pot (rules)\n{best.get('url') or ''}")
+        log.info("REENTRY %s buyback push=%s", it["symbol"], push_pair(tok, text, f"{it['symbol']} re-entry setup", log))
