@@ -3,11 +3,14 @@ on:
   schedule:
     - cron: "*/5 * * * *"
   workflow_dispatch: {}
+# One active run + at most one pending (GitHub replaces an older pending run with a newer one), so the
+# self-chain and the backup cron never overlap or pile up.
 concurrency:
   group: desk-watcher
   cancel-in-progress: false
 permissions:
   contents: write
+  actions: write
 jobs:
   watch:
     runs-on: ubuntu-latest
@@ -46,3 +49,11 @@ jobs:
           git add -A .
           git commit -q -m "state $(date -u +%FT%TZ)"
           git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" state:state
+      - name: Chain the next run (skip if STOP exists on main)
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api "repos/${{ github.repository }}/contents/STOP?ref=main" >/dev/null 2>&1; then
+            echo "STOP file on main: not chaining"; exit 0; fi
+          gh workflow run desk-watcher -R "${{ github.repository }}" --ref main && echo "next run dispatched"
