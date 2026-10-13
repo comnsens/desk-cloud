@@ -616,6 +616,7 @@ def heartbeat(st, cyc_s, gates, survivors, err):
     hb["long_watch"] = {"n": len(L), "armed": sum(1 for e in L.values() if e.get("state") == "armed"),
                         "by_chain": {c: sum(1 for e in L.values() if e["chain"] == c) for c in ("base", SOL)}}
     hb["watch_by_chain"] = {c: sum(1 for w in st["watch"].values() if w.get("chain", "base") == c) for c in ("base", SOL)}
+    hb["positions"] = {"loaded": st.get("pos_loaded", []), **{k[:6]: {x: v.get(x) for x in ("mcap", "liq", "high", "fired")} for k, v in st.get("pos", {}).items()}}
     hb["watch_reasons"] = dict(sorted(why.items(), key=lambda kv: -kv[1])[:12])
     tmp = HEART_F + ".tmp"; json.dump(hb, open(tmp, "w"), indent=1); os.replace(tmp, HEART_F)
 
@@ -659,6 +660,10 @@ def main():
         st["stats"]["cycles"] = st["stats"].get("cycles", 0) + 1; st["last_cycle_end"] = time.time()
         cyc = time.time() - t0
         try:
+            try:
+                import positions; positions.check(st, log)
+            except Exception as e:
+                log.warning("position watch: %s", f"{type(e).__name__}: {e}"[:200])
             save_state(st); heartbeat(st, cyc, gates, survivors, err)
         except Exception as e:
             log.error("state/heartbeat write failed: %s", e)
