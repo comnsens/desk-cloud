@@ -8,5 +8,27 @@
       "token": "Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump",
       "note": "owner fully exited ~ $580k mcap 2026-10-13; ping only on rules-based re-entry (buy-back setup or floor-watch breakout)"
     }
+  ],
+  "user_alerts": [
+    {
+      "symbol": "FLOYD",
+      "chain": "solana",
+      "token": "Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump",
+      "id": "ENTRY_520K",
+      "below": 520000,
+      "two_messages": true,
+      "title": "FLOYD near $500k entry zone",
+      "message": "FLOYD near $500k entry zone: mcap {mcap}, liq {liq}, buys/sells in the last 1h: {buys}/{sells}; suggested stop below $410k mcap (price $0.00050); this is the user's level, not a desk signal"
+    },
+    {
+      "symbol": "FLOYD",
+      "chain": "solana",
+      "token": "Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump",
+      "id": "BREAKDOWN_410K",
+      "below": 410000,
+      "two_messages": false,
+      "title": "FLOYD breakdown",
+      "message": "FLOYD breakdown: below $410k, skip entry (mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells})"
+    }
   ]
 }

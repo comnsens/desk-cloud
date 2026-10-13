@@ -134,3 +134,30 @@ def reentry_check(st, log, watcher):
                 f"Liquidity {fmt(liq)} | RugCheck + Jupiter sell PASS | {len(bigs)} wallets hold >=1% | smart money {smart}\n"
                 f"Entry zone: {pl['entry_zone']}\nStop: {pl['stop']}\nTargets: {pl['targets']}\nSize: 5% of pot (rules)\n{best.get('url') or ''}")
         log.info("REENTRY %s buyback push=%s", it["symbol"], push_pair(tok, text, f"{it['symbol']} re-entry setup", log))
+
+# ---------------------------------------------------------------- owner's own level alerts (not desk signals)
+def user_alerts(st, log):
+    try: items = json.load(open(POS_FILE)).get("user_alerts") or []
+    except FileNotFoundError: items = []
+    U = st.setdefault("user_alerts", {}); st["user_alerts_loaded"] = [f"{x['symbol']}:{x['id']}" for x in items]
+    cache = {}
+    for it in items:
+        tok, ch = it["token"], it.get("chain", "solana"); key = f"{tok}:{it['id']}"
+        if tok not in cache:
+            pairs = desk.ds_token_pairs([tok], chain=ch)
+            cache[tok] = max(pairs, key=lambda x: desk.f((x.get("liquidity") or {}).get("usd"), 0)) if pairs else None
+        p = cache[tok]
+        if not p: continue
+        mc = desk.f(p.get("marketCap")) or desk.f(p.get("fdv")); liq = desk.f((p.get("liquidity") or {}).get("usd"), 0)
+        if not mc: continue
+        h1 = (p.get("txns") or {}).get("h1") or {}
+        s = U.setdefault(key, {"fired": None})
+        lvl = it["below"]; hit = mc <= lvl; rearm = mc >= lvl * (1 + REARM)
+        s.update(mcap=round(mc), at=int(time.time()))
+        if hit and not s["fired"]:
+            s["fired"] = int(time.time())
+            text = it["message"].format(mcap=fmt(mc), liq=fmt(liq), buys=h1.get("buys"), sells=h1.get("sells")) + f"\n{p.get('url') or ''}"
+            res = push_pair(tok, text, it.get("title", it["id"]), log) if it.get("two_messages") else push(text, it.get("title", it["id"]), log)
+            log.info("USER_ALERT %s %s mcap=%s push=%s", it["symbol"], it["id"], round(mc), res)
+        elif rearm and s["fired"]:
+            s["fired"] = None

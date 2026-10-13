@@ -624,6 +624,7 @@ def heartbeat(st, cyc_s, gates, survivors, err):
     hb["watch_by_chain"] = {c: sum(1 for w in st["watch"].values() if w.get("chain", "base") == c) for c in ("base", SOL)}
     hb["positions"] = {"loaded": st.get("pos_loaded", []), **{k[:6]: {x: v.get(x) for x in ("mcap", "liq", "high", "fired")} for k, v in st.get("pos", {}).items()}}
     hb["reentry"] = {"loaded": st.get("reentry_loaded", []), **{k[:6]: {x: v.get(x) for x in ("peak_mcap", "floor_mcap", "floor_days", "dd", "mcap", "why")} for k, v in st.get("reentry", {}).items()}}
+    hb["user_alerts"] = {"loaded": st.get("user_alerts_loaded", []), **{k[:6] + k.split(":")[-1]: v for k, v in st.get("user_alerts", {}).items()}}
     hb["watch_reasons"] = dict(sorted(why.items(), key=lambda kv: -kv[1])[:12])
     tmp = HEART_F + ".tmp"; json.dump(hb, open(tmp, "w"), indent=1); os.replace(tmp, HEART_F)
 
@@ -668,7 +669,7 @@ def main():
         cyc = time.time() - t0
         try:
             try:
-                import positions; positions.check(st, log); positions.reentry_check(st, log, None)
+                import positions; positions.check(st, log); positions.reentry_check(st, log, None); positions.user_alerts(st, log)
             except Exception as e:
                 log.warning("position watch: %s", f"{type(e).__name__}: {e}"[:200])
             save_state(st); heartbeat(st, cyc, gates, survivors, err)
