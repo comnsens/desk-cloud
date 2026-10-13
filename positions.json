@@ -5,19 +5,48 @@
       "symbol": "FLOYD",
       "chain": "solana",
       "token": "Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump",
-      "cost_basis_mcap": 504000,
-      "note": "bought via Fomo; 25% sold at ~$1M; rest ~ $95",
+      "cost_basis_mcap": 536000,
+      "note": "bought via Fomo; avg entry $0.000612 ($92.85 in, 113.7K FLOYD held); 25% sold at ~$1M",
       "levels": [
-        {"id": "STOP", "below": 504000, "action": "STOP hit (breakeven): sell the rest"},
-        {"id": "WARN", "below": 600000, "action": "WARNING: close to breakeven stop ($504k). Get ready to sell"},
-        {"id": "TP_2.5M", "above": 2500000, "action": "Take profit: sell 25%"},
-        {"id": "RUN_5M", "above": 5000000, "action": "Runner: sell a quarter of what is left"},
-        {"id": "RUN_10M", "above": 10000000, "action": "Runner: sell a quarter of what is left"},
-        {"id": "RUN_20M", "above": 20000000, "action": "Runner: sell a quarter of what is left"}
+        {
+          "id": "STOP",
+          "below": 536000,
+          "action": "STOP hit (breakeven, entry $0.000612): sell the rest"
+        },
+        {
+          "id": "WARN",
+          "below": 640000,
+          "action": "WARNING: near breakeven stop ($536k / $0.000612). Get ready to sell"
+        },
+        {
+          "id": "TP_2.5M",
+          "above": 2500000,
+          "action": "Take profit: sell 25%"
+        },
+        {
+          "id": "RUN_5M",
+          "above": 5000000,
+          "action": "Runner: sell a quarter of what is left"
+        },
+        {
+          "id": "RUN_10M",
+          "above": 10000000,
+          "action": "Runner: sell a quarter of what is left"
+        },
+        {
+          "id": "RUN_20M",
+          "above": 20000000,
+          "action": "Runner: sell a quarter of what is left"
+        }
       ],
-      "trail": {"arm_above": 2500000, "drop_pct": 35, "action": "Trail stop: down 35% from the high, sell the rest"},
+      "trail": {
+        "arm_above": 2500000,
+        "drop_pct": 35,
+        "action": "Trail stop: down 35% from the high, sell the rest"
+      },
       "liquidity_drop_pct": 40,
-      "rugcheck": true
+      "rugcheck": true,
+      "entry_price_usd": 0.000612
     }
   ]
 }
