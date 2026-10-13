@@ -917,6 +917,16 @@ def sol_audit(mint, price_usd=None):
         {"top10_ex_lp_burn_pct": top10, "creator": r.get("creator"), "creator_pct": creator_pct, "insider_pct": insider,
          "insider_networks": r.get("graphInsidersDetected"), "holders": r.get("totalHolders")})
     chk("deployer_linked", "REJECT" if (linked or 0) > 5 else ("PASS" if linked is not None else "UNKNOWN"), {"pct": linked})
+    # bundle / insider clusters (RugCheck insiderNetworks; amounts are raw units like supply)
+    nets = r.get("insiderNetworks") or []
+    amt = lambda n: max(f(n.get("tokenAmount"), 0), f(n.get("currentHolding"), 0))
+    bundle = round(sum(amt(n) for n in nets) / sup * 100, 2) if sup else None
+    biggest = round(max([amt(n) for n in nets] or [0]) / sup * 100, 2) if sup else None
+    held = round(sum(f(n.get("currentHolding"), 0) for n in nets) / sup * 100, 2) if sup else None
+    gi = r.get("graphInsidersDetected") or 0
+    bad = (bundle or 0) > 10 or (biggest or 0) > 5 or gi >= 50
+    chk("bundle", "REJECT" if bad else ("PASS" if sup else "UNKNOWN"),
+        {"bundle_pct": bundle, "biggest_cluster_pct": biggest, "clusters_still_hold_pct": held, "clusters": len(nets), "insider_wallets": gi})
     dec = tok.get("decimals"); price = price_usd or f(r.get("price"))
     js = jup_sell(mint, dec, price)
     chk("sellable", js["status"], js["detail"])
@@ -924,7 +934,7 @@ def sol_audit(mint, price_usd=None):
     verdict = "REJECT" if rej else "UNKNOWN" if unk else "PASS"
     lp_name = (r.get("launchpad") or {}).get("platform") or r.get("deployPlatform")
     return {"cmd": "audit", "chain": SOL, "token": mint, "verdict": verdict, "because": rej or unk, "checks": checks,
-            "top10": top10, "linked_pct": linked, "creator": r.get("creator"), "holders": r.get("totalHolders"), "launchpad": lp_name}
+            "top10": top10, "linked_pct": linked, "bundle_pct": bundle, "insider_wallets": gi, "creator": r.get("creator"), "holders": r.get("totalHolders"), "launchpad": lp_name}
 
 def sol_wallets(mint, big_usd=500, pnl_checks=3):
     """Birdeye-only big-wallet read for Solana (no free RPC log scan). smart_money BUYING/HOLDING/SELLING/NONE_CLEAR."""

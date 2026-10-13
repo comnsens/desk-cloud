@@ -69,3 +69,9 @@ at each milestone, or when the pot doubles since the last withdrawal: tell the u
 - Solana graduations tracked: pump.fun -> PumpSwap, LetsBonk -> Raydium, Meteora DBC -> Meteora/DAMM (GeckoTerminal lists + DexScreener search).
 - 30-day long watchlist: every audit PASS, and any token seen at $300k+ market cap (not copycat/fake). Floor-watch arms when price is 70-92% below the peak and closes have held one range (high/low within 1.6x) for 5+ days. Floor breakout alert needs ALL: a completed 1h close 30%+ above the range top, 24h volume >= 3x the range daily average, 50+ unique sellers in 24h, and either 2+ proven wallets buying (Birdeye) or holders up 10%+ vs 4+ days earlier; then the full audit, wash screen, liquidity >= $50k, sizing and account gates still apply.
 - unchanged: pool-lock, holder, sell-test rules, first-hour skip, $50k liquidity, 1.5%-of-liquidity max buy, ETH filter, circuit breaker.
+
+## Added 2026-10-13: bundle filter
+- Solana: RugCheck insiderNetworks (transfer-linked wallet clusters). Bundle % = sum over clusters of max(tokenAmount, currentHolding) / supply.
+  REJECT if clusters total > 10% of supply, any one cluster > 5%, or graphInsidersDetected >= 50. bundle_pct is shown in alert evidence and message 2.
+- Backtest: FLOYD REJECT (26.2% in 5 clusters, biggest 16.9%, 251 insider wallets); Bumo REJECT (37.1%); recent passes: SEALS still PASS (2.7%), FARM REJECT (10.1%), YILONGMA REJECT (95.8%).
+- Base/EVM gap: no free cluster data (GoPlus gives top-10 holders only). Existing deployer-linked check (deployer + wallets it funded/transferred to, >5% = skip) and top-10 <= 40% remain the EVM proxy.

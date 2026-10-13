@@ -377,7 +377,7 @@ def run_audit(w, tok):
         hc = next((c["detail"] for c in a.get("checks", []) if c["check"] == "holder_concentration"), {})
         return {"verdict": a["verdict"], "because": a.get("because", []), "at": time.time(),
                 "checks": {c["check"]: c["status"] for c in a.get("checks", [])}, "creator": a.get("creator"), "owner": None,
-                "top10": a.get("top10"), "linked_pct": a.get("linked_pct"), "launchpad": a.get("launchpad"), "holders": a.get("holders"),
+                "top10": a.get("top10"), "linked_pct": a.get("linked_pct"), "bundle_pct": a.get("bundle_pct"), "launchpad": a.get("launchpad"), "holders": a.get("holders"),
                 "insider_networks": hc.get("insider_networks") if isinstance(hc, dict) else None}
     a = desk.cmd_audit(SimpleNamespace(token=tok))
     return {"verdict": a["verdict"], "because": a.get("because", []), "at": time.time(),
@@ -441,7 +441,7 @@ def evaluate(st, tok, gates, setup_override=None):
             "setup": setups, "trend_listed": listed,
             "evidence": {"audit": "PASS", "wallets_signal": wl["signal"], "smart_money": wl["smart"], "wallets": wl["evidence"],
                          "chg_h1": w.get("chg_h1"), "h1_buys": w.get("h1_buys"), "h1_sells": w.get("h1_sells"), "vol_h1": w.get("vol_h1"),
-                         "top10_pct": ac["top10"], "deployer_linked_pct": w["linked"]["pct"], "sources": w["src"],
+                         "top10_pct": ac["top10"], "deployer_linked_pct": w["linked"]["pct"], "bundle_pct": ac.get("bundle_pct", "n/a (EVM: no free cluster data)"), "sources": w["src"],
                          "first_candle_mcap": (w.get("fake") or {}).get("first"),
                          "wash": {k: (w.get("wash") or {}).get(k) for k in ("h1_unique_buyers", "h1_unique_sellers", "h1_buys", "h1_sells")},
                          "sell_test": "Jupiter quote" if ch == SOL else "honeypot.is", **({"floor": w["floor_ev"]} if w.get("floor_ev") else {})},
@@ -468,7 +468,7 @@ def messages(rec):
              f"Market cap: {fmt_usd(rec['mcap'])} | Liquidity: {fmt_usd(rec['liquidity'])} | Age: {rec.get('age_h')}h",
              f"Buy (paper): ${rec['sizing']['paper_size_usd']:.0f} (max 1.5% of liq = ${rec['sizing']['max_buy_1_5pct_liq']:.0f})",
              "Sell: " + "; ".join(sell_levels(rec["mcap"])) + "; stop -25%",
-             f"Evidence: audit PASS ({ev['sell_test']} sell test), top10 {ev['top10_pct']}%, deployer-linked {ev['deployer_linked_pct']}%, "
+             f"Evidence: audit PASS ({ev['sell_test']} sell test), top10 {ev['top10_pct']}%, deployer-linked {ev['deployer_linked_pct']}%, bundle {ev.get('bundle_pct')}%, "
              f"wallets {ev['wallets_signal']}/{ev['smart_money']}, 1h unique buyers/sellers {ev['wash'].get('h1_unique_buyers')}/{ev['wash'].get('h1_unique_sellers')}"
              + (f", floor {ev['floor']}" if ev.get("floor") else ""),
              rec["link"], rec["time_et"]]
