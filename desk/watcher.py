@@ -30,7 +30,7 @@ WETH = "0x4200000000000000000000000000000000000006"
 CYCLE_S = 60
 # ---- rules (paper-limits.md v2 + "Added 2026-10-11") ----
 MIN_LIQ = 50_000; MAX_MCAP = 1_000_000; PREF_MCAP = 400_000
-MIN_VOL24 = 25_000; MIN_TXNS24 = 150; MAX_VOL_LIQ = 30
+MIN_VOL24 = 25_000; MIN_TXNS24 = 150; MAX_VOL_LIQ = 30; MAX_VOL_LIQ_SOL = 80  # pump.fun graduates trade 30-60x liq; unique-trader wash screen still applies
 MIN_AGE_H = 1.0; MAX_AGE_H = 48.0
 DEPLOYER_LINKED_MAX = 5.0; TOP10_MAX = 40.0
 SIZE_PCT = 0.05; SIZE_PCT_LOSING = 0.025; MAX_BUY_LIQ = 0.015; MIN_CASH = 0.70
@@ -239,7 +239,7 @@ def prefilter(st):
         elif mc > MAX_MCAP: why = "mcap_over_1M"
         elif vol < MIN_VOL24: why = "volume"
         elif ntx < MIN_TXNS24: why = "txns"
-        elif liq and vol / liq > MAX_VOL_LIQ: why = "wash_volume"
+        elif liq and vol / liq > (MAX_VOL_LIQ_SOL if w.get("chain") == "solana" else MAX_VOL_LIQ): why = "wash_volume"
         w["why"] = why
         if why == "too_old" or (why or "").startswith("copycat"): w["drop"] = True; continue
         if why == "first_hour":
