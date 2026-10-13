@@ -40,6 +40,17 @@
       "two_messages": true,
       "title": "FLOYD back above $600k",
       "message": "FLOYD broke back above $600k: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}"
+    },
+    {
+      "symbol": "SEALS",
+      "chain": "solana",
+      "token": "3sKaoPryg4KrXubLWtoqF7MznLT7QNqKRxMMkkxTpump",
+      "id": "BREAK_1M",
+      "above": 1000000,
+      "rearm_below": 900000,
+      "two_messages": true,
+      "title": "SEALS broke $1M",
+      "message": "SEALS broke $1M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}. User level, not a desk signal."
     }
   ]
 }
