@@ -1,0 +1,48 @@
+name: desk-watcher
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch: {}
+concurrency:
+  group: desk-watcher
+  cancel-in-progress: false
+permissions:
+  contents: write
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check out state branch
+        run: |
+          mkdir -p state
+          if git fetch -q origin state --depth=1; then git --work-tree=state checkout -q FETCH_HEAD -- . ; fi
+          git reset -q   # do not leave state files staged in the main checkout
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install --quiet requests
+      - name: HTTP cache (short-lived, not state)
+        uses: actions/cache@v4
+        with:
+          path: .http-cache
+          key: http-${{ github.run_id }}
+          restore-keys: http-
+      - name: Run watcher (~4.5 min)
+        env:
+          BIRDEYE_API_KEY: ${{ secrets.BIRDEYE_API_KEY }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          STATE: ${{ github.workspace }}/state
+        run: ./run_cloud.sh
+      - name: Save state to the state branch (single commit, force-pushed, so history never grows)
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd state
+          rm -rf .git
+          git init -q -b state
+          git config user.name desk-bot; git config user.email desk-bot@users.noreply.github.com
+          git add -A .
+          git commit -q -m "state $(date -u +%FT%TZ)"
+          git push -q -f "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" state:state

@@ -1,0 +1,5 @@
+.http-cache/
+state/
+__pycache__/
+*.pyc
+.env
