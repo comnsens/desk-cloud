@@ -29,6 +29,17 @@
       "two_messages": false,
       "title": "FLOYD breakdown",
       "message": "FLOYD breakdown: below $410k, skip entry (mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells})"
+    },
+    {
+      "symbol": "FLOYD",
+      "chain": "solana",
+      "token": "Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump",
+      "id": "RECLAIM_600K",
+      "above": 600000,
+      "rearm_below": 540000,
+      "two_messages": true,
+      "title": "FLOYD back above $600k",
+      "message": "FLOYD broke back above $600k: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}"
     }
   ]
 }

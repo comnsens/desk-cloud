@@ -152,8 +152,16 @@ def user_alerts(st, log):
         if not mc: continue
         h1 = (p.get("txns") or {}).get("h1") or {}
         s = U.setdefault(key, {"fired": None})
-        lvl = it["below"]; hit = mc <= lvl; rearm = mc >= lvl * (1 + REARM)
         s.update(mcap=round(mc), at=int(time.time()))
+        if "above" in it:
+            # cross-up alert: arms only after a reading below the level; after firing, re-arms below rearm_below
+            lvl = it["above"]
+            if not s.get("armed") and not s["fired"] and mc < lvl: s["armed"] = True
+            if s["fired"] and mc < it.get("rearm_below", lvl * (1 - REARM)): s["fired"] = None; s["armed"] = True
+            hit = bool(s.get("armed")) and mc >= lvl; rearm = False
+            if hit: s["armed"] = False
+        else:
+            lvl = it["below"]; hit = mc <= lvl; rearm = mc >= lvl * (1 + REARM)
         if hit and not s["fired"]:
             s["fired"] = int(time.time())
             text = it["message"].format(mcap=fmt(mc), liq=fmt(liq), buys=h1.get("buys"), sells=h1.get("sells")) + f"\n{p.get('url') or ''}"
