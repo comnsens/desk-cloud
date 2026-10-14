@@ -167,6 +167,7 @@ def main():
     while time.time() < end:
         t0 = time.time(); TICK_T[0] = t0
         if t0 - flags_at > 60: load_flags(st); flags_at = t0
+        refresh_positions()
         TICK_CACHE.clear()
         by = {}
         for ch, tok in watch_set(st): by.setdefault(ch, []).append(tok)
