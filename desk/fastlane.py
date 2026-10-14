@@ -149,6 +149,18 @@ def chart_loop():
             except Exception: STATS["errors"] += 1
     threading.Thread(target=run, daemon=True).start()
 
+_POS_AT = [0.0]
+def refresh_positions(every=20):
+    """Pull positions.json from main every ~20s so new coins/levels apply without a restart. Never raises."""
+    if time.time() - _POS_AT[0] < every: return
+    _POS_AT[0] = time.time()
+    try:
+        r = S.get(f"https://raw.githubusercontent.com/comnsens/desk-cloud/main/positions.json?t={int(time.time())}", timeout=4)
+        if r.ok:
+            json.loads(r.text)
+            tmp = positions.POS_FILE + ".tmp"; open(tmp, "w").write(r.text); os.replace(tmp, positions.POS_FILE)
+    except Exception as e: log.warning("refresh_positions: %s", type(e).__name__)
+
 def chart_cached(pair): return CHARTS.get((pair.get("pairAddress") or "").lower())
 
 def main():
