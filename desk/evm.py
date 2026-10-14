@@ -102,7 +102,9 @@ def v4_key(ch, pool_id, created_ms):
 
 def sell_test(tok, ch, pair, kind, liq_usd, native_usd, dex="", created_ms=None):
     """kind: 'v2' or 'v3'. Buys ~0.5% of liquidity (min $20) then sells it all; second buy at 1.5% of liquidity checks max-tx limits."""
-    if kind == "v2" and "aerodrome" in dex: kind = "aero"
+    if kind == "v2" and "aerodrome" in dex:
+        try: call(ch, pair, "0x0902f1ac"); kind = "aero"          # getReserves -> classic Aerodrome pool
+        except RuntimeError: kind = "v3"                          # Slipstream (concentrated liquidity; DexScreener often omits the label)
     if kind not in ("v2", "v3", "aero", "v4"):
         return {"status": "UNSUPPORTED", "detail": f"{kind}/{dex} pools not simulated (honeypot.is / GoPlus cover these)"}
     key = None

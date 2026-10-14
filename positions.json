@@ -90,6 +90,14 @@
    "chain": "solana",
    "held_usd": 15,
    "note": "REAL position (liquidity watch only, no levels)"
+  },
+  {
+   "symbol": "VEIL",
+   "token": "HgTGdc29D5bDMrDvsCLnorxz899VyDj7ZN7FPa6vpump",
+   "chain": "solana",
+   "held_usd": 10,
+   "entry_mcap": 15360000,
+   "note": "REAL position (liquidity watch only, no levels)"
   }
  ]
 }
