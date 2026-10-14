@@ -114,6 +114,22 @@
       "ath_mcap": 0,
       "every_s": 900,
       "note": "closed by user ~$400k (entry ~$484k); study how it ends"
+    },
+    {
+      "symbol": "Eikon",
+      "token": "63A9mFGpX4Mws6TznZm4287P4vTsTxQ5NvcJPsbXpump",
+      "chain": "solana",
+      "ath_mcap": 0,
+      "every_s": 900,
+      "note": "alerted, failed: watcher flag $351k (1h +236%, 7x first candle $50k) 2026-10-14 01:12 ET; late-chase; grade in Sunday study"
+    },
+    {
+      "symbol": "VCAT",
+      "token": "5Z6LFstu6KBC1pcR9co3e1forvP5jRBQhgLvyStxpump",
+      "chain": "solana",
+      "ath_mcap": 0,
+      "every_s": 900,
+      "note": "alerted, failed: watcher flag $375k with chart BREAKDOWN 2026-10-14 00:48 ET; late-chase; grade in Sunday study"
     }
   ],
   "liq_watch": [

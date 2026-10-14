@@ -485,10 +485,29 @@ def messages(rec):
         lines.insert(-2, f"Stop: 15% below the floor (~{fmt_usd(lo * m * 0.85)} mcap); targets 2x/3x of entry, trail -35%, out near old peak ({fmt_usd(fl.get('peak_usd', 0) * m)})")
     return rec["token"], "\n".join(lines)
 
+LATE_H1_CHG, LATE_FC_MULT = 150, 5
+def late_chase(rec):
+    """Return reject reason or None. BREAKDOWN signal, or 1h>+150% AND mcap>=5x first candle unless inside the dip zone."""
+    ch = rec.get("chart") or {}
+    if (ch.get("signal") or "") == "breakdown": return "late_chase:chart_BREAKDOWN"
+    ev = rec.get("evidence") or {}; h1 = desk.f(ev.get("chg_h1"), 0); fc = ev.get("first_candle_mcap"); mc = rec.get("mcap") or 0
+    if h1 > LATE_H1_CHG and fc and mc >= LATE_FC_MULT * fc:
+        dz = (ch.get("entry_zones") or {}).get("dip")
+        if dz and dz["from"] <= mc <= dz["to"]: return None
+        return f"late_chase:h1+{h1:.0f}%_mcap{mc/fc:.1f}x_first_candle"
+    return None
+
 def flag(st, rec):
     try:
         import chart; rec["chart"] = chart.read(rec["pair"], rec["chain"], mcap=rec.get("mcap"), quick=True)
     except Exception as e: rec["chart"] = {"error": f"{type(e).__name__}"}
+    why = late_chase(rec)
+    if why:                                              # pre-approved auto-reject: late-chase pattern (Eikon/VCAT 2026-10-13)
+        w = st["watch"].get(rec["token"])
+        if w is not None: w["why"] = why; w["next"] = time.time() + 1800
+        st["stats"]["late_chase_rejects"] = st["stats"].get("late_chase_rejects", 0) + 1
+        log.info("REJECT %s %s %s", rec.get("symbol"), rec["token"], why)
+        return False
     try:
         import runner; rec["runner_score"] = runner.score({"mc": rec.get("mcap"), "liq": rec.get("liquidity"), "v24": rec.get("vol24"), "age_h": rec.get("age_h")}, ch=rec["chain"])
     except Exception as e: rec["runner_score"] = {"error": f"{type(e).__name__}"}
@@ -505,6 +524,7 @@ def flag(st, rec):
     res = post_webhook(summ); res += " ntfy=" + post_ntfy(rec)
     log.info("FLAG %s %s setup=%s mcap=%s liq=%s webhook=%s", rec["symbol"], rec["token"], rec["setup"], rec["mcap"], rec["liquidity"], res)
     st["stats"]["flags"] = st["stats"].get("flags", 0) + 1
+    return True
 
 # ---- 30-day long watchlist + floor-watch ----
 def long_add(st, tok, w):
@@ -688,9 +708,9 @@ def main():
                 if time.time() - t0 > 240: break             # keep cycles bounded
                 try:
                     rec = evaluate(st, tok, gates)
+                    if rec: flag(st, rec)
                     try: dsrows.evaluated(tok, st["watch"][tok])
                     except Exception: pass
-                    if rec: flag(st, rec)
                 except Exception as e:
                     log.warning("eval %s: %s", tok, f"{type(e).__name__}: {e}"[:200])
             if time.time() - t0 < 200:
