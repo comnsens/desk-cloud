@@ -9,7 +9,7 @@ The model target is the primary label when it has >= 30 positives, else the stro
 Labels are final after 30 days (or earlier when a coin is dead).
 Validation is walk-forward by first-seen day: train on earlier days only, test on the next day (no lookahead).
 """
-import argparse, glob, gzip, json, math, os, random, subprocess, time, datetime as dt
+import json, time, argparse, glob, gzip, json, math, os, random, subprocess, time, datetime as dt
 
 NUM = ["age_h", "mc", "liq", "v24", "v1", "v5", "b1", "s1", "b5", "s5", "c1", "c5", "soc", "web", "boost",
        "liq_mc", "bs1", "bs5", "v1_liq", "top10", "linked", "bundle", "ub1", "us1", "ub24", "fc_mult", "holders"]
@@ -228,6 +228,15 @@ def main():
         coef = sorted(((w[j], names[j]) for j in range(len(names))), key=lambda x: -abs(x[0]))[:10]
         out += ["", "Logistic weights (last fold, standardized; + = more runner-like):", ""] + [f"- {nm}: {c:+.2f}" for c, nm in coef]
         out += ["", "Decision tree (last fold, depth 3):", "```", tree_txt(last_tree).rstrip(), "```"]
+    # ---- runner model for live scoring (LOG-ONLY until validated) ----
+    try:
+        Xall, sts = matrix(data[-20000:], names); yv = [1 if d[2] == "runner" else 0 for d in data[-20000:]]
+        wa, ba = fit_lr(Xall, yv)
+        pooled = auc(yall, plr) if yall else None
+        json.dump({"built": int(time.time()), "target": TARGET, "names": names, "stats": sts, "w": wa, "b": ba, "n": len(yv), "positives": sum(yv),
+                   "pooled_auc": pooled, "validated": bool(pooled and pooled >= 0.70 and sum(yv) >= 30)},
+                  open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "runner-model.json"), "w"))
+    except Exception as e: out += ["", f"runner-model.json not written: {e}"]
     out += ["", "Notes: features are what the desk saw at first sight (+ its audit within 2h). Peaks are sampled at 1h/6h/24h/3d/7d and refined with 4h candles for movers, so short wicks between samples are missed."]
     open(a.out, "w").write("\n".join(out) + "\n"); print("\n".join(out))
 

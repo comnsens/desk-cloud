@@ -6,7 +6,7 @@ Hand-off between overlapping runs: the outgoing run posts its alert state to a p
 subscribed on the phone); the incoming run waits for the outgoing run's end time, then loads that state, so nothing double-fires."""
 import json, logging, os, sys, time, requests
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import desk, positions
+import desk, positions, chart
 
 log = logging.getLogger("fastlane"); logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 TICK = float(os.environ.get("FAST_TICK_S", "2.5"))
@@ -77,6 +77,7 @@ def load_flags(st):
                 st.setdefault("flagged", {})[x["token"]] = t; st.setdefault("flagged_ch", {})[x["token"]] = x["chain"]
     except Exception: STATS["errors"] += 1
 
+KEEP = ("pos", "user_alerts", "liqw", "moves", "ladder", "chart")
 def compact(st):
     lw = {k: {"hist": v["hist"][-4:], "fired": v["fired"]} for k, v in st.get("liqw", {}).items()}
     return {"pos": {k: {x: v.get(x) for x in ("fired", "high", "liq_max")} for k, v in st.get("pos", {}).items()},
@@ -90,9 +91,9 @@ def handoff_load():
         try:
             r = S.get(f"https://ntfy.sh/{CTL}/json?poll=1&since=12h", timeout=10)
             msgs = [json.loads(l) for l in r.text.splitlines() if l.strip()]
-            msgs = [m for m in msgs if m.get("event") == "message"]
+            msgs = [m for m in msgs if m.get("event") == "message" and m.get("attachment")]
             if msgs:
-                d = json.loads(msgs[-1]["message"])
+                d = S.get(msgs[-1]["attachment"]["url"], timeout=10).json()
                 if not PREV_END or d.get("end", 0) >= PREV_END - 5 or time.time() - d.get("end", 0) > 60: return d
         except Exception: pass
         time.sleep(2)
@@ -100,16 +101,17 @@ def handoff_load():
 
 def handoff_save(st):
     if not CTL: return
-    body = json.dumps(compact(st), separators=(",", ":"))
-    if len(body) > 3900:
-        st2 = compact(st); st2["liqw"] = {k: {"hist": v["hist"][-1:], "fired": v["fired"]} for k, v in st2["liqw"].items()}; body = json.dumps(st2, separators=(",", ":"))
-    try: S.post(f"https://ntfy.sh/{CTL}", data=body.encode(), timeout=10)
+    body = json.dumps({**{k: st.get(k) or {} for k in KEEP}, "end": time.time()}, separators=(",", ":"))
+    try: S.put(f"https://ntfy.sh/{CTL}", data=body.encode(), headers={"Filename": "state.json"}, timeout=15)
     except Exception: pass
 
 _orig_push = positions.push
 def urgent_push(text, title, log_, priority="urgent"):
     STATS["pushes"] += 1
     t0 = time.time(); topic = TOPIC
+    low = text.lower()
+    for key, c in CHARTS.items():
+        if key and key in low and "Chart:" not in text: text += "\n" + chart.line(c); break
     if not topic: log.info("push (no NTFY_TOPIC): %s", title); return "not_configured"
     for a in range(3):
         try:
@@ -122,19 +124,46 @@ def urgent_push(text, title, log_, priority="urgent"):
     return "fail"
 positions.push = urgent_push
 TICK_T = [time.time()]
+CHARTS = {}                                    # pair address (lower) -> chart read (refreshed in the background, 1 coin / 15 s)
+def chart_for(pair):
+    k = (pair.get("pairAddress") or "").lower(); c = CHARTS.get(k)
+    if c and time.time() - c.get("t", 0) < 600: return c
+    try:
+        STATS["gt_calls"] += 2
+        c = chart.read(pair["pairAddress"], pair.get("chainId"), mcap=desk.f(pair.get("marketCap")) or desk.f(pair.get("fdv")), price=desk.f(pair.get("priceUsd")))
+        if not c.get("error"): CHARTS[k] = c
+    except Exception: STATS["errors"] += 1
+    return CHARTS.get(k)
+
+CH_AT = [0]
+def chart_loop():
+    """Background thread: refresh the stalest chart every 15 s (2 GT calls), so ticks never wait on GeckoTerminal."""
+    import threading
+    def run():
+        while True:
+            time.sleep(15)
+            try:
+                bests = [max(ps, key=lambda x: desk.f((x.get("liquidity") or {}).get("usd"), 0)) for ps in list(TICK_CACHE.values()) if ps]
+                bests.sort(key=lambda b: CHARTS.get((b.get("pairAddress") or "").lower(), {}).get("t", 0))
+                if bests and time.time() - CHARTS.get((bests[0].get("pairAddress") or "").lower(), {}).get("t", 0) > 300: chart_for(bests[0])
+            except Exception: STATS["errors"] += 1
+    threading.Thread(target=run, daemon=True).start()
+
+def chart_cached(pair): return CHARTS.get((pair.get("pairAddress") or "").lower())
 
 def main():
     st = {"flagged": {}, "flagged_ch": {}}
+    global CHARTS
     prev = handoff_load()
     if not prev:                                                         # cold start: take fired/armed state from the watcher's saved state
         try:
             ws = S.get(FLAGS_URL.replace("flags.jsonl", "watcher_state.json"), timeout=10).json()
             prev = {k: ws.get(k) or {} for k in ("pos", "user_alerts", "liqw")}
         except Exception: prev = {}
-    st.update({k: v for k, v in prev.items() if k in ("pos", "user_alerts", "liqw")})
+    st.update({k: v for k, v in prev.items() if k in KEEP and v}); CHARTS = st.setdefault("chart", {})
     end = time.time() + RUN_S
     log.info("fastlane start; handoff state %s", "loaded" if prev else "none")
-    flags_at = 0
+    flags_at = 0; chart_loop()
     while time.time() < end:
         t0 = time.time(); TICK_T[0] = t0
         if t0 - flags_at > 60: load_flags(st); flags_at = t0
@@ -150,7 +179,7 @@ def main():
                     for k in ((ch, a), (ch, a.lower())):
                         if k in TICK_CACHE: TICK_CACHE[k].append(p)
         try:
-            positions.check(st, log); positions.user_alerts(st, log)
+            positions.check(st, log); positions.user_alerts(st, log); positions.ladder(st, log, chart_cached); positions.study_moves(st, log)
             st["liqw_next"] = 0; positions.liq_watch(st, log)
         except Exception as e:
             STATS["errors"] += 1; log.warning("alert eval: %s", f"{type(e).__name__}: {e}"[:200])

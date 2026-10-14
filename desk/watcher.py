@@ -486,7 +486,17 @@ def messages(rec):
     return rec["token"], "\n".join(lines)
 
 def flag(st, rec):
+    try:
+        import chart; rec["chart"] = chart.read(rec["pair"], rec["chain"], mcap=rec.get("mcap"), quick=True)
+    except Exception as e: rec["chart"] = {"error": f"{type(e).__name__}"}
+    try:
+        import runner; rec["runner_score"] = runner.score({"mc": rec.get("mcap"), "liq": rec.get("liquidity"), "v24": rec.get("vol24"), "age_h": rec.get("age_h")}, ch=rec["chain"])
+    except Exception as e: rec["runner_score"] = {"error": f"{type(e).__name__}"}
     rec["message_1"], rec["message_2"] = messages(rec)
+    try:
+        import chart
+        rec["message_2"] = rec["message_2"] + "\n" + chart.line(rec["chart"]) + (f"\nRunner score (log-only): {rec['runner_score']['score']}" if (rec.get("runner_score") or {}).get("score") is not None else "")
+    except Exception: pass
     with open(ALERTS, "a") as fh: fh.write(json.dumps(rec, separators=(",", ":")) + "\n")
     st["flagged"][rec["token"]] = time.time()
     st.setdefault("flagged_ch", {})[rec["token"]] = rec["chain"]

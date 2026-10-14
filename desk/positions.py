@@ -221,6 +221,7 @@ def study(st, log):
         for k, msg in ev:
             text = (f"{it['symbol']} STUDY ({ch}): {msg}\nmcap {fmt(mc)} | liq {fmt(tot_liq)} | 1h buys/sells {h1.get('buys')}/{h1.get('sells')} | "
                     f"unique 1h {gh1.get('buyers')}/{gh1.get('sellers')} | holders {snap['holders']}\nStudy only, not a desk signal.\n{best.get('url') or ''}")
+            if os.environ.get("DESK_FASTLANE") == "1" and k != "WALLET": continue      # % moves are pushed by the fastlane
             log.info("STUDY %s %s push=%s", it["symbol"], k, push(text, f"{it['symbol']} {k}", log, priority="default"))
 
 # ---------------------------------------------------------------- liquidity watch (item 4; LIVE push)
@@ -268,3 +269,80 @@ def liq_watch(st, log):
                     log.info("LIQ_WATCH %s %s %s -> %s push=%s", sym, tok, round(hi), round(liq), res)
                 elif s["fired"] and liq >= hi * 0.80: s["fired"] = 0
     st["liqw_n"] = len(want)
+
+# ---------------------------------------------------------------- stop ladder (fastlane; held coins with entry_mcap + tp)
+def _tp_levels(p):
+    e = p["entry_mcap"]
+    return [(t.get("mcap") or e * t["x"], t.get("sell_pct", 25)) for t in p.get("tp") or [{"x": 2}, {"x": 3}, {"x": 5}]]
+
+def ladder(st, log, chart_for=None):
+    """Initial stop below the nearest support (fallback entry -25%). TP1 hit -> stop to breakeven; TP2 -> stop to TP1 level;
+    after TP2 -> trail trail_pct (25-35, default 30) from the high. Pushes STOP SET / TP HIT / STOP MOVED / STOP HIT."""
+    L = st.setdefault("ladder", {})
+    for p in load():
+        if not p.get("entry_mcap"): continue
+        tok, ch = p["token"], p.get("chain", "solana")
+        pairs = desk.ds_token_pairs([tok], chain=ch)
+        if not pairs: continue
+        best = max(pairs, key=lambda x: desk.f((x.get("liquidity") or {}).get("usd"), 0))
+        mc = desk.f(best.get("marketCap")) or desk.f(best.get("fdv"))
+        if not mc: continue
+        s = L.setdefault(tok, {"stage": 0, "stop": None, "high": mc, "done": False, "pushed_stop": None})
+        if s["done"]: continue
+        s["high"] = max(s["high"], mc); e = p["entry_mcap"]; tps = _tp_levels(p); trail = min(35, max(25, p.get("trail_pct", 30))) / 100
+        ev = []
+        s.setdefault("seen", time.time())
+        if s["stop"] is None and not p.get("stop_mcap") and chart_for and not chart_for(best) and time.time() - s["seen"] < 90:
+            continue                                    # wait up to 90 s for the chart so the stop can sit below real support
+        if s["stop"] is None:
+            sup = None
+            if p.get("stop_mcap"): s["stop"] = p["stop_mcap"]
+            else:
+                c = chart_for(best) if chart_for else None
+                sup = next((x["mcap"] for x in (c or {}).get("support", []) if x["mcap"] < min(e, mc)), None)
+                s["stop"] = round(sup * 0.95) if sup and sup > e * 0.5 else round(e * 0.75)
+            ev.append(("STOP SET", f"initial stop {fmt(s['stop'])} ({'5% below support ' + fmt(sup) if sup else 'entry -25%' if not p.get('stop_mcap') else 'your stop'})"))
+        while s["stage"] < len(tps) and mc >= tps[s["stage"]][0]:
+            lvl, pct = tps[s["stage"]]; s["stage"] += 1
+            ev.append((f"TP{s['stage']} HIT", f"TP{s['stage']} {fmt(lvl)} reached: sell {pct}%"))
+            new = e if s["stage"] == 1 else tps[s["stage"] - 2][0] if s["stage"] == 2 else max(s["stop"], s["high"] * (1 - trail))
+            if new > s["stop"]: s["stop"] = round(new); ev.append(("STOP MOVED", f"STOP MOVED to {fmt(s['stop'])} ({'breakeven' if s['stage'] == 1 else 'TP1 level' if s['stage'] == 2 else f'trail {trail*100:.0f}%'})"))
+        if s["stage"] >= 2:
+            tr = round(s["high"] * (1 - trail))
+            if tr > s["stop"] * 1.05:
+                s["stop"] = tr; ev.append(("STOP MOVED", f"STOP MOVED to {fmt(tr)} (trail {trail*100:.0f}% from high {fmt(s['high'])})"))
+        if mc <= s["stop"]:
+            s["done"] = True; ev.append(("STOP HIT", f"STOP HIT at {fmt(mc)} (stop {fmt(s['stop'])}): sell the rest now"))
+        for k, msg in ev:
+            text = (f"{p['symbol']} (REAL position, {ch}): {msg}\nmcap {fmt(mc)} | entry {fmt(e)} | high {fmt(s['high'])} | stop {fmt(s['stop'])}\n{best.get('url') or ''}")
+            log.info("LADDER %s %s push=%s", p["symbol"], k, push(text, f"{p['symbol']} {k}", log, priority="urgent"))
+
+# ---------------------------------------------------------------- study % moves on rolling windows (fastlane)
+def study_moves(st, log):
+    try: items = json.load(open(POS_FILE)).get("study") or []
+    except FileNotFoundError: items = []
+    M = st.setdefault("moves", {}); now = time.time()
+    for it in items:
+        tok, ch = it["token"], it.get("chain", "solana")
+        pairs = desk.ds_token_pairs([tok], chain=ch)
+        if not pairs: continue
+        best = max(pairs, key=lambda x: desk.f((x.get("liquidity") or {}).get("usd"), 0))
+        mc = desk.f(best.get("marketCap")) or desk.f(best.get("fdv"))
+        if not mc: continue
+        s = M.setdefault(tok, {"fired": {}, "high": it.get("ath_mcap") or 0, "hist": []})
+        if not s["hist"] or now - s["hist"][-1][0] >= 20: s["hist"] = [h for h in s["hist"] if now - h[0] <= 3900] + [[int(now), round(mc)]]
+        ev = []; prev = s["high"]
+        if mc > prev:
+            if prev and not s["fired"].get("ATH"): ev.append(("ATH", f"new ATH: {fmt(mc)} (old {fmt(prev)})")); s["fired"]["ATH"] = 1
+            s["high"] = mc; s["fired"].pop("DD30", None)
+        elif s["fired"].get("ATH") and mc < prev * 0.9: s["fired"].pop("ATH")
+        lo1h = min(h[1] for h in s["hist"] if now - h[0] <= 3600)
+        if mc >= 1.25 * lo1h and not s["fired"].get("UP25"):
+            ev.append(("UP25", f"+{(mc / lo1h - 1) * 100:.0f}% vs the 1h low ({fmt(lo1h)} -> {fmt(mc)})")); s["fired"]["UP25"] = 1
+        elif s["fired"].get("UP25") and mc < 1.10 * lo1h: s["fired"].pop("UP25")
+        if s["high"] and mc <= 0.70 * s["high"] and not s["fired"].get("DD30"):
+            ev.append(("DD30", f"-{(1 - mc / s['high']) * 100:.0f}% from high {fmt(s['high'])}")); s["fired"]["DD30"] = 1
+        elif s["fired"].get("DD30") and mc >= 0.77 * s["high"]: s["fired"].pop("DD30")
+        for k, msg in ev:
+            text = f"{it['symbol']} STUDY ({ch}): {msg}\nmcap {fmt(mc)}\nStudy only, not a desk signal.\n{best.get('url') or ''}"
+            log.info("STUDY %s %s push=%s", it["symbol"], k, push(text, f"{it['symbol']} {k}", log, priority="high"))

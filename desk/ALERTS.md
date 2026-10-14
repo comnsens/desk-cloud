@@ -20,3 +20,10 @@ Workflow desk-fastlane polls every 2.5 s: positions, liq_watch, user_alerts, re-
 It handles all level / stop / trail / user / liquidity-drop pushes at priority urgent. The watcher no longer sends these (DESK_FASTLANE=1). It still runs re-entry and study.
 Each run lasts about 5.5 min and starts its successor 80 s before it ends. Alert state is handed over via the private ntfy topic <topic>-ctl.
 If it stops: gh workflow run fastlane.yml -R comnsens/desk-cloud. The cron runs every 5 min as a backup.
+
+## Added 2026-10-13: stop ladder, chart lines, study moves (fastlane)
+- Held coin with a ladder: add to positions.json "positions": {"symbol","token","chain","entry_mcap", "tp":[{"x":2,"sell_pct":25},{"x":3,"sell_pct":25},{"x":5,"sell_pct":25}] (or "mcap" instead of "x"), "trail_pct":30 (25-35), optional "stop_mcap"}.
+  Pushes (urgent): STOP SET (5% below the nearest chart support, or entry -25%), TPn HIT (sell %), STOP MOVED (TP1 -> breakeven, TP2 -> TP1 level, then trail from the high, re-pushed on each +5% raise), STOP HIT.
+- Every fastlane push and every new-coin flag's message_2 now ends with a chart line: support/resistance, VWAP, trend, volume spike, breakout/breakdown, floor, dip zone and reclaim level, in mcap terms.
+- Study ATH / +25% vs the 1h low / -30% from high now run in the fastlane on rolling windows. The watcher only keeps the 15-min snapshots and the WALLET alerts.
+- Runner score (log-only) shows on flags once research/runner-model.json exists (written by analyze.py when 7-day labels exist).

@@ -204,7 +204,7 @@ def followups(reg, budget_s):
         for name, off in FU:
             if name not in e["fu"] and now >= e["t0"] + off:
                 due.setdefault(e["ch"], []).append((tok, name)); break
-    cap = dict(HOLDER_CAP, deep=DEEP_CAP, eb=2); n = 0
+    cap = dict(HOLDER_CAP, deep=DEEP_CAP, eb=2, chart=4); n = 0
     for ch, items in due.items():
         items.sort(key=lambda x: T[x[0]]["t0"])
         for i in range(0, len(items), 30):
@@ -229,6 +229,12 @@ def followups(reg, budget_s):
                     try:
                         import smart; eb = smart.sol_early_buyers(tok, max_pages=8)
                         if not eb.get("error"): e["eb"] = eb
+                    except Exception: pass
+                if name == "1h" and p and liq >= 10_000 and (e["fs"].get("mc") or 0) <= EARLY_MC and cap["chart"] > 0:
+                    cap["chart"] -= 1
+                    try:
+                        import chart; c = chart.read(p["pairAddress"], ch, mcap=mc, price=desk.f(p.get("priceUsd")), quick=True)
+                        if not c.get("error"): e["chart"] = {k: c[k] for k in ("trend", "vol_spike_x", "signal", "vwap_24h", "floor", "support", "resistance", "entry_zones")}
                     except Exception: pass
                 if name == "1h" and ch != "solana" and p and liq >= 5_000 and cap["deep"] > 0 and time.time() - t0 < budget_s:
                     cap["deep"] -= 1; deep_row(tok, ch, e, p)
@@ -258,7 +264,7 @@ def finalize(tok, e, dead=False):
            "max_mc": peak, "peak_src": src, "max_mult": round(peak / mc0, 2) if mc0 else None,
            "hit_1m": peak >= 1e6, "hit_5m": peak >= 5e6, "hit_10m": peak >= 10e6, "early": bool(mc0 and mc0 <= EARLY_MC), "dead_early": dead,
            "t_peak_h": round((peak_t - e["t0"]) / 3600, 1), "rug": rug,
-           "deep": e.get("deep"), "eb": e.get("eb"), "holders_growth": round(((e["fu"].get("24h") or {}).get("holders") or 0) / e["holders0"], 2) if e.get("holders0") else None,
+           "deep": e.get("deep"), "eb": e.get("eb"), "chart1h": e.get("chart"), "holders_growth": round(((e["fu"].get("24h") or {}).get("holders") or 0) / e["holders0"], 2) if e.get("holders0") else None,
            "final": True}
     label_out(lab); e["done"] = True
 
