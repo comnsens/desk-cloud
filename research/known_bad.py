@@ -22,6 +22,12 @@ for f in glob.glob(os.path.join(ROOT, "data", "labels-*.jsonl")):
     for line in open(f):
         r = json.loads(line)
         if r.get("rug"): items[r["tok"]] = {"tok": r["tok"], "ch": r["ch"], "sym": r["fs"].get("sym"), "label": "BAD", "why": "final label rug", "pair": None}
+# manual rug set (flagged-and-rugged cases confirmed by hand)
+MANUAL_BAD = [
+    {"tok": "5Z6LFstu6KBC1pcR9co3e1forvP5jRBQhgLvyStxpump", "ch": "solana", "sym": "VCAT", "label": "BAD", "pair": "22T6SEtZswEAeBtnJA9qHGrX6MGucyUfPBEXqGuUEKbV",
+     "why": "manual rug 2026-10-14: flagged $375k, -98% in 1h; LP 100% locked (no pull); sybil-spread supply (top10 1.13%) dumped into pool (pool now 99.3% of supply); ~4.7 buys/unique buyer"},
+]
+for x in MANUAL_BAD: items[x["tok"]] = x
 out = {"built": int(time.time()), "n_bad": sum(1 for x in items.values() if x["label"] == "BAD"),
        "n_good": sum(1 for x in items.values() if x["label"] == "GOOD"), "items": list(items.values())}
 json.dump(out, open(os.path.join(ROOT, "research", "known-bad.json"), "w"), indent=1)

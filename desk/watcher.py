@@ -501,13 +501,11 @@ def flag(st, rec):
     try:
         import chart; rec["chart"] = chart.read(rec["pair"], rec["chain"], mcap=rec.get("mcap"), quick=True)
     except Exception as e: rec["chart"] = {"error": f"{type(e).__name__}"}
-    why = late_chase(rec)
-    if why:                                              # pre-approved auto-reject: late-chase pattern (Eikon/VCAT 2026-10-13)
-        w = st["watch"].get(rec["token"])
-        if w is not None: w["why"] = why; w["next"] = time.time() + 1800
-        st["stats"]["late_chase_rejects"] = st["stats"].get("late_chase_rejects", 0) + 1
-        log.info("REJECT %s %s %s", rec.get("symbol"), rec["token"], why)
-        return False
+    why = late_chase(rec)                                # WARN tag only (user: never block on these); logged as dataset feature
+    rec["warn"] = [why] if why else []
+    w = st["watch"].get(rec["token"])
+    if w is not None: w["warn"] = rec["warn"]
+    if why: st["stats"]["late_chase_warns"] = st["stats"].get("late_chase_warns", 0) + 1
     try:
         import runner; rec["runner_score"] = runner.score({"mc": rec.get("mcap"), "liq": rec.get("liquidity"), "v24": rec.get("vol24"), "age_h": rec.get("age_h")}, ch=rec["chain"])
     except Exception as e: rec["runner_score"] = {"error": f"{type(e).__name__}"}
@@ -516,6 +514,8 @@ def flag(st, rec):
         import chart
         rec["message_2"] = rec["message_2"] + "\n" + chart.line(rec["chart"]) + (f"\nRunner score (log-only): {rec['runner_score']['score']}" if (rec.get("runner_score") or {}).get("score") is not None else "")
     except Exception: pass
+    for x in rec.get("warn") or []:
+        rec["message_2"] = ("WARN: chart breakdown" if "BREAKDOWN" in x else "WARN: chasing " + x.split("mcap")[1].split("x")[0] + "x pump (1h " + x.split("h1")[1].split("_")[0] + ")") + "\n" + rec["message_2"]
     with open(ALERTS, "a") as fh: fh.write(json.dumps(rec, separators=(",", ":")) + "\n")
     st["flagged"][rec["token"]] = time.time()
     st.setdefault("flagged_ch", {})[rec["token"]] = rec["chain"]

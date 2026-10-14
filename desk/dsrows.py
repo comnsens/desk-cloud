@@ -28,7 +28,7 @@ def first_seen(tok, w, best):
 def evaluated(tok, w):
     ac = w.get("audit") or {}; wa = w.get("wash") or {}; fk = w.get("fake") or {}; wl = w.get("wallets") or {}
     row = {"k": "ev", "t": int(time.time()), "tok": tok, "ch": w.get("chain", "base"), "mc": w.get("mcap"), "liq": w.get("liq"),
-           "why": w.get("why"), "verdict": ac.get("verdict"), "because": ac.get("because"), "checks": ac.get("checks"),
+           "why": w.get("why"), "warn": w.get("warn"), "verdict": ac.get("verdict"), "because": ac.get("because"), "checks": ac.get("checks"),
            "top10": ac.get("top10"), "linked": (w.get("linked") or {}).get("pct", ac.get("linked_pct")), "bundle": ac.get("bundle_pct"),
            "ub1": wa.get("h1_unique_buyers"), "us1": wa.get("h1_unique_sellers"), "fc_mc": fk.get("first"), "ub24": fk.get("buyers24"),
            "wsig": wl.get("signal"), "smart": wl.get("smart"), "holders": ac.get("holders")}
