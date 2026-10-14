@@ -1,0 +1,9 @@
+date_et,symbol,chain,ca,mcap_at_check,note
+2026-10-13 21:13,VEIL,solana,HgTGdc29D5bDMrDvsCLnorxz899VyDj7ZN7FPa6vpump,12830578,user sent; 6x in 24h; safety OK; 20.9% top wallet; past entry cap
+2026-10-13 19:41,SEALS,solana,3sKaoPryg4KrXubLWtoqF7MznLT7QNqKRxMMkkxTpump,794833,missed: vol/liq false reject (fixed)
+2026-10-13 18:50,FLOYD,solana,Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump,732900,user traded; bundled 26%; dumped to ~157k
+2026-10-13 21:56,Shopper,solana,HhP4AMBsXpiThDvoyP9KzwaP5GJ4GXytAvfeRkbxpump,13443,user bought $10 on bonding curve; 11-wallet cluster 15% (fails bundle filter)
+2026-10-13 21:56,ENTANGLE,solana,22UqpxbE7PKPYDLLvCejEMgsu17KWBBpFz9bDbLbpump,20128,user bought $15 on bonding curve; 2 clusters 6.0%+5.5% (fails bundle filter)
+2026-10-13 22:57,JEANGUY,solana,5kbUKCWs7ZS5EVqdY9Ci9e5GXH4bbXrHD2vTfn41pump,463090,user bought $20.87; RugCheck 'High holder correlation'; many 0.4% holders; LP lock reads 0
+2026-10-14 01:12,Eikon,solana,63A9mFGpX4Mws6TznZm4287P4vTsTxQ5NvcJPsbXpump,350715,"alerted, failed: watcher flag 1h +236% at 7x first candle ($50k); now ~$166k; late-chase filter added"
+2026-10-14 00:48,VCAT,solana,5Z6LFstu6KBC1pcR9co3e1forvP5jRBQhgLvyStxpump,374715,"alerted, failed: flagged while chart said BREAKDOWN; now ~$2k (rugged); late-chase filter added"

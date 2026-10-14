@@ -497,12 +497,21 @@ def late_chase(rec):
         return f"late_chase:h1+{h1:.0f}%_mcap{mc/fc:.1f}x_first_candle"
     return None
 
+def sybil_spread(rec):
+    """LOG-ONLY tag (VCAT 2026-10-14): supply spread thin (top10<3%) + >4 buys per unique 1h buyer = bot/wallet farm."""
+    ev = rec.get("evidence") or {}; t10 = ev.get("top10_pct"); wa = ev.get("wash") or {}
+    ub, b = wa.get("h1_unique_buyers"), wa.get("h1_buys")
+    if t10 is not None and t10 < 3 and ub and b and b / ub > 4: return f"sybil_spread:top10_{t10}%_{b/ub:.1f}buys_per_buyer"
+    return None
+
 def flag(st, rec):
     try:
         import chart; rec["chart"] = chart.read(rec["pair"], rec["chain"], mcap=rec.get("mcap"), quick=True)
     except Exception as e: rec["chart"] = {"error": f"{type(e).__name__}"}
     why = late_chase(rec)                                # WARN tag only (user: never block on these); logged as dataset feature
     rec["warn"] = [why] if why else []
+    sy = sybil_spread(rec)
+    if sy: rec["warn"].append(sy); st["stats"]["sybil_warns"] = st["stats"].get("sybil_warns", 0) + 1
     w = st["watch"].get(rec["token"])
     if w is not None: w["warn"] = rec["warn"]
     if why: st["stats"]["late_chase_warns"] = st["stats"].get("late_chase_warns", 0) + 1
@@ -515,6 +524,7 @@ def flag(st, rec):
         rec["message_2"] = rec["message_2"] + "\n" + chart.line(rec["chart"]) + (f"\nRunner score (log-only): {rec['runner_score']['score']}" if (rec.get("runner_score") or {}).get("score") is not None else "")
     except Exception: pass
     for x in rec.get("warn") or []:
+        if x.startswith("sybil_spread"): rec["message_2"] = "WARN: sybil-spread (" + x.split(":")[1].replace("_", " ") + ")\n" + rec["message_2"]; continue
         rec["message_2"] = ("WARN: chart breakdown" if "BREAKDOWN" in x else "WARN: chasing " + x.split("mcap")[1].split("x")[0] + "x pump (1h " + x.split("h1")[1].split("_")[0] + ")") + "\n" + rec["message_2"]
     with open(ALERTS, "a") as fh: fh.write(json.dumps(rec, separators=(",", ":")) + "\n")
     st["flagged"][rec["token"]] = time.time()
