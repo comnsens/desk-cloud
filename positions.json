@@ -1,36 +1,6 @@
 {
  "_doc": "Real positions to watch (read-only alerts, no trading). Levels are market cap in USD. See ROUTINE-NOTES.md on the box. 'reentry' = coins exited; pinned on the long watchlist, push (address, then details) only on a rules-based re-entry.",
- "positions": [
-  {
-   "symbol": "JEANGUY",
-   "chain": "solana",
-   "token": "5kbUKCWs7ZS5EVqdY9Ci9e5GXH4bbXrHD2vTfn41pump",
-   "entry_mcap": 484000,
-   "entry_price": 0.000495,
-   "usd": 20.87,
-   "note": "user learning buy",
-   "levels": [
-    {
-     "id": "WARN_420K",
-     "below": 420000,
-     "action": "Getting close to the stop ($363k): be ready to sell"
-    }
-   ],
-   "stop_mcap": 363000,
-   "tp": [
-    {
-     "mcap": 1000000,
-     "sell_pct": 25
-    },
-    {
-     "mcap": 2500000,
-     "sell_pct": 25
-    }
-   ],
-   "trail_pct": 30,
-   "liquidity_drop_pct": 30
-  }
- ],
+ "positions": [],
  "reentry": [
   {
    "symbol": "FLOYD",
@@ -104,6 +74,14 @@
      "move_pts": 0.5
     }
    ]
+  },
+  {
+   "symbol": "JEANGUY",
+   "token": "5kbUKCWs7ZS5EVqdY9Ci9e5GXH4bbXrHD2vTfn41pump",
+   "chain": "solana",
+   "ath_mcap": 0,
+   "every_s": 900,
+   "note": "closed by user ~$400k (entry ~$484k); study how it ends"
   }
  ],
  "liq_watch": [
