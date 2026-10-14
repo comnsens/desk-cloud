@@ -18,9 +18,16 @@ jobs:
       - uses: actions/setup-python@v5
         with: { python-version: "3.12" }
       - run: pip install --quiet requests
+      - name: Shared EVM check cache (watcher + collector)
+        uses: actions/cache@v4
+        with:
+          path: .evm-cache
+          key: evm-cache-${{ github.run_id }}
+          restore-keys: evm-cache-
       - name: Collect (~4.5 min; BNB/ETH discovery, watcher rows, follow-ups; Birdeye never used)
         env:
           GH_TOKEN: ${{ github.token }}
+          EVM_CACHE_DIR: .evm-cache
         run: python3 collector/collect.py
       - name: Chain the next run (skip if STOP exists on main)
         if: ${{ !cancelled() }}

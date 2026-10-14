@@ -75,3 +75,14 @@ at each milestone, or when the pot doubles since the last withdrawal: tell the u
   REJECT if clusters total > 10% of supply, any one cluster > 5%, or graphInsidersDetected >= 50. bundle_pct is shown in alert evidence and message 2.
 - Backtest: FLOYD REJECT (26.2% in 5 clusters, biggest 16.9%, 251 insider wallets); Bumo REJECT (37.1%); recent passes: SEALS still PASS (2.7%), FARM REJECT (10.1%), YILONGMA REJECT (95.8%).
 - Base/EVM gap: no free cluster data (GoPlus gives top-10 holders only). Existing deployer-linked check (deployer + wallets it funded/transferred to, >5% = skip) and top-10 <= 40% remain the EVM proxy.
+
+## Added 2026-10-13: EVM deep checks (Base / BNB / ETH)
+- LIVE: liquidity watch. Every open / re-entry / user-alert / study coin, and every coin flagged in the last 7 days (all chains), is checked about every 2 min. ntfy push (CA first, then details) when total liquidity drops 30%+ below its 24h high.
+- LOG-ONLY until validated (NOT reject rules yet). These run in the collector at the 1h follow-up on EVM coins with liq >= $5k, max 3 per loop:
+  - GoPlus + honeypot.is: tax, owner powers, mint, pause, blacklist, hidden owner, honeypot. Runs first; deep checks only if it doesn't reject.
+  - Our own sell test (eth_call + state override, Uniswap/Pancake V2 + V3). Reject would be tax >10%, round-trip loss >20%, or a revert. Also a max-tx probe at 1.5% of liquidity. V4 and Aerodrome V2 are not simulated yet.
+  - Launch sniffer: buyers in the first 10 blocks and the supply % they got.
+  - Funding clusters: union of same tx / same funder / deployer. Would reject at bundle >10% total or any one cluster >5%.
+  - Combined risk: hard flags + soft 0-100. The existing hard rejects stay as they are.
+- Promotion rule: precision >= 0.9 on >= 30 bad (rug/dead within 7d) cases in research/tool-accuracy.md, and no worse than GoPlus/honeypot.is.
+- Existing rules (pool lock, holders, sell test, 1h skip, Solana bundle filter) are unchanged.

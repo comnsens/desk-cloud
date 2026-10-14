@@ -1,5 +1,8 @@
-.http-cache/
-state/
-__pycache__/
 *.pyc
 .env
+.evm-cache/
+.http-cache/
+__pycache__/
+data/
+desk/.cache/
+state/

@@ -222,3 +222,49 @@ def study(st, log):
             text = (f"{it['symbol']} STUDY ({ch}): {msg}\nmcap {fmt(mc)} | liq {fmt(tot_liq)} | 1h buys/sells {h1.get('buys')}/{h1.get('sells')} | "
                     f"unique 1h {gh1.get('buyers')}/{gh1.get('sellers')} | holders {snap['holders']}\nStudy only, not a desk signal.\n{best.get('url') or ''}")
             log.info("STUDY %s %s push=%s", it["symbol"], k, push(text, f"{it['symbol']} {k}", log, priority="default"))
+
+# ---------------------------------------------------------------- liquidity watch (item 4; LIVE push)
+LIQ_DROP = 0.30
+def liq_watch(st, log):
+    """Total liquidity (all pairs) on every open / re-entry / user-alert / study coin and every coin flagged in the last 7 days.
+    Pushes ntfy at once if it falls 30%+ below the highest reading in the last 24h. Re-arms after recovering above -20%.
+    DexScreener only, batched 30 per call per chain."""
+    try: cfg = json.load(open(POS_FILE))
+    except FileNotFoundError: cfg = {}
+    want = {}
+    for key in ("positions", "reentry", "user_alerts", "study"):
+        for it in cfg.get(key) or []:
+            if it.get("token"): want.setdefault(it["token"], (it.get("chain", "solana"), it.get("symbol", "?"), key))
+    now = time.time(); fch = st.get("flagged_ch", {})
+    for tok, t in (st.get("flagged") or {}).items():
+        if now - t < 7 * 86400 and tok in fch: want.setdefault(tok, (fch[tok], "?", "flagged"))
+    W = st.setdefault("liqw", {})
+    for k in [k for k in W if k not in want]: W.pop(k)
+    if st.get("liqw_next", 0) > now: return
+    st["liqw_next"] = now + 120
+    by = {}
+    for tok, (ch, sym, src) in want.items(): by.setdefault(ch, []).append(tok)
+    for ch, toks in by.items():
+        for i in range(0, len(toks), 30):
+            pairs = desk.ds_token_pairs(toks[i:i + 30], chain=ch) or []
+            agg = {}
+            for p in pairs:
+                for side in ("baseToken", "quoteToken"):
+                    a = p[side]["address"]; key = a if a in want else a.lower() if a.lower() in want else None
+                    if key and key in toks:
+                        g = agg.setdefault(key, {"liq": 0.0, "best": p, "sym": p["baseToken"].get("symbol")})
+                        g["liq"] += desk.f((p.get("liquidity") or {}).get("usd"), 0)
+            for tok in toks[i:i + 30]:
+                g = agg.get(tok); s = W.setdefault(tok, {"hist": [], "fired": 0})
+                liq = g["liq"] if g else 0.0
+                s["hist"] = [h for h in s["hist"] if now - h[0] < 86400] + [[int(now), round(liq)]]
+                hi = max(h[1] for h in s["hist"])
+                if hi >= 2000 and liq <= hi * (1 - LIQ_DROP) and not s["fired"]:
+                    s["fired"] = int(now); ch_, sym, src = want[tok]; sym = (g or {}).get("sym") or sym
+                    url = ((g or {}).get("best") or {}).get("url") or ""
+                    text = (f"{sym} ({ch_}, {src}): LIQUIDITY DOWN {round((1 - liq / hi) * 100)}% in <24h ({fmt(hi)} -> {fmt(liq)})\n"
+                            f"Possible LP pull / rug. Check now; exit if you hold it.\n{url}")
+                    res = push_pair(tok, text, f"LIQ DROP {sym}", log)
+                    log.info("LIQ_WATCH %s %s %s -> %s push=%s", sym, tok, round(hi), round(liq), res)
+                elif s["fired"] and liq >= hi * 0.80: s["fired"] = 0
+    st["liqw_n"] = len(want)

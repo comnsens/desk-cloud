@@ -11,3 +11,6 @@ Alert format to the owner (always two messages):
 2) Symbol, chain (BASE or SOLANA) and launchpad, contract address again, setup type, market cap, liquidity, buy amount, sell levels, evidence, DexScreener link, time in ET.
 Setup types: new pair, trending, viral, launchpad, big-buyer cluster, strong trend, floor breakout (30-day floor-watch).
 Health check / wake routine: bash -lc /workspace/desk/tools/check_watcher.sh (starts or repairs the watcher, prints one JSON status line).
+
+## Liquidity-drop alerts (added 2026-10-13, live)
+Title "LIQ DROP <SYM>". Sent when total liquidity on an open, re-entry, user-alert, study or recently flagged coin falls 30%+ below its 24h high. Same two-message format (CA first). Treat it as an exit-risk alert. It re-arms after liquidity recovers above -20%.

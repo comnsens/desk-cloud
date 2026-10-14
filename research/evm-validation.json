@@ -1,0 +1,1578 @@
+[
+ {
+  "ch": "base",
+  "tok": "0x532f27101965dd16442e59d40670faf5ebb142e4",
+  "sym": "BRETT",
+  "grp": "clean",
+  "dex": "aerodrome",
+  "labels": null,
+  "liq": 798623.76,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 908845,
+   "lp_locked_pct": 0,
+   "creator": "0x21c3de23d98caddc406e3d31b25e807addf33633",
+   "top10": 32.91
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v2/aerodrome pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0
+ },
+ {
+  "ch": "base",
+  "tok": "0xac1bd2486aaf3b5c0fc3fd868558b082a531b2b4",
+  "sym": "TOSHI",
+  "grp": "clean",
+  "dex": "uniswap",
+  "labels": [
+   "v3"
+  ],
+  "liq": 1060461.47,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 1019630,
+   "lp_locked_pct": null,
+   "creator": "0xbd11ced0a5021cd7262c64576a79d5dc3bb5856c",
+   "top10": 39.42
+  },
+  "sell": {
+   "status": "PASS",
+   "sell_transfer_tax": 0.0,
+   "round_trip_loss": 1.98,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2
+ },
+ {
+  "ch": "base",
+  "tok": "0x4ed4e862860bed51a9570b96d89af5e1b0efefed",
+  "sym": "DEGEN",
+  "grp": "clean",
+  "dex": "uniswap",
+  "labels": [
+   "v3"
+  ],
+  "liq": 112366.84,
+  "basic": {
+   "verdict": "REJECT",
+   "because": [
+    "mint"
+   ],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": true,
+   "holders": 1182390,
+   "lp_locked_pct": 0,
+   "creator": "0x3c12b77ae8b7dd1feb63d1d6a2a819acda0a41d2",
+   "top10": 61.81
+  },
+  "sell": {
+   "status": "PASS",
+   "sell_transfer_tax": 0.0,
+   "round_trip_loss": 0.6,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2
+ },
+ {
+  "ch": "ethereum",
+  "tok": "0x6982508145454ce325ddbe47a25d4ec3d2311933",
+  "sym": "PEPE",
+  "grp": "clean",
+  "dex": "uniswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 30233291.57,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 598151,
+   "lp_locked_pct": 0.0,
+   "creator": "0xfbfeaf0da0f2fde5c66df570133ae35f3eb58c9a",
+   "top10": 35.74
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 6.47,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2
+ },
+ {
+  "ch": "ethereum",
+  "tok": "0xaaee1a9723aadb7afa2810263653a34ba2c21c7a",
+  "sym": "MOG",
+  "grp": "clean",
+  "dex": "uniswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 5364519.94,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 58892,
+   "lp_locked_pct": 100.0,
+   "creator": "0x20e12a9a5c738e265ec81d6f2a8e77785b6aa8b8",
+   "top10": 52.08
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 6.47,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2
+ },
+ {
+  "ch": "bsc",
+  "tok": "0xfb5b838b6cfeedc2873ab27866079ac55363d37e",
+  "sym": "FLOKI",
+  "grp": "clean",
+  "dex": "pancakeswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 9314834.94,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.29,
+   "sell_tax": 0.3,
+   "owner_live": false,
+   "holders": 470552,
+   "lp_locked_pct": 90.6,
+   "creator": "0xa99c602037f8e85a44bbe88f3c0ee3af60345b9b",
+   "top10": 25.91
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.3,
+   "sell_tax": -0.0,
+   "round_trip_loss": 6.65,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2
+ },
+ {
+  "ch": "base",
+  "tok": "0x7dc193e390271bde3a6e2382881f076906ea7fa0",
+  "sym": "SPCX / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 9122.4,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 0,
+   "lp_locked_pct": null,
+   "creator": "0xc8976b3d57c1fceb19e3d76c5f059a8e0feecbe0",
+   "top10": null
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 6.47,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch": {
+   "n_buyers": 3,
+   "pct_total": 2.46,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0.01,
+   "biggest_cluster_pct": 0.006,
+   "n_clusters": 1
+  },
+  "deep_calls": 42
+ },
+ {
+  "ch": "base",
+  "tok": "0xbfd29e7ff94c7ed82ef9022b42549fc243b5c27e",
+  "sym": "LIQPAIR / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": 4992.24,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": null,
+   "sell_tax": null,
+   "owner_live": true,
+   "holders": 0,
+   "lp_locked_pct": null,
+   "creator": null,
+   "top10": null
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 0.0,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 16
+ },
+ {
+  "ch": "base",
+  "tok": "0x7120bb01c658eccfb350fbf776e2026b79ccb53a",
+  "sym": "SI276 / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": 3215.15,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": null,
+   "sell_tax": null,
+   "owner_live": true,
+   "holders": 0,
+   "lp_locked_pct": null,
+   "creator": null,
+   "top10": null
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 0.0,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 16
+ },
+ {
+  "ch": "base",
+  "tok": "0x3d2463f4f0e3b45c74bca74b9d10bf945cf5d8fd",
+  "sym": "IOF / WETH 0.3%",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": 182315.77,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": null,
+   "sell_tax": null,
+   "owner_live": true,
+   "holders": 0,
+   "lp_locked_pct": null,
+   "creator": null,
+   "top10": null
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch_err": "rpc eth_getLogs failed: invalid params",
+  "deep_calls": 15
+ },
+ {
+  "ch": "base",
+  "tok": "0x5d216ed63a9f1291f13a54b56642a8ae49936f3a",
+  "sym": "LSCK / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": 7331.26,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": null,
+   "sell_tax": null,
+   "owner_live": true,
+   "holders": 0,
+   "lp_locked_pct": null,
+   "creator": "0x1278c1e48e3c9548a5d9f2b16dc27ed311b0697c",
+   "top10": null
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 4,
+   "pct_total": 6.94,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0.0,
+   "biggest_cluster_pct": 0.001,
+   "n_clusters": 1
+  },
+  "deep_calls": 23
+ },
+ {
+  "ch": "base",
+  "tok": "0x473d1923513ff202af9d653a53e6f88493e3c8da",
+  "sym": "BI / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 86766.97,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 0,
+   "lp_locked_pct": null,
+   "creator": "0xfe1f98956b40a560ef440a7900cce082cd2757e6",
+   "top10": null
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 6.47,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 0.0,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 17
+ },
+ {
+  "ch": "base",
+  "tok": "0xa78c766634eb48f56e3f5ec551ab2bb444d0d833",
+  "sym": "XCR / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": 172059.31,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": null,
+   "sell_tax": null,
+   "owner_live": false,
+   "holders": 0,
+   "lp_locked_pct": null,
+   "creator": "0x6204d6146b75e4b42ed7e2d29b05783f1584ac8d",
+   "top10": null
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 2,
+   "pct_total": 0.0,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 19
+ },
+ {
+  "ch": "base",
+  "tok": "0x8ab9ab549c2ba14fae9c2a90d75ee5a4037fee8a",
+  "sym": "IOF / WETH 0.3%",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": 183516.49,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": null,
+   "sell_tax": null,
+   "owner_live": true,
+   "holders": 0,
+   "lp_locked_pct": null,
+   "creator": "0x8fde9156207095a195645d3b9522104105ee0f04",
+   "top10": null
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch_err": "rpc eth_getLogs failed: invalid params",
+  "deep_calls": 16
+ },
+ {
+  "ch": "base",
+  "tok": "0xa78c766634eb48f56e3f5ec551ab2bb444d0d833",
+  "sym": "XCR / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": 172059.31,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": null,
+   "sell_tax": null,
+   "owner_live": false,
+   "holders": 0,
+   "lp_locked_pct": null,
+   "creator": "0x6204d6146b75e4b42ed7e2d29b05783f1584ac8d",
+   "top10": null
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 2,
+   "pct_total": 0.0,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 0
+ },
+ {
+  "ch": "base",
+  "tok": "0x8ab9ab549c2ba14fae9c2a90d75ee5a4037fee8a",
+  "sym": "IOF / WETH 0.3%",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": 183516.49,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": null,
+   "sell_tax": null,
+   "owner_live": true,
+   "holders": 0,
+   "lp_locked_pct": null,
+   "creator": "0x8fde9156207095a195645d3b9522104105ee0f04",
+   "top10": null
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch_err": "rpc eth_getLogs failed: invalid params",
+  "deep_calls": 16
+ },
+ {
+  "ch": "base",
+  "tok": "0xa73105113973ad5d0a87861a54be4a4c8bd31fbc",
+  "sym": "SMH / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 15871.84,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 0,
+   "lp_locked_pct": null,
+   "creator": "0x0045a92c4d254b74a18ac49676f7a590830fa26a",
+   "top10": null
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 6.47,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 0.0,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 18
+ },
+ {
+  "ch": "base",
+  "tok": "0x2cc1eba8b1f6d3496d7e0f6a6a029d19d65bbe62",
+  "sym": "DUOLc / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 16007.53,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 0,
+   "lp_locked_pct": null,
+   "creator": null,
+   "top10": null
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 6.47,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 2.67,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 18
+ },
+ {
+  "ch": "bsc",
+  "tok": "0x05488d86807f623771d5818942d8debcea642b92",
+  "sym": "ANTHROPICx1L / WBNB",
+  "grp": "new",
+  "dex": "pancakeswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 4338.01,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 0,
+   "lp_locked_pct": 0.0,
+   "creator": "0xe3764456b4f0b82257c773490d277da208b4b5e2",
+   "top10": null
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 6.38,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 0.16,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 19
+ },
+ {
+  "ch": "bsc",
+  "tok": "0x558b15fd3b3f138f39a9ee822715824a202650bf",
+  "sym": "BTW / WBNB",
+  "grp": "new",
+  "dex": "pancakeswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 36725.02,
+  "basic": {
+   "verdict": "REJECT",
+   "because": [
+    "not_open_source"
+   ],
+   "buy_tax": 0.0,
+   "sell_tax": null,
+   "owner_live": false,
+   "holders": 1,
+   "lp_locked_pct": 0.0,
+   "creator": "0x49f71caaae4029e9e186177a893d69fc7a142ef3",
+   "top10": 0
+  },
+  "sell": {
+   "status": "REVERT",
+   "detail": "buy/sell simulation revert: execution reverted: panic: arithmetic underflow or overflow (0x11)"
+  },
+  "sell_calls": 1,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 0.0,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 18
+ },
+ {
+  "ch": "bsc",
+  "tok": "0x23f93508b34b95f5da9cec3a7c039eeb6a347777",
+  "sym": "\uc794\ub9dd\ub8e8 / WBNB",
+  "grp": "new",
+  "dex": "pancakeswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 0.12,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 0,
+   "lp_locked_pct": 0.0,
+   "creator": null,
+   "top10": null
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 5.92,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch": {
+   "n_buyers": 2,
+   "pct_total": 0.41,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 19
+ },
+ {
+  "ch": "bsc",
+  "tok": "0x2ceec3d9fe9442f4cdf47d308967875139852c3c",
+  "sym": "TTWOc / WBNB",
+  "grp": "new",
+  "dex": "pancakeswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 24226.68,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 0,
+   "lp_locked_pct": 0.0,
+   "creator": "0xc7bded84e5582ccc38baba29c0925cc7fe766c3d",
+   "top10": null
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 6.38,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 0.17,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 19
+ },
+ {
+  "ch": "bsc",
+  "tok": "0x0b6a6021b8882fcd80a9515aa9b9a5da60607777",
+  "sym": "\uc794\ub9dd\ub8e8 / WBNB",
+  "grp": "new",
+  "dex": "pancakeswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 0.1,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 0,
+   "lp_locked_pct": 0.0,
+   "creator": "0xf88acb4c99598f1ebc4ecf23a2c80124d084f4e3",
+   "top10": null
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 5.92,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch": {
+   "n_buyers": 2,
+   "pct_total": 0.04,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 20
+ },
+ {
+  "ch": "bsc",
+  "tok": "0x463c15a73de4623c7e2907470d780accb5cef603",
+  "sym": "Ne Zha / WBNB",
+  "grp": "new",
+  "dex": "pancakeswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 13820.24,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 0,
+   "lp_locked_pct": 0.0,
+   "creator": "0xf37e72189c55115158f89d4b753e2dba4b336f61",
+   "top10": null
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 6.38,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 0.69,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 19
+ },
+ {
+  "ch": "bsc",
+  "tok": "0x41160a3e64eb4ba4740c7dfa048c46d5b664c1ea",
+  "sym": "CRYP / WBNB",
+  "grp": "new",
+  "dex": "pancakeswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 0.1,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 0,
+   "lp_locked_pct": 0.0,
+   "creator": "0xf145760b30c5084797e0c1740d89abd19c32a7f6",
+   "top10": null
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 5.92,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 0.72,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 18
+ },
+ {
+  "ch": "bsc",
+  "tok": "0x61b3a3fa0c0d9ffc7ecd8b0e335d7e7b5cb7c244",
+  "sym": "STABLE / WBNB",
+  "grp": "new",
+  "dex": "pancakeswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 74384.15,
+  "basic": {
+   "verdict": "REJECT",
+   "because": [
+    "not_open_source"
+   ],
+   "buy_tax": 0.0,
+   "sell_tax": null,
+   "owner_live": false,
+   "holders": 1,
+   "lp_locked_pct": 0.0,
+   "creator": "0x1cf63a87e5a9f5b460e4a0d2869ed90721804329",
+   "top10": 0
+  },
+  "sell": {
+   "status": "REVERT",
+   "detail": "buy/sell simulation revert: execution reverted: panic: arithmetic underflow or overflow (0x11)"
+  },
+  "sell_calls": 1,
+  "launch_err": "rpc eth_getBlockByNumber failed: Rate limit exceeded on Nodies public endpoints. For higher limits, create a free accoun",
+  "deep_calls": 12
+ },
+ {
+  "ch": "bsc",
+  "tok": "0xb94075a04fd5aa2285e2ec9bbed7ac1750b7d041",
+  "sym": "\u6c34\u74f6\u5ea7\u767d / WBNB",
+  "grp": "new",
+  "dex": "pancakeswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 84052.55,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 1,
+   "lp_locked_pct": null,
+   "creator": "0x5f848e73ebcbb644944abe78b01be8ad1b051f5f",
+   "top10": 0
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 5.92,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 0.02,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 18
+ },
+ {
+  "ch": "bsc",
+  "tok": "0xf3434eb757a0e8e5f714dda422d7eda0c8ff0d49",
+  "sym": "BAL\ud83d\ude0e / WBNB",
+  "grp": "new",
+  "dex": "pancakeswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 0.09,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 1,
+   "lp_locked_pct": null,
+   "creator": "0x6688304b780699f9b8efbb5da5977323310bbf5c",
+   "top10": 0
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 5.92,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch_err": "rpc eth_getLogs failed: limit exceeded",
+  "deep_calls": 16
+ },
+ {
+  "ch": "bsc",
+  "tok": "0xb5ce3709a5b6b279667095e9b4a253c3b91a366e",
+  "sym": "\uc794\ub9dd\ub8e8\ud53c / WBNB",
+  "grp": "new",
+  "dex": "pancakeswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 4.34,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 1,
+   "lp_locked_pct": 0.0,
+   "creator": "0xbe274b259ff99c4950ac36e3ed86ab6335ce2b1f",
+   "top10": 100.0
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 5.96,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 0.47,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 19
+ },
+ {
+  "ch": "bsc",
+  "tok": "0xf3434eb757a0e8e5f714dda422d7eda0c8ff0d49",
+  "sym": "BAL\ud83d\ude0e / WBNB",
+  "grp": "new",
+  "dex": "pancakeswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 0.09,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 1,
+   "lp_locked_pct": null,
+   "creator": "0x6688304b780699f9b8efbb5da5977323310bbf5c",
+   "top10": 0
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 5.92,
+   "max_tx_ok": true
+  },
+  "sell_calls": 0,
+  "launch_err": "rpc eth_getLogs failed: ReadTimeout",
+  "deep_calls": 16
+ },
+ {
+  "ch": "ethereum",
+  "tok": "0x34d91252df0a7590e1124d92d2a26b6a0eb1e4eb",
+  "sym": "SPHCOL / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v2"
+  ],
+  "liq": 0.0,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 1,
+   "lp_locked_pct": null,
+   "creator": null,
+   "top10": 100.0
+  },
+  "sell": {
+   "status": "PASS",
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "round_trip_loss": 5.92,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch": {
+   "n_buyers": 6,
+   "pct_total": 6.88,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 113
+ },
+ {
+  "ch": "ethereum",
+  "tok": "0x5697d0542f78b5ada4fb75e474a40f482c313bf1",
+  "sym": "RUNUP / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": null,
+  "basic": {
+   "verdict": "REJECT",
+   "because": [
+    "not_open_source"
+   ],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 3,
+   "lp_locked_pct": null,
+   "creator": null,
+   "top10": 100.0
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 12,
+   "pct_total": 50.34,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 119
+ },
+ {
+  "ch": "ethereum",
+  "tok": "0x7d345cc6bc964f3f08ba73adf9c2d4b9066f4ac9",
+  "sym": "CALL / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": null,
+  "basic": {
+   "verdict": "REJECT",
+   "because": [
+    "not_open_source"
+   ],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 3,
+   "lp_locked_pct": null,
+   "creator": null,
+   "top10": 100.0
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 3.89,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 33
+ },
+ {
+  "ch": "ethereum",
+  "tok": "0xf5f97f585fbdbb97a3ff28ff006ed5aa66726918",
+  "sym": "PINECONE / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": null,
+  "basic": {
+   "verdict": "UNKNOWN",
+   "because": [
+    "no_goplus_or_honeypot_data"
+   ],
+   "buy_tax": null,
+   "sell_tax": null,
+   "owner_live": false,
+   "holders": null,
+   "lp_locked_pct": null,
+   "creator": null,
+   "top10": null
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 10.87,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 16
+ },
+ {
+  "ch": "ethereum",
+  "tok": "0x4abd562e50824ee1bb8f087c56c2622a0487eb1b",
+  "sym": "RUNNER / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": 4268.96,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 3,
+   "lp_locked_pct": null,
+   "creator": null,
+   "top10": 100.0
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 3.41,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 33
+ },
+ {
+  "ch": "ethereum",
+  "tok": "0x1edfe075dcf548bf5bb48adf6331624093912cf2",
+  "sym": "ST0X / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": 4009.48,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 3,
+   "lp_locked_pct": null,
+   "creator": null,
+   "top10": 100.0
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 12,
+   "pct_total": 42.53,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 120
+ },
+ {
+  "ch": "ethereum",
+  "tok": "0x51076ec94cef9d2dcd0722fb4b121000bacd28db",
+  "sym": "TAOLL / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": null,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 3,
+   "lp_locked_pct": null,
+   "creator": null,
+   "top10": 100.0
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 0.73,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0.0,
+   "n_clusters": 0
+  },
+  "deep_calls": 34
+ },
+ {
+  "ch": "ethereum",
+  "tok": "0x7a7dbb070b0d1cc30bed071dfcba0bd70e2c808e",
+  "sym": "WORMED / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": null,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 2,
+   "lp_locked_pct": null,
+   "creator": "0x9ea99d0cd146e5525085f08291c57538690253d2",
+   "top10": 100.0
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 5.75,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 5.75,
+   "biggest_cluster_pct": 5.747,
+   "n_clusters": 1
+  },
+  "deep_calls": 34
+ },
+ {
+  "ch": "ethereum",
+  "tok": "0x8d95130b76ea05ff85521a1f5f661da3d2382732",
+  "sym": "FREECODE / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": null,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 2,
+   "lp_locked_pct": null,
+   "creator": "0x11569771667e51bc243118c9a52e31158b7db3e1",
+   "top10": 100.0
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 11,
+   "pct_total": 41.3,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 23.73,
+   "biggest_cluster_pct": 23.731,
+   "n_clusters": 1
+  },
+  "deep_calls": 118
+ },
+ {
+  "ch": "ethereum",
+  "tok": "0xb44749cfd18c76fbf02a3934d11c69633b6e7c44",
+  "sym": "LOCUST / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": null,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 3,
+   "lp_locked_pct": null,
+   "creator": "0x4afe461c3bfd5df0a15372c6f500cb862e798b90",
+   "top10": 100.0
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 4.0,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 4.0,
+   "biggest_cluster_pct": 4.003,
+   "n_clusters": 1
+  },
+  "deep_calls": 33
+ },
+ {
+  "ch": "ethereum",
+  "tok": "0xdfb1f476646fd11000625de92803474224ace301",
+  "sym": "TI / WETH 0.3%",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v3"
+  ],
+  "liq": 20074000.04,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": 0.0,
+   "sell_tax": 0.0,
+   "owner_live": false,
+   "holders": 4,
+   "lp_locked_pct": 0,
+   "creator": "0x6ebb78712962b48dfe083b090b68ebdb4b020a57",
+   "top10": 50.0
+  },
+  "sell": {
+   "status": "PASS",
+   "sell_transfer_tax": 0.0,
+   "round_trip_loss": 0.6,
+   "max_tx_ok": true
+  },
+  "sell_calls": 2,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 0.0,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 0,
+   "biggest_cluster_pct": 0,
+   "n_clusters": 1
+  },
+  "deep_calls": 17
+ },
+ {
+  "ch": "ethereum",
+  "tok": "0xa94f12b7892d9ff0668e97f57dcdf5c840e7fc05",
+  "sym": "VEARL / WETH",
+  "grp": "new",
+  "dex": "uniswap",
+  "labels": [
+   "v4"
+  ],
+  "liq": null,
+  "basic": {
+   "verdict": "PASS",
+   "because": [],
+   "buy_tax": null,
+   "sell_tax": null,
+   "owner_live": false,
+   "holders": 2,
+   "lp_locked_pct": null,
+   "creator": "0x6f3c733ed05b5176b6cd1523ac4a9a4db829f6ce",
+   "top10": 100.0
+  },
+  "sell": {
+   "status": "UNSUPPORTED",
+   "detail": "v4/uniswap pools not simulated (honeypot.is / GoPlus cover these)"
+  },
+  "sell_calls": 0,
+  "launch": {
+   "n_buyers": 1,
+   "pct_total": 3.39,
+   "multi_recipient_txs": 0,
+   "error": null
+  },
+  "bundle": {
+   "bundle_pct": 3.4,
+   "biggest_cluster_pct": 3.395,
+   "n_clusters": 1
+  },
+  "deep_calls": 34
+ }
+]

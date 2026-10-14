@@ -489,6 +489,7 @@ def flag(st, rec):
     rec["message_1"], rec["message_2"] = messages(rec)
     with open(ALERTS, "a") as fh: fh.write(json.dumps(rec, separators=(",", ":")) + "\n")
     st["flagged"][rec["token"]] = time.time()
+    st.setdefault("flagged_ch", {})[rec["token"]] = rec["chain"]
     summ = {k: rec[k] for k in ("chain", "symbol", "token", "link", "mcap", "liquidity", "setup", "time_utc", "time_et", "message_1", "message_2")}
     summ["size_usd"] = rec["sizing"]["paper_size_usd"]; summ["note"] = "PAPER candidate; read-only watcher"
     res = post_webhook(summ); res += " ntfy=" + post_ntfy(rec)
@@ -679,7 +680,7 @@ def main():
         cyc = time.time() - t0
         try:
             try:
-                import positions; positions.check(st, log); positions.reentry_check(st, log, None); positions.user_alerts(st, log); positions.study(st, log)
+                import positions; positions.check(st, log); positions.reentry_check(st, log, None); positions.user_alerts(st, log); positions.study(st, log); positions.liq_watch(st, log)
             except Exception as e:
                 log.warning("position watch: %s", f"{type(e).__name__}: {e}"[:200])
             save_state(st); heartbeat(st, cyc, gates, survivors, err)

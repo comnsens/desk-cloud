@@ -10,6 +10,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "desk"))
 os.environ.setdefault("DESK_CACHE_DIR", os.path.join(ROOT, ".http-cache"))
 import desk  # noqa: E402
+import evm  # noqa: E402
 desk.USE_BE = False
 
 WORK = os.environ.get("DATA_DIR", os.path.join(ROOT, "data"))
@@ -28,6 +29,7 @@ GP_ID = {"base": 8453, "bsc": 56, "ethereum": 1}
 EVM_MAJORS = {"0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", "0x55d398326f99059ff775485246999027b3197955", "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
               "0xe9e7cea3dedca5984780bafc599bd69add087d56", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2", "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
               "0xdac17f958d2ee523a2206206994597c13d831ec7", "0x6b175474e89094c44da98b954eedeac495271d0f", "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"} | desk.MAJORS
+DEEP_CAP = int(os.environ.get("DEEP_CAP", "3"))                # EVM deep checks per loop (public RPCs)
 HOLDER_CAP = {"solana": 20, "evm": 15}                        # holder lookups per loop (RugCheck / GoPlus free limits)
 RAW_KEEP_DAYS = 90
 
@@ -181,6 +183,18 @@ def holders(tok, ch, cap):
         hc = list((d.get("result") or {}).values())[0].get("holder_count"); return int(hc) if hc else None
     except Exception: return None
 
+# ---- EVM deep checks (LOG-ONLY; items 0-3). Basic first; deep only for coins the basic check doesn't reject ----
+def deep_row(tok, ch, e, p):
+    c0 = evm.CALLS["n"]
+    try: basic = evm.audit_basic(tok, ch)
+    except Exception as ex: basic = {"verdict": "UNKNOWN", "because": [f"{type(ex).__name__}"]}
+    deep = evm.deep_check(tok, ch, p, deployer=basic.get("creator")) if basic.get("verdict") != "REJECT" else {"skipped": "basic REJECT"}
+    rk = evm.risk(basic, deep)
+    e["deep"] = {"basic": {k: basic.get(k) for k in ("verdict", "because", "buy_tax", "sell_tax", "lp_locked_pct", "holders", "top10")}, "sell": (deep.get("sell") or {}).get("status"),
+                 "sell_detail": deep.get("sell"), "launch": deep.get("launch"), "bundle": {k: (deep.get("bundle") or {}).get(k) for k in ("bundle_pct", "biggest_cluster_pct")},
+                 "risk": rk, "rpc_calls": evm.CALLS["n"] - c0}
+    raw({"k": "deep", "t": int(time.time()), "tok": tok, "ch": ch, **e["deep"]})
+
 # ---- follow-ups + labels ----
 def followups(reg, budget_s):
     t0 = time.time(); now = time.time(); T = reg["tokens"]
@@ -190,7 +204,7 @@ def followups(reg, budget_s):
         for name, off in FU:
             if name not in e["fu"] and now >= e["t0"] + off:
                 due.setdefault(e["ch"], []).append((tok, name)); break
-    cap = dict(HOLDER_CAP); n = 0
+    cap = dict(HOLDER_CAP, deep=DEEP_CAP); n = 0
     for ch, items in due.items():
         items.sort(key=lambda x: T[x[0]]["t0"])
         for i in range(0, len(items), 30):
@@ -210,6 +224,8 @@ def followups(reg, budget_s):
                 if mc > e["max_mc"]: e["max_mc"], e["max_t"] = mc, row["t"]
                 e["max_liq"] = max(e["max_liq"], liq)
                 if p: e["pair"] = p.get("pairAddress")
+                if name == "1h" and ch != "solana" and p and liq >= 5_000 and cap["deep"] > 0 and time.time() - t0 < budget_s:
+                    cap["deep"] -= 1; deep_row(tok, ch, e, p)
                 raw(row); n += 1
                 dead = (not p) or (age >= 6 * 3600 and mc < 6_000 and row["v24"] < 500) or (age >= 86400 and mc < 15_000 and row["v24"] < 1_000) \
                        or (age >= 7 * 86400 and mc < 30_000 and liq < 5_000)
@@ -236,7 +252,7 @@ def finalize(tok, e, dead=False):
            "max_mc": peak, "peak_src": src, "max_mult": round(peak / mc0, 2) if mc0 else None,
            "hit_1m": peak >= 1e6, "hit_5m": peak >= 5e6, "hit_10m": peak >= 10e6, "early": bool(mc0 and mc0 <= EARLY_MC), "dead_early": dead,
            "t_peak_h": round((peak_t - e["t0"]) / 3600, 1), "rug": rug,
-           "holders_growth": round(((e["fu"].get("24h") or {}).get("holders") or 0) / e["holders0"], 2) if e.get("holders0") else None,
+           "deep": e.get("deep"), "holders_growth": round(((e["fu"].get("24h") or {}).get("holders") or 0) / e["holders0"], 2) if e.get("holders0") else None,
            "final": True}
     label_out(lab); e["done"] = True
 
