@@ -27,7 +27,7 @@ def fetch(ch, toks):
         chunk = toks[i:i + 30]
         try:
             STATS["ds_calls"] += 1
-            r = S.get(f"{DS}/{ch}/{','.join(chunk)}", timeout=6)
+            r = S.get(f"{DS}/{ch}/{','.join(chunk)}?_={int(time.time() * 1000)}", timeout=6)   # cache-buster: the plain URL is edge-cached ~30 s
             if r.status_code == 200: out += [p for p in r.json() if p.get("chainId") == ch]; continue
         except Exception: pass
         STATS["errors"] += 1
