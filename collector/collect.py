@@ -227,8 +227,14 @@ def followups(reg, budget_s):
                 if name == "1h" and ch == "solana" and p and liq >= 10_000 and (e["fs"].get("mc") or 0) <= EARLY_MC and cap["eb"] > 0 and time.time() - t0 < budget_s:
                     cap["eb"] -= 1
                     try:
-                        import smart; eb = smart.sol_early_buyers(tok, max_pages=8)
-                        if not eb.get("error"): e["eb"] = eb
+                        if tok.endswith("pump"):
+                            import identity; eb = identity.early_buyers(tok, max_pages=40)
+                            if not eb.get("error"):
+                                top = sorted(eb["buyers"].items(), key=lambda kv: -kv[1]["buy_usd"])[:60]
+                                e["eb"] = {"creator": None, "buyers": {w: {"first_mc": v["first_mc"], "buy_usd": round(v["buy_usd"])} for w, v in top}, "src": "pump_trades"}
+                        else:
+                            import smart; eb = smart.sol_early_buyers(tok, max_pages=8)
+                            if not eb.get("error"): e["eb"] = eb
                     except Exception: pass
                 if name == "1h" and p and liq >= 10_000 and (e["fs"].get("mc") or 0) <= EARLY_MC and cap["chart"] > 0:
                     cap["chart"] -= 1
@@ -306,7 +312,11 @@ def smart_refresh(reg):
     for lab in picks[:3]:
         try: n += smart.add_coin(d, lab["ch"], lab["tok"], lab["fs"].get("sym") or "?", lab["max_mc"], eb=lab.get("eb"))
         except Exception as ex: d["sources"].append({"tok": lab["tok"], "skipped": str(ex)[:80]})
-    if picks[:3]:
+    ec = {}
+    for e in reg["tokens"].values():
+        for w in ((e.get("eb") or {}).get("buyers") or {}): ec[w] = ec.get(w, 0) + 1
+    smart.rank(d, ec)
+    if True:
         body = json.dumps({"message": f"smart wallets daily refresh {day} (+{n})", "sha": meta["sha"],
                            "content": base64.b64encode(json.dumps(d, indent=1).encode()).decode()})
         subprocess.run(["gh", "api", "-X", "PUT", f"repos/{REPO}/contents/smart_wallets.json", "--input", "-"], input=body, text=True, capture_output=True)

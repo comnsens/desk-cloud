@@ -80,10 +80,10 @@ def add_coin(d, ch, tok, sym, peak, log=print, eb=None):
             for a in net.get("activeAccounts") or net.get("accounts") or []: excl.add(a if isinstance(a, str) else a.get("address"))
         excl |= set((rc.get("knownAccounts") or {}).keys())
         for w, v in eb["buyers"].items():
-            if v["slot_offset"] == 0: continue              # bought in the launch slot = bundle/sniper
+            if v.get("slot_offset") == 0: continue              # bought in the launch slot = bundle/sniper
             if w in excl: continue
             cand[w] = v
-        cand = dict(list(cand.items())[:25])
+        cand = dict(sorted(cand.items(), key=lambda kv: -(kv[1].get("buy_usd") or 0))[:25])
         for w in list(cand):
             try:
                 if sol_is_bot(w): cand.pop(w)
@@ -113,15 +113,42 @@ def add_coin(d, ch, tok, sym, peak, log=print, eb=None):
                 if int(evm.rpc(ch, "eth_getTransactionCount", [w, "latest"]), 16) > 3000: continue
             except Exception: continue
             cand[w.lower()] = {"block_offset": b["block_offset"], "pct": b["pct"]}
+    if ch == "solana":
+        import identity
+        for w in cand:
+            try: cand[w]["name"] = identity.name(w); cand[w]["behav"] = identity.behaviour(tok, w)
+            except Exception: pass
     n = 0
     for w, v in cand.items():
         e = d["wallets"].setdefault(w, {"chain": ch, "coins": [], "added": time.strftime("%Y-%m-%d")})
         if sym not in e["coins"]: e["coins"].append(sym); n += 1
         e["score"] = len(e["coins"])
+        if v.get("name"): e["name"] = v["name"]
+        if v.get("behav"): e.setdefault("behav", {})[sym] = v["behav"]
+        if v.get("first_mc"): e.setdefault("entry_mc", {})[sym] = v["first_mc"]
+        if ch == "solana":
+            import identity; e["label"] = identity.label(list((e.get("behav") or {}).values()), (e.get("name") or {}).get("followers"))
     d["sources"].append({"tok": tok, "sym": sym, "ch": ch, "peak": peak, "added_wallets": len(cand), "excluded": len([x for x in excl if x])})
     d["updated"] = int(time.time())
     log(f"smart: {sym} {ch} +{len(cand)} wallets")
     return n
+
+def who(e, w):
+    n = e.get("name") or {}
+    tag = n.get("username") or w[:6]
+    if n.get("x"): tag += f" (@{n['x']})"
+    return f"{tag} [{e.get('label', '?')}, {e.get('score', 0)} runners]"
+
+def rank(d, early_counts):
+    """identities ranked by early-entry hit rate. early_counts: wallet -> number of early entries seen in the dataset."""
+    out = []
+    for w, e in d["wallets"].items():
+        n_early = max(early_counts.get(w, 0), e.get("score", 0))
+        out.append({"wallet": w, "name": (e.get("name") or {}).get("username"), "x": (e.get("name") or {}).get("x"),
+                    "followers": (e.get("name") or {}).get("followers"), "runners": e.get("score", 0), "early_entries": n_early,
+                    "hit_rate": round(e.get("score", 0) / n_early, 2) if n_early else None, "label": e.get("label", "unknown")})
+    out.sort(key=lambda x: (-(x["runners"]), -(x["hit_rate"] or 0)))
+    d["identities"] = out[:100]
 
 # ---------------------------------------------------------------- detection (watcher, each cycle)
 PER_CYCLE = int(os.environ.get("SMART_PER_CYCLE", "8"))
@@ -172,7 +199,8 @@ def detect(st, log, push_fn=None):
         S["buys"][tok] = b
         if len(b) >= 2 and tok not in {h["tok"] for h in S["hits"]}:
             ch = W[next(iter(b))]["chain"]
-            hit = {"t": int(now), "tok": tok, "ch": ch, "wallets": sorted(b)[:6], "mode": d.get("mode", "log")}
+            hit = {"t": int(now), "tok": tok, "ch": ch, "wallets": sorted(b)[:6], "mode": d.get("mode", "log"),
+                   "names": [who(W.get(w) or {}, w) for w in sorted(b)[:6]]}
             if d.get("mode") == "push" and len(W) >= 20 and push_fn:
                 hit["push"] = push_fn(tok, ch, hit)
             S["hits"] = (S["hits"] + [hit])[-50:]

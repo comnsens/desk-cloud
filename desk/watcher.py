@@ -659,6 +659,7 @@ def smart_push(tok, ch, hit):
     pairs = desk.ds_token_pairs([tok], chain=ch) or []
     p = max(pairs, key=lambda x: desk.f((x.get("liquidity") or {}).get("usd"), 0)) if pairs else {}
     text = (f"{(p.get('baseToken') or {}).get('symbol', '?')} ({ch}): {len(hit['wallets'])} tracked wallets bought in the last 6h\n"
+            f"Who: {'; '.join(hit.get('names') or [])}\n"
             f"mcap {desk.f(p.get('marketCap')) or '?'} | liq {desk.f((p.get('liquidity') or {}).get('usd'))} | safety PASS\n{p.get('url') or ''}")
     return positions.push_pair(tok, text, "SMART WALLETS", log)
 

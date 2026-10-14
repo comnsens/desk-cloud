@@ -36,7 +36,7 @@ def check(st, log):
         if not mc: continue
         s.update(mcap=round(mc), liq=round(liq), at=int(time.time()), url=best.get("url"))
         events = []
-        for L in p.get("levels", []):
+        for L in (p.get("levels") if isinstance(p.get("levels"), list) else []):
             lid = L["id"]
             if "below" in L:
                 hit, rearm = mc <= L["below"], mc >= L["below"] * (1 + REARM); lvl = L["below"]
