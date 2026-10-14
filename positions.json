@@ -83,6 +83,38 @@
       "two_messages": true,
       "title": "SI breakdown below $13M",
       "message": "SI breakdown below $13M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}"
+    },
+    {
+      "symbol": "Eikon",
+      "chain": "solana",
+      "token": "63A9mFGpX4Mws6TznZm4287P4vTsTxQ5NvcJPsbXpump",
+      "id": "UP_350K",
+      "above": 350000,
+      "two_messages": true,
+      "title": "Eikon reclaimed $350k",
+      "message": "Eikon reclaimed $350k: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}",
+      "rearm_below": 315000
+    },
+    {
+      "symbol": "Eikon",
+      "chain": "solana",
+      "token": "63A9mFGpX4Mws6TznZm4287P4vTsTxQ5NvcJPsbXpump",
+      "id": "UP_500K",
+      "above": 500000,
+      "two_messages": true,
+      "title": "Eikon broke $500k",
+      "message": "Eikon broke $500k: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}",
+      "rearm_below": 450000
+    },
+    {
+      "symbol": "Eikon",
+      "chain": "solana",
+      "token": "63A9mFGpX4Mws6TznZm4287P4vTsTxQ5NvcJPsbXpump",
+      "id": "DOWN_150K",
+      "below": 150000,
+      "two_messages": true,
+      "title": "Eikon breakdown below $150k",
+      "message": "Eikon breakdown below $150k: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}"
     }
   ],
   "study": [
