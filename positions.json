@@ -1,111 +1,143 @@
 {
- "_doc": "Real positions to watch (read-only alerts, no trading). Levels are market cap in USD. See ROUTINE-NOTES.md on the box. 'reentry' = coins exited; pinned on the long watchlist, push (address, then details) only on a rules-based re-entry.",
- "positions": [],
- "reentry": [
-  {
-   "symbol": "FLOYD",
-   "chain": "solana",
-   "token": "Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump",
-   "note": "owner fully exited ~ $580k mcap 2026-10-13; ping only on rules-based re-entry (buy-back setup or floor-watch breakout)"
-  }
- ],
- "user_alerts": [
-  {
-   "symbol": "FLOYD",
-   "chain": "solana",
-   "token": "Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump",
-   "id": "ENTRY_520K",
-   "below": 520000,
-   "two_messages": true,
-   "title": "FLOYD near $500k entry zone",
-   "message": "FLOYD near $500k entry zone: mcap {mcap}, liq {liq}, buys/sells in the last 1h: {buys}/{sells}; suggested stop below $410k mcap (price $0.00050); this is the user's level, not a desk signal"
-  },
-  {
-   "symbol": "FLOYD",
-   "chain": "solana",
-   "token": "Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump",
-   "id": "BREAKDOWN_410K",
-   "below": 410000,
-   "two_messages": false,
-   "title": "FLOYD breakdown",
-   "message": "FLOYD breakdown: below $410k, skip entry (mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells})"
-  },
-  {
-   "symbol": "FLOYD",
-   "chain": "solana",
-   "token": "Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump",
-   "id": "RECLAIM_600K",
-   "above": 600000,
-   "rearm_below": 540000,
-   "two_messages": true,
-   "title": "FLOYD back above $600k",
-   "message": "FLOYD broke back above $600k: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}"
-  },
-  {
-   "symbol": "SEALS",
-   "chain": "solana",
-   "token": "3sKaoPryg4KrXubLWtoqF7MznLT7QNqKRxMMkkxTpump",
-   "id": "BREAK_1M",
-   "above": 1000000,
-   "rearm_below": 900000,
-   "two_messages": true,
-   "title": "SEALS broke $1M",
-   "message": "SEALS broke $1M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}. User level, not a desk signal."
-  }
- ],
- "study": [
-  {
-   "symbol": "VEIL",
-   "chain": "solana",
-   "token": "HgTGdc29D5bDMrDvsCLnorxz899VyDj7ZN7FPa6vpump",
-   "pool": "2LhZHygydAYPBoxxhW95mEvN1yndL1JpoScakULSxgWo",
-   "ath_mcap": 18880000,
-   "every_s": 900,
-   "note": "close-watch study 2026-10-13; snapshots to state branch study/VEIL.jsonl",
-   "watch_wallets": [
+  "_doc": "Real positions to watch (read-only alerts, no trading). Levels are market cap in USD. See ROUTINE-NOTES.md on the box. 'reentry' = coins exited; pinned on the long watchlist, push (address, then details) only on a rules-based re-entry.",
+  "positions": [],
+  "reentry": [
     {
-     "owner": "8683DyCsmWfBYK2rgbn4R7Ut9LFCK8SDnog6BrabxKgf",
-     "label": "20.9% top holder (RugCheck: Pump Fun program/AMM account)",
-     "move_pts": 2.0
+      "symbol": "FLOYD",
+      "chain": "solana",
+      "token": "Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump",
+      "note": "owner fully exited ~ $580k mcap 2026-10-13; ping only on rules-based re-entry (buy-back setup or floor-watch breakout)"
+    }
+  ],
+  "user_alerts": [
+    {
+      "symbol": "FLOYD",
+      "chain": "solana",
+      "token": "Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump",
+      "id": "ENTRY_520K",
+      "below": 520000,
+      "two_messages": true,
+      "title": "FLOYD near $500k entry zone",
+      "message": "FLOYD near $500k entry zone: mcap {mcap}, liq {liq}, buys/sells in the last 1h: {buys}/{sells}; suggested stop below $410k mcap (price $0.00050); this is the user's level, not a desk signal"
     },
     {
-     "owner": "6TnWWZ2KshXpzJWrp6fExrbG6YLuBU2LA2uN8AGpYGNY",
-     "label": "top non-pool wallet 6TnW (Birdeye: fresh, bundler)",
-     "move_pts": 0.5
+      "symbol": "FLOYD",
+      "chain": "solana",
+      "token": "Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump",
+      "id": "BREAKDOWN_410K",
+      "below": 410000,
+      "two_messages": false,
+      "title": "FLOYD breakdown",
+      "message": "FLOYD breakdown: below $410k, skip entry (mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells})"
+    },
+    {
+      "symbol": "FLOYD",
+      "chain": "solana",
+      "token": "Gjd3JUbNG2C3n5Ww98SfPxyWaqvDk2BkiKongGwEpump",
+      "id": "RECLAIM_600K",
+      "above": 600000,
+      "rearm_below": 540000,
+      "two_messages": true,
+      "title": "FLOYD back above $600k",
+      "message": "FLOYD broke back above $600k: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}"
+    },
+    {
+      "symbol": "SEALS",
+      "chain": "solana",
+      "token": "3sKaoPryg4KrXubLWtoqF7MznLT7QNqKRxMMkkxTpump",
+      "id": "BREAK_1M",
+      "above": 1000000,
+      "rearm_below": 900000,
+      "two_messages": true,
+      "title": "SEALS broke $1M",
+      "message": "SEALS broke $1M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}. User level, not a desk signal."
+    },
+    {
+      "symbol": "SI",
+      "chain": "solana",
+      "token": "DEW9dSN6QpWyNthphCpMmAbZP1Q4cEKR9xQXAri98WDP",
+      "id": "UP_30M",
+      "above": 30000000,
+      "two_messages": true,
+      "title": "SI back above $30M",
+      "message": "SI back above $30M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}",
+      "rearm_below": 27000000
+    },
+    {
+      "symbol": "SI",
+      "chain": "solana",
+      "token": "DEW9dSN6QpWyNthphCpMmAbZP1Q4cEKR9xQXAri98WDP",
+      "id": "UP_65M",
+      "above": 65000000,
+      "two_messages": true,
+      "title": "SI hit $65M",
+      "message": "SI hit $65M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}",
+      "rearm_below": 58500000
+    },
+    {
+      "symbol": "SI",
+      "chain": "solana",
+      "token": "DEW9dSN6QpWyNthphCpMmAbZP1Q4cEKR9xQXAri98WDP",
+      "id": "DOWN_13M",
+      "below": 13000000,
+      "two_messages": true,
+      "title": "SI breakdown below $13M",
+      "message": "SI breakdown below $13M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}"
     }
-   ]
-  },
-  {
-   "symbol": "JEANGUY",
-   "token": "5kbUKCWs7ZS5EVqdY9Ci9e5GXH4bbXrHD2vTfn41pump",
-   "chain": "solana",
-   "ath_mcap": 0,
-   "every_s": 900,
-   "note": "closed by user ~$400k (entry ~$484k); study how it ends"
-  }
- ],
- "liq_watch": [
-  {
-   "symbol": "Shopper",
-   "token": "HhP4AMBsXpiThDvoyP9KzwaP5GJ4GXytAvfeRkbxpump",
-   "chain": "solana",
-   "held_usd": 10,
-   "note": "REAL position (liquidity watch only, no levels)"
-  },
-  {
-   "symbol": "ENTANGLE",
-   "token": "22UqpxbE7PKPYDLLvCejEMgsu17KWBBpFz9bDbLbpump",
-   "chain": "solana",
-   "held_usd": 15,
-   "note": "REAL position (liquidity watch only, no levels)"
-  },
-  {
-   "symbol": "VEIL",
-   "token": "HgTGdc29D5bDMrDvsCLnorxz899VyDj7ZN7FPa6vpump",
-   "chain": "solana",
-   "held_usd": 10,
-   "entry_mcap": 16400000,
-   "note": "REAL position (liquidity watch only, no levels)"
-  }
- ]
+  ],
+  "study": [
+    {
+      "symbol": "VEIL",
+      "chain": "solana",
+      "token": "HgTGdc29D5bDMrDvsCLnorxz899VyDj7ZN7FPa6vpump",
+      "pool": "2LhZHygydAYPBoxxhW95mEvN1yndL1JpoScakULSxgWo",
+      "ath_mcap": 18880000,
+      "every_s": 900,
+      "note": "close-watch study 2026-10-13; snapshots to state branch study/VEIL.jsonl",
+      "watch_wallets": [
+        {
+          "owner": "8683DyCsmWfBYK2rgbn4R7Ut9LFCK8SDnog6BrabxKgf",
+          "label": "20.9% top holder (RugCheck: Pump Fun program/AMM account)",
+          "move_pts": 2.0
+        },
+        {
+          "owner": "6TnWWZ2KshXpzJWrp6fExrbG6YLuBU2LA2uN8AGpYGNY",
+          "label": "top non-pool wallet 6TnW (Birdeye: fresh, bundler)",
+          "move_pts": 0.5
+        }
+      ]
+    },
+    {
+      "symbol": "JEANGUY",
+      "token": "5kbUKCWs7ZS5EVqdY9Ci9e5GXH4bbXrHD2vTfn41pump",
+      "chain": "solana",
+      "ath_mcap": 0,
+      "every_s": 900,
+      "note": "closed by user ~$400k (entry ~$484k); study how it ends"
+    }
+  ],
+  "liq_watch": [
+    {
+      "symbol": "Shopper",
+      "token": "HhP4AMBsXpiThDvoyP9KzwaP5GJ4GXytAvfeRkbxpump",
+      "chain": "solana",
+      "held_usd": 10,
+      "note": "REAL position (liquidity watch only, no levels)"
+    },
+    {
+      "symbol": "ENTANGLE",
+      "token": "22UqpxbE7PKPYDLLvCejEMgsu17KWBBpFz9bDbLbpump",
+      "chain": "solana",
+      "held_usd": 15,
+      "note": "REAL position (liquidity watch only, no levels)"
+    },
+    {
+      "symbol": "VEIL",
+      "token": "HgTGdc29D5bDMrDvsCLnorxz899VyDj7ZN7FPa6vpump",
+      "chain": "solana",
+      "held_usd": 10,
+      "entry_mcap": 16400000,
+      "note": "REAL position (liquidity watch only, no levels)"
+    }
+  ]
 }
