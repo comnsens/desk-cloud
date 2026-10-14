@@ -114,6 +114,7 @@ def urgent_push(text, title, log_, priority="urgent"):
     for key, c in CHARTS.items():
         if key and key in low and "Chart:" not in text: text += "\n" + chart.line(c); break
     if not topic: log.info("push (no NTFY_TOPIC): %s", title); return "not_configured"
+    if positions.quiet(): log.info("QUIET (study only, not pushed): %s", title); return "quiet"
     for a in range(3):
         try:
             r = S.post(f"https://ntfy.sh/{topic}", data=text.encode(), timeout=8,

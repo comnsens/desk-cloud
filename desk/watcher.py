@@ -628,6 +628,8 @@ def post_ntfy(rec):
     """Two pushes to https://ntfy.sh/$NTFY_TOPIC: (1) ONLY the address, (2) details. Topic never logged."""
     topic = os.environ.get("NTFY_TOPIC")
     if not topic: return "not_configured"
+    import positions as _p
+    if _p.quiet(): return "quiet"
     out = []
     for i, body in enumerate((rec["message_1"], rec["message_2"])):
         hdr = {"Title": f"{rec['symbol']} {rec['chain'].upper()} paper flag"} if i else {}

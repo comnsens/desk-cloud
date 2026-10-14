@@ -27,3 +27,6 @@ If it stops: gh workflow run fastlane.yml -R comnsens/desk-cloud. The cron runs 
 - Every fastlane push and every new-coin flag's message_2 now ends with a chart line: support/resistance, VWAP, trend, volume spike, breakout/breakdown, floor, dip zone and reclaim level, in mcap terms.
 - Study ATH / +25% vs the 1h low / -30% from high now run in the fastlane on rolling windows. The watcher only keeps the 15-min snapshots and the WALLET alerts.
 - Runner score (log-only) shows on flags once research/runner-model.json exists (written by analyze.py when 7-day labels exist).
+
+## Study-only mode (2026-10-14)
+positions.json "alerts_mode": "user_alerts_only" = every phone push is logged as QUIET except user_alerts entries. Everything else (flags, study moves, ladder, liq watch, smart wallets) keeps running and logging for the study. Remove the key to restore all pushes.
