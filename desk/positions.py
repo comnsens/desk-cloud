@@ -82,7 +82,7 @@ def plan(floor, peak):
             "targets": f"25% at 2x ({fmt(floor * 2)}), 25% at 3x ({fmt(floor * 3)}), rest trails -35% from high, all out near old peak ({fmt(peak)})"}
 
 def push_pair(addr, text, title, log):
-    a = push(addr, "", log, priority="high"); time.sleep(1)
+    a = push(addr, "", log, priority="high"); time.sleep(0.3)
     return a + "/" + push(text, title, log, priority="high")
 
 def reentry_check(st, log, watcher):

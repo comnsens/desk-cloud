@@ -1,0 +1,44 @@
+name: desk-fastlane
+# ~2.5 s polling for every position / alert coin. Each run lasts ~5.5 min and dispatches its successor ~80 s before it
+# ends; the successor waits for the exact end time and takes over the alert state (no gap, no double pushes).
+on:
+  schedule:
+    - cron: "*/5 * * * *"          # backup only: exits at once if a fastlane run is already active
+  workflow_dispatch:
+    inputs:
+      prev_end: { description: "unix end time of the run being replaced", required: false, default: "" }
+permissions:
+  contents: read
+  actions: write
+jobs:
+  fast:
+    runs-on: ubuntu-latest
+    timeout-minutes: 9
+    steps:
+      - name: Skip if another fastlane run is already active (cron backup / manual)
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -n "${{ inputs.prev_end }}" ]; then echo "go=1" >> $GITHUB_OUTPUT; exit 0; fi
+          n=$(gh run list -R "${{ github.repository }}" -w desk-fastlane -s in_progress --json databaseId -q 'length')
+          if [ "$n" -gt 1 ]; then echo "fastlane already running ($n): exit"; echo "go=0" >> $GITHUB_OUTPUT; else echo "go=1" >> $GITHUB_OUTPUT; fi
+      - uses: actions/checkout@v4
+        if: steps.gate.outputs.go == '1'
+      - name: Fastlane (~5.5 min) + dispatch successor before the end
+        if: steps.gate.outputs.go == '1'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          FAST_PREV_END: ${{ inputs.prev_end }}
+        run: |
+          python3 -c "import requests" 2>/dev/null || pip install --quiet requests
+          RUN=330
+          if [ -n "$FAST_PREV_END" ]; then START=$(python3 -c "import time;print(max(time.time(), float('$FAST_PREV_END')))"); else START=$(date +%s); fi
+          END=$(python3 -c "print(int(float('$START') + $RUN))")
+          export FAST_RUN_S=$(python3 -c "import time;print(int($END - max(time.time(), float('$START'))))")
+          (python3 desk/fastlane.py) & PID=$!
+          sleep $(python3 -c "import time;print(max(5, int($END - time.time() - 80)))")
+          if gh api "repos/${{ github.repository }}/contents/STOP?ref=main" >/dev/null 2>&1; then echo "STOP: not chaining"
+          else gh workflow run desk-fastlane -R "${{ github.repository }}" --ref main -f prev_end=$END && echo "successor dispatched (prev_end=$END)"; fi
+          wait $PID

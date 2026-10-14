@@ -1,0 +1,31 @@
+{
+ "built": 1791944952,
+ "n_bad": 3,
+ "n_good": 0,
+ "items": [
+  {
+   "tok": "0x63b3571c6d80e3682b12f61bb24e9f4fdff059cb",
+   "ch": "base",
+   "sym": "openhuman",
+   "label": "BAD",
+   "why": "liq 84203->4 by 1h",
+   "pair": "0xfDf00370596e4B37298A4d76F6aA2A29bbc8057e"
+  },
+  {
+   "tok": "aVmKA9EWTGjAjY7RUqYmVPFW1gyByz54UhPgd4upump",
+   "ch": "solana",
+   "sym": "Taylor",
+   "label": "BAD",
+   "why": "liq 96275->2026 by 1h",
+   "pair": "PKs17MG2pJ7ZpLLv79yf1VvA5EQjrgmsLpUH49mGpzp"
+  },
+  {
+   "tok": "8L9bgqk34bsM1QVWQPuxHbvFAorg25wCjgGKh2cQpump",
+   "ch": "solana",
+   "sym": "FPAD",
+   "label": "BAD",
+   "why": "liq 79626->3743 by 1h",
+   "pair": "5DbEYwdjsteByrDgJe5xWFrVbwuotEANdQTFcYA1zTxU"
+  }
+ ]
+}

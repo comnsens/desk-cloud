@@ -634,8 +634,23 @@ def heartbeat(st, cyc_s, gates, survivors, err):
     hb["reentry"] = {"loaded": st.get("reentry_loaded", []), **{k[:6]: {x: v.get(x) for x in ("peak_mcap", "floor_mcap", "floor_days", "dd", "mcap", "why")} for k, v in st.get("reentry", {}).items()}}
     hb["user_alerts"] = {"loaded": st.get("user_alerts_loaded", []), **{k[:6] + k.split(":")[-1]: v for k, v in st.get("user_alerts", {}).items()}}
     hb["study"] = {"loaded": st.get("study_loaded", []), **{k[:6]: {"high": v.get("high"), "fired": v.get("fired"), "last": v.get("last")} for k, v in st.get("study", {}).items()}}
+    sm = st.get("smart", {}); hb["smart_wallets"] = {"tracked": sm.get("tracked"), "hits": sm.get("hits", [])[-5:], "pending": len(sm.get("buys", {})), "evm_err": sm.get("evm_err")}
     hb["watch_reasons"] = dict(sorted(why.items(), key=lambda kv: -kv[1])[:12])
     tmp = HEART_F + ".tmp"; json.dump(hb, open(tmp, "w"), indent=1); os.replace(tmp, HEART_F)
+
+def smart_push(tok, ch, hit):
+    """Only used when smart_wallets.json mode == "push". Safety must PASS first; then CA-only message, then details."""
+    import positions
+    if ch == SOL:
+        v = desk.sol_audit(tok).get("verdict")
+    else:
+        import evm; v = evm.audit_basic(tok, ch).get("verdict")
+    if v != "PASS": return f"blocked: safety {v}"
+    pairs = desk.ds_token_pairs([tok], chain=ch) or []
+    p = max(pairs, key=lambda x: desk.f((x.get("liquidity") or {}).get("usd"), 0)) if pairs else {}
+    text = (f"{(p.get('baseToken') or {}).get('symbol', '?')} ({ch}): {len(hit['wallets'])} tracked wallets bought in the last 6h\n"
+            f"mcap {desk.f(p.get('marketCap')) or '?'} | liq {desk.f((p.get('liquidity') or {}).get('usd'))} | safety PASS\n{p.get('url') or ''}")
+    return positions.push_pair(tok, text, "SMART WALLETS", log)
 
 def main():
     setup_log()
@@ -680,9 +695,17 @@ def main():
         cyc = time.time() - t0
         try:
             try:
-                import positions; positions.check(st, log); positions.reentry_check(st, log, None); positions.user_alerts(st, log); positions.study(st, log); positions.liq_watch(st, log)
+                import positions
+                if os.environ.get("DESK_FASTLANE") == "1":       # levels / stops / user alerts / liquidity drops run in the fastlane workflow
+                    positions.reentry_check(st, log, None); positions.study(st, log)
+                else:
+                    positions.check(st, log); positions.reentry_check(st, log, None); positions.user_alerts(st, log); positions.study(st, log); positions.liq_watch(st, log)
             except Exception as e:
                 log.warning("position watch: %s", f"{type(e).__name__}: {e}"[:200])
+            try:
+                import smart; smart.detect(st, log, push_fn=smart_push)
+            except Exception as e:
+                log.warning("smart wallets: %s", f"{type(e).__name__}: {e}"[:200])
             save_state(st); heartbeat(st, cyc, gates, survivors, err)
         except Exception as e:
             log.error("state/heartbeat write failed: %s", e)

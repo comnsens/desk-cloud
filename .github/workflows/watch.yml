@@ -36,6 +36,7 @@ jobs:
           BIRDEYE_API_KEY: ${{ secrets.BIRDEYE_API_KEY }}
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           STATE: ${{ github.workspace }}/state
+          DESK_FASTLANE: "1"
         run: ./run_cloud.sh
       - name: Save state to the state branch (single commit, force-pushed, so history never grows)
         if: always()

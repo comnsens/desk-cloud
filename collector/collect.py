@@ -271,6 +271,35 @@ def prune(reg):
     cut = time.time() - 31 * 86400
     for k in [k for k, e in reg["tokens"].items() if e.get("done") or e["t0"] < cut]: reg["tokens"].pop(k)
 
+# ---- smart wallets: daily refresh from labels (coins first seen <= $100k that hit $1M+) ----
+def smart_refresh(reg):
+    day = today()
+    if reg.get("smart_day") == day: return 0
+    reg["smart_day"] = day
+    import smart, base64
+    r = gh("api", f"repos/{REPO}/contents/smart_wallets.json?ref=main", check=False)
+    if r.returncode != 0: return 0
+    meta = json.loads(r.stdout); d = json.loads(base64.b64decode(meta["content"]))
+    done = {x["tok"] for x in d.get("sources", [])}; picks = []
+    for fn in sorted(os.listdir(WORK)):
+        if fn.startswith("labels-") and fn.endswith(".jsonl"):
+            for line in open(os.path.join(WORK, fn)):
+                try: lab = json.loads(line)
+                except Exception: continue
+                if lab.get("hit_1m") and lab.get("early") and lab["tok"] not in done: picks.append(lab)
+    for tok, e in reg["tokens"].items():                       # provisional runners too (still tracked)
+        if e["max_mc"] >= 1e6 and (e["fs"].get("mc") or 0) <= EARLY_MC and tok not in done:
+            picks.append({"tok": tok, "ch": e["ch"], "fs": e["fs"], "max_mc": e["max_mc"]})
+    n = 0
+    for lab in picks[:3]:
+        try: n += smart.add_coin(d, lab["ch"], lab["tok"], lab["fs"].get("sym") or "?", lab["max_mc"])
+        except Exception as ex: d["sources"].append({"tok": lab["tok"], "skipped": str(ex)[:80]})
+    if picks[:3]:
+        body = json.dumps({"message": f"smart wallets daily refresh {day} (+{n})", "sha": meta["sha"],
+                           "content": base64.b64encode(json.dumps(d, indent=1).encode()).decode()})
+        subprocess.run(["gh", "api", "-X", "PUT", f"repos/{REPO}/contents/smart_wallets.json", "--input", "-"], input=body, text=True, capture_output=True)
+    return n
+
 def main():
     start = time.time(); restore(); reg = load_reg(); stats = {"rows_in": 0, "evm_new": 0, "followups": 0}
     while time.time() - start < RUN_S - 30:
@@ -281,6 +310,8 @@ def main():
         save_reg(reg)
         if os.environ.get("COLLECT_ONCE") == "1": break
         time.sleep(max(3, 60 - (time.time() - t)))
+    try: stats["smart_added"] = smart_refresh(reg)
+    except Exception as ex: stats["smart_err"] = str(ex)[:80]
     prune(reg); save_reg(reg); provisional(reg)
     by = {}
     for e in reg["tokens"].values(): by[e["ch"]] = by.get(e["ch"], 0) + 1
