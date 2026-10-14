@@ -232,7 +232,7 @@ def liq_watch(st, log):
     try: cfg = json.load(open(POS_FILE))
     except FileNotFoundError: cfg = {}
     want = {}
-    for key in ("positions", "reentry", "user_alerts", "study"):
+    for key in ("positions", "liq_watch", "reentry", "user_alerts", "study"):
         for it in cfg.get(key) or []:
             if it.get("token"): want.setdefault(it["token"], (it.get("chain", "solana"), it.get("symbol", "?"), key))
     now = time.time(); fch = st.get("flagged_ch", {})
