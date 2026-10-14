@@ -147,5 +147,8 @@
       "entry_mcap": 16400000,
       "note": "REAL position (liquidity watch only, no levels)"
     }
+  ],
+  "muted": [
+    "63A9mFGpX4Mws6TznZm4287P4vTsTxQ5NvcJPsbXpump"
   ]
 }

@@ -239,6 +239,7 @@ def liq_watch(st, log):
     now = time.time(); fch = st.get("flagged_ch", {})
     for tok, t in (st.get("flagged") or {}).items():
         if now - t < 7 * 86400 and tok in fch: want.setdefault(tok, (fch[tok], "?", "flagged"))
+    for tok in cfg.get("muted") or []: want.pop(tok, None)
     W = st.setdefault("liqw", {})
     for k in [k for k in W if k not in want]: W.pop(k)
     if st.get("liqw_next", 0) > now: return

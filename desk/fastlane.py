@@ -63,7 +63,8 @@ def watch_set(st):
             if it.get("token"): w[(it.get("chain", "solana"), it["token"])] = 1
     for tok, ch in st.get("flagged_ch", {}).items():
         if time.time() - st["flagged"].get(tok, 0) < 48 * 3600: w[(ch, tok)] = 1
-    return w
+    muted = set(cfg.get("muted") or [])  # tokens the user said to stop watching: no pushes at all
+    return {k: v for k, v in w.items() if k[1] not in muted}
 
 def load_flags(st):
     try:
