@@ -26,6 +26,10 @@ for f in glob.glob(os.path.join(ROOT, "data", "labels-*.jsonl")):
 MANUAL_BAD = [
     {"tok": "5Z6LFstu6KBC1pcR9co3e1forvP5jRBQhgLvyStxpump", "ch": "solana", "sym": "VCAT", "label": "BAD", "pair": "22T6SEtZswEAeBtnJA9qHGrX6MGucyUfPBEXqGuUEKbV",
      "why": "manual rug 2026-10-14: flagged $375k, -98% in 1h; LP 100% locked (no pull); sybil-spread supply (top10 1.13%) dumped into pool (pool now 99.3% of supply); ~4.7 buys/unique buyer"},
+    {"tok": "5kbUKCWs7ZS5EVqdY9Ci9e5GXH4bbXrHD2vTfn41pump", "ch": "solana", "sym": "JEANGUY", "label": "BAD", "pair": "Ezs3x8qpnA1SQsXzS3DEYsj68WXyy6cZtgVdNNv91SQJ",
+     "why": "manual rug 2026-10-14: flagged strong_trend $350-420k, audit PASS, 0% bundle, crashed ~95% to ~$2k mcap, liq ~$2.2-2.5k"},
+    {"tok": "E5SzGqbAaXQwwtkRYsrL4NrcvJfcSFjm8aSwyMhCpump", "ch": "solana", "sym": "VEILDOGE", "label": "BAD", "pair": "yEmmw7mPXoaTga2oiD5bFEDvZ89TWcBebj9C69Kp3wH",
+     "why": "manual rug 2026-10-14: flagged strong_trend $350-420k, audit PASS, 0% bundle, crashed ~95% to ~$2k mcap, liq ~$2.2-2.5k"},
 ]
 for x in MANUAL_BAD: items[x["tok"]] = x
 out = {"built": int(time.time()), "n_bad": sum(1 for x in items.values() if x["label"] == "BAD"),
