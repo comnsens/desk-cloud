@@ -66,12 +66,12 @@ def load():
 
 def save(d): json.dump(d, open(FILE + ".tmp", "w"), indent=1); os.replace(FILE + ".tmp", FILE)
 
-def add_coin(d, ch, tok, sym, peak, log=print):
+def add_coin(d, ch, tok, sym, peak, log=print, eb=None):
     """Add early buyers of one runner. Returns count added."""
     if any(s["tok"] == tok for s in d["sources"]): return 0
     excl, cand = set(), {}
     if ch == "solana":
-        eb = sol_early_buyers(tok)
+        eb = eb or sol_early_buyers(tok)
         if eb.get("error"): d["sources"].append({"tok": tok, "sym": sym, "ch": ch, "skipped": eb["error"]}); return 0
         excl.add(eb["creator"])
         rc = desk.rugcheck(tok) or {}

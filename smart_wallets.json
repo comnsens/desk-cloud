@@ -272,6 +272,430 @@
    ],
    "added": "2026-10-13",
    "score": 1
+  },
+  "0x9b35c3602c664773b99f0e2c1639ebe659be788a": {
+   "chain": "base",
+   "coins": [
+    "UMIA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xe2114b9bc4ee596668d4228cf78277e90537bd4f": {
+   "chain": "base",
+   "coins": [
+    "UMIA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x7f1e0a23396863c7784559b3b479db2c753e6b78": {
+   "chain": "base",
+   "coins": [
+    "UMIA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x75484c9f5f3f5c3b6cf93edddaa751114eca4f32": {
+   "chain": "base",
+   "coins": [
+    "UMIA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x7f08f9d711276d5433034355b899def1617ed7d1": {
+   "chain": "base",
+   "coins": [
+    "UMIA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x2989a8202739172cd32ee3e0ebf8f92ee8b931c6": {
+   "chain": "base",
+   "coins": [
+    "UMIA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x895f633b806adf8ff05b568a1602a1aab814a806": {
+   "chain": "base",
+   "coins": [
+    "UMIA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x9f4eb92b6e93d4ec39c0a5e90388320af60466d3": {
+   "chain": "base",
+   "coins": [
+    "UMIA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x5b9df8106f8796675d044a48fad50230c64671b4": {
+   "chain": "base",
+   "coins": [
+    "UMIA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xeff3ea88e75b2d4b5296846cd3818eb33ff29dea": {
+   "chain": "base",
+   "coins": [
+    "UMIA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x6835137ba435204f21c8ff4eb8b6d15fa98bea03": {
+   "chain": "base",
+   "coins": [
+    "UMIA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xf9bd5a380b9cb513d5dcd1503c9e2fa773ffa043": {
+   "chain": "base",
+   "coins": [
+    "UMIA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x5c8aeb99bcc9706fcf74f163ca4e94c68b509e20": {
+   "chain": "base",
+   "coins": [
+    "UMIA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xa51eccf4ba0ab21c1683895395934d63c647551a": {
+   "chain": "base",
+   "coins": [
+    "VCAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x96bed53e78bb1bb4967ee55ab7cd1b6ca3801910": {
+   "chain": "base",
+   "coins": [
+    "VCAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x77209deda50b37b5fc13d7e65f6bb092cb4dfe33": {
+   "chain": "base",
+   "coins": [
+    "VCAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x9e8ebafb3489c077227ad499fea7fe774ab2af48": {
+   "chain": "base",
+   "coins": [
+    "VCAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xcb0e3a0dafe9653fd04046d447b3e57a0de0689e": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x6e6112a4e115ab4a447df966983a4134833e9cd9": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x387a2a766300c006c4ec495cbe9d647d8c9cc4cf": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x4be15875c92e179dad385531eb696cd6d35b5ef7": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xdf9811ab79a2331dd57aa39883e961c1fe9a867f": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x924f91e8378d562e8f3f95a692799d9dd75c6b62": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x235a611827325df84b1f4f27c2762b9bac6a8330": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xe4270acfd23dd60355546ff4bd4d88158e84a4cf": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xdf4060d5beed43d8582dedceb73d345091b89351": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x347706d28b4e55a52c7ea96723040c84537d4347": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xce624b2c822a1bfc8af96a72be90762d955e4155": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xadf75ed588b37dd2c0a648485652a8cf23780af5": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x2caaf4b44dd75b6ae99ee222b6a3325e09da2172": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x854f961acb56dac6ba1d6e5b537698a5ce094341": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x8f551d6ddbafb19f8f00717d3a16aa089bc8839b": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x806ad4e694022ebfb83c9303c4a30cbcabeae682": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xec45b673d279c94ab4e34c188172ec804790e730": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x525fb4cdf87d8a023b91a6e0e6c38cdf2b32108a": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x41b9c62f14ad4999ad947d895c42b40ed19bb23d": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x12613aae05c45b182c0b224dfd6a14ae1a00a25d": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x34b7fa39ecc13f8e1908d87313a20ef6248ed666": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xae1fbe928106733235bfa34f80d12f4ab12729b8": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xff8072f9c7e18259b85db106843b30ebfee36e92": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x3845654f7bce87480d91d37414d6ff4b7765e929": {
+   "chain": "base",
+   "coins": [
+    "ELONRWA"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xfec73897af84561cd2af2d726d4ed58ed9991aad": {
+   "chain": "base",
+   "coins": [
+    "BASEJUICE"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x9cc644752c51e9a153a773e928961737b68b67cf": {
+   "chain": "base",
+   "coins": [
+    "RAWR"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x4998007d47f0c971d6bfa6166acea329680e7a5c": {
+   "chain": "base",
+   "coins": [
+    "RAWR"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x2aced1b1501f58f89317bb5e1d2684f43ba2ac9b": {
+   "chain": "base",
+   "coins": [
+    "RAWR"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xe23f42cd4d88e9e0f843b1516f8fcd6c6e6ebe81": {
+   "chain": "base",
+   "coins": [
+    "RAWR"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x039acade028870567a5a66c58b0b6c1884c2c9a2": {
+   "chain": "base",
+   "coins": [
+    "WOLF"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xa6d97c9538678e5b8545e2a0599f92e48fad5269": {
+   "chain": "base",
+   "coins": [
+    "WOLF"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x9c7a8e9dd10754420b8d239a0b5c17e4543bbde2": {
+   "chain": "base",
+   "coins": [
+    "WOLF"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xb624c0897d8e58eb553909c7c8ed708149fffd0c": {
+   "chain": "base",
+   "coins": [
+    "WOLF"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x47282f17e6c6647785581018b73791135ac83695": {
+   "chain": "base",
+   "coins": [
+    "WOLF"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x58860d6bd8f4011afe7c9590b02a91f894ecfaf8": {
+   "chain": "base",
+   "coins": [
+    "WOLF"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x46b2261f447a318c185189163f42fab2e57165ae": {
+   "chain": "base",
+   "coins": [
+    "DGUY"
+   ],
+   "added": "2026-10-13",
+   "score": 1
   }
  },
  "sources": [
@@ -326,7 +750,245 @@
    "peak": 30580044.0,
    "added_wallets": 20,
    "excluded": 4
+  },
+  {
+   "tok": "0x56ab53b77f07da3af732150e8aec4783eb5bba7d",
+   "sym": "UMIA",
+   "ch": "base",
+   "peak": 21956516.0,
+   "added_wallets": 13,
+   "excluded": 1
+  },
+  {
+   "tok": "0xe35baa79cbe6090cc69deb2b1609a891904cfc69",
+   "sym": "PLUTON",
+   "ch": "base",
+   "peak": 21272959.0,
+   "added_wallets": 0,
+   "excluded": 4
+  },
+  {
+   "tok": "0xfdcc845c048ad96b5c80b6a55d65c20a98d37777",
+   "sym": "VCAT",
+   "ch": "base",
+   "peak": 9817904.0,
+   "added_wallets": 4,
+   "excluded": 3
+  },
+  {
+   "tok": "0x0cbf291ba052174879d90bf781df1a5f2bc5bb07",
+   "sym": "BOAR",
+   "ch": "base",
+   "skipped": "no pool buys within 1200 blocks of pool creation"
+  },
+  {
+   "tok": "0xb20000000000000000000070f6c1a66d7c1e4d01",
+   "sym": "SPIKE",
+   "ch": "base",
+   "skipped": "no pool buys within 1200 blocks of pool creation"
+  },
+  {
+   "tok": "0x05e4362f078b20689371ecf4bc08764af5680f65",
+   "sym": "WINC2.0",
+   "ch": "base",
+   "peak": 3776142.0,
+   "added_wallets": 0,
+   "excluded": 1
+  },
+  {
+   "tok": "0xaa6cccdce193698d33deb9ffd4be74eaa74c4898",
+   "sym": "ELONRWA",
+   "ch": "base",
+   "peak": 3588296.0,
+   "added_wallets": 24,
+   "excluded": 1
+  },
+  {
+   "tok": "0xca7a1e31b36779cf32acb18714ab26982cf36b05",
+   "sym": "CATALYST",
+   "ch": "base",
+   "peak": 3367357.0,
+   "added_wallets": 0,
+   "excluded": 1
+  },
+  {
+   "tok": "0x4150f5408cbfa6264aa8f8aa973f8362f30c7bea",
+   "sym": "DYNAMO",
+   "ch": "base",
+   "peak": 2930353.0,
+   "added_wallets": 0,
+   "excluded": 1
+  },
+  {
+   "tok": "0xb200000000000000000000046390aed221043f01",
+   "sym": "BASEJUICE",
+   "ch": "base",
+   "peak": 2881233.0,
+   "added_wallets": 1,
+   "excluded": 0
+  },
+  {
+   "tok": "0x7b37beae59055694a9f49cbddb67777235edf08c",
+   "sym": "EUNICE",
+   "ch": "base",
+   "peak": 2620637.0,
+   "added_wallets": 0,
+   "excluded": 7
+  },
+  {
+   "tok": "0xb200000000000000000000503d889fdcbe48b801",
+   "sym": "RAWR",
+   "ch": "base",
+   "peak": 2278535.0,
+   "added_wallets": 4,
+   "excluded": 0
+  },
+  {
+   "tok": "0x4b4ca3a662246ea69fb65830454f81761146e6be",
+   "sym": "PEAK",
+   "ch": "base",
+   "peak": 1809565.0,
+   "added_wallets": 0,
+   "excluded": 6
+  },
+  {
+   "tok": "0xf0cb96a4011a0a6f73d100c7080bf8020d10f87a",
+   "sym": "MR_LIGHTSPEED",
+   "ch": "base",
+   "peak": 1241427.0,
+   "added_wallets": 0,
+   "excluded": 1
+  },
+  {
+   "tok": "0x73ac2806c40ab4741ea7a35b7328aca957755ba3",
+   "sym": "WOLF",
+   "ch": "base",
+   "peak": 1237189.0,
+   "added_wallets": 6,
+   "excluded": 3
+  },
+  {
+   "tok": "0xe34356dcd3d7bb991248f322e4ec31b5d60bc54e",
+   "sym": "DGUY",
+   "ch": "base",
+   "peak": 1167052.0,
+   "added_wallets": 1,
+   "excluded": 6
+  },
+  {
+   "tok": "HcRLc9VDgjLeK154xDawfb1dmVJ98DoSqcwTHGqiDeJR",
+   "sym": "ZCAT",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "DEW9dSN6QpWyNthphCpMmAbZP1Q4cEKR9xQXAri98WDP",
+   "sym": "SI",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "8RVBk8vxLiUHueLUW1f4izFVqN3nWippLhkohKg6EGkS",
+   "sym": "KNOTS",
+   "ch": "solana",
+   "skipped": "sol rpc getSignaturesForAddress: Transaction 3wXisja4rfbRAH37GjQxeQYvky9wLZtDua7"
+  },
+  {
+   "tok": "98kfF7rmsg1QDUEoCqNE7g7M1FdrTt92TEp2CLzypump",
+   "sym": "PAID",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "Ge87EtsjwRQbHaqQmKRno69RFTwh9bfSsm99XNxTpump",
+   "sym": "JIMOTHY",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "CTPoyCwkjMvoJwU4xvZZqoD8tiYk6yDchySiN5gGpump",
+   "sym": "FONE",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "4MMQY9bwkxxTtsK3W227Q5ABT6yFY8Pmn9Ze7wmAXKY8",
+   "sym": "ALLINU",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "ApZuxdpzMrbEYTGEzeY9afh5pj9d6qPRJCTgQYiipbKg",
+   "sym": "CYBERLEEK",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "HKZDfZnkHZxd9agRDNPyDv4iT6LmAurJnpRtj9wpump",
+   "sym": "MISTAKE",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "6UtY9iTZMQQ5QZVrbzFnNaJntV7oySm9k97mvwnuZcxr",
+   "sym": "NEARKAT",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "CaWZeUM4FvX9dPkjGc2xHS6tSN3qJfTWyvaG77aM5o7h",
+   "sym": "AGI",
+   "ch": "solana",
+   "skipped": "sol rpc getSignaturesForAddress: Transaction 4T8zZ9xg5yH88AevJMH7U2YmKqyxzTXsivr"
+  },
+  {
+   "tok": "8nnaeWCw8mUypcGAgbmSuzAT85uWx4UN12adDrMhXrGF",
+   "sym": "HOTBOT",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "GY9mZfyPpxXxBXBxS2hB2XjhP3kfUsywTvgveozxpump",
+   "sym": "ELON",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "GWTP6M5bxhaJ1k2Kxvf8hhYaHE6jZMhh4cKzFuCpnc83",
+   "sym": "USEFUL",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "zj1jpp7QMveWHLs61vL9KMZf254KvW7j4AAmBF8ry2k",
+   "sym": "BULLSHIT",
+   "ch": "solana",
+   "skipped": "sol rpc getSignaturesForAddress: Transaction 3oQg4JBjWWMqdQe358ki2E7oWaZHdnF8Sip"
+  },
+  {
+   "tok": "5tCju6YNxHq5zrA6tGndr6F7TK42mpUFmeE31cSFpump",
+   "sym": "SWORDCAT",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "9h5AzEQzYu9CV5K6uLtFRMD1KcbxZSFNxZEgBTNfw5Na",
+   "sym": "STONKCATS",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "7ypCq2CJ4fnbtS3z2B1W1UT2he5E3u7Md6Gy1ri7uGrQ",
+   "sym": "ANT",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "CBLx6CRcCTtbmgTdxpqnF2dP1MpWbMUjngtNbFTApump",
+   "sym": "BACKERS",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
   }
  ],
- "updated": 1791944857
+ "updated": 1791945073
 }

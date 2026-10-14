@@ -204,7 +204,7 @@ def followups(reg, budget_s):
         for name, off in FU:
             if name not in e["fu"] and now >= e["t0"] + off:
                 due.setdefault(e["ch"], []).append((tok, name)); break
-    cap = dict(HOLDER_CAP, deep=DEEP_CAP); n = 0
+    cap = dict(HOLDER_CAP, deep=DEEP_CAP, eb=2); n = 0
     for ch, items in due.items():
         items.sort(key=lambda x: T[x[0]]["t0"])
         for i in range(0, len(items), 30):
@@ -224,6 +224,12 @@ def followups(reg, budget_s):
                 if mc > e["max_mc"]: e["max_mc"], e["max_t"] = mc, row["t"]
                 e["max_liq"] = max(e["max_liq"], liq)
                 if p: e["pair"] = p.get("pairAddress")
+                if name == "1h" and ch == "solana" and p and liq >= 10_000 and (e["fs"].get("mc") or 0) <= EARLY_MC and cap["eb"] > 0 and time.time() - t0 < budget_s:
+                    cap["eb"] -= 1
+                    try:
+                        import smart; eb = smart.sol_early_buyers(tok, max_pages=8)
+                        if not eb.get("error"): e["eb"] = eb
+                    except Exception: pass
                 if name == "1h" and ch != "solana" and p and liq >= 5_000 and cap["deep"] > 0 and time.time() - t0 < budget_s:
                     cap["deep"] -= 1; deep_row(tok, ch, e, p)
                 raw(row); n += 1
@@ -252,7 +258,7 @@ def finalize(tok, e, dead=False):
            "max_mc": peak, "peak_src": src, "max_mult": round(peak / mc0, 2) if mc0 else None,
            "hit_1m": peak >= 1e6, "hit_5m": peak >= 5e6, "hit_10m": peak >= 10e6, "early": bool(mc0 and mc0 <= EARLY_MC), "dead_early": dead,
            "t_peak_h": round((peak_t - e["t0"]) / 3600, 1), "rug": rug,
-           "deep": e.get("deep"), "holders_growth": round(((e["fu"].get("24h") or {}).get("holders") or 0) / e["holders0"], 2) if e.get("holders0") else None,
+           "deep": e.get("deep"), "eb": e.get("eb"), "holders_growth": round(((e["fu"].get("24h") or {}).get("holders") or 0) / e["holders0"], 2) if e.get("holders0") else None,
            "final": True}
     label_out(lab); e["done"] = True
 
@@ -289,10 +295,10 @@ def smart_refresh(reg):
                 if lab.get("hit_1m") and lab.get("early") and lab["tok"] not in done: picks.append(lab)
     for tok, e in reg["tokens"].items():                       # provisional runners too (still tracked)
         if e["max_mc"] >= 1e6 and (e["fs"].get("mc") or 0) <= EARLY_MC and tok not in done:
-            picks.append({"tok": tok, "ch": e["ch"], "fs": e["fs"], "max_mc": e["max_mc"]})
+            picks.append({"tok": tok, "ch": e["ch"], "fs": e["fs"], "max_mc": e["max_mc"], "eb": e.get("eb")})
     n = 0
     for lab in picks[:3]:
-        try: n += smart.add_coin(d, lab["ch"], lab["tok"], lab["fs"].get("sym") or "?", lab["max_mc"])
+        try: n += smart.add_coin(d, lab["ch"], lab["tok"], lab["fs"].get("sym") or "?", lab["max_mc"], eb=lab.get("eb"))
         except Exception as ex: d["sources"].append({"tok": lab["tok"], "skipped": str(ex)[:80]})
     if picks[:3]:
         body = json.dumps({"message": f"smart wallets daily refresh {day} (+{n})", "sha": meta["sha"],
