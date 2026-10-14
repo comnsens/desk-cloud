@@ -46,3 +46,11 @@ Heartbeat: .../state/watcher_heartbeat.json  (unix field = last cycle)
 - State branch is one force-pushed commit (no history growth).
 - Birdeye: the 800 CU/day cap is counted per copy. If the box watcher also keeps running, stop it or both spend.
 - Account gates use desk/paper-book.md (template: pot $2000, 0 open). Update it in the repo if the paper book changes.
+
+## Dataset collector (desk-collector workflow)
+- `collector/collect.py`, self-chaining like the watcher (cron "2-59/10" backup). Birdeye is never used.
+- Inputs: watcher rows (state branch `ds_rows.jsonl`, Base + Solana with audit features) and its own discovery:
+  Solana new pools pages 1-3 every minute (includes pump.fun / Meteora DBC / LetsBonk bonding curves), BNB + Ethereum new/trending pools.
+- Follow-ups: 1h, 6h, 24h, 3d, 7d, then 14d/21d/30d for survivors. Dead coins are finalized early. Labels are final at 30d.
+- Storage: GitHub release `data` assets (not in git): `raw-YYYY-MM-DD.jsonl.gz` (pruned after 90 days), `labels-YYYY-MM.jsonl.gz` (kept), `registry.json.gz` (working set).
+- Analysis: `python3 research/analyze.py --fetch --data data` -> research/runner-signals.md

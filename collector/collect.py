@@ -17,9 +17,13 @@ REPO = os.environ.get("GITHUB_REPOSITORY", "comnsens/desk-cloud")
 RUN_S = float(os.environ.get("COLLECT_RUN_SECONDS", "270"))
 OFFLINE = os.environ.get("COLLECT_OFFLINE") == "1"           # local test: no release download/upload
 ROWS_FILE = os.environ.get("COLLECT_ROWS_FILE")              # local test: read watcher rows from a file
-FU = [("1h", 3600), ("6h", 6 * 3600), ("24h", 86400), ("3d", 3 * 86400), ("7d", 7 * 86400)]
+FU = [("1h", 3600), ("6h", 6 * 3600), ("24h", 86400), ("3d", 3 * 86400), ("7d", 7 * 86400),
+      ("14d", 14 * 86400), ("21d", 21 * 86400), ("30d", 30 * 86400)]        # 14-30d only for survivors (slow second legs)
+FINAL = "30d"
+EARLY_MC = 100_000                                                            # main target: first seen <= $100k
 DS_CHAIN = {"base": "base", "solana": "solana", "bsc": "bsc", "ethereum": "ethereum"}
 GT_NET = {"bsc": "bsc", "ethereum": "eth"}
+GT_ANY = {"base": "base", "solana": "solana", "bsc": "bsc", "ethereum": "eth"}
 GP_ID = {"base": 8453, "bsc": 56, "ethereum": 1}
 EVM_MAJORS = {"0xbb4cdb9cbd36b01bd1cbaebf2de08d9173bc095c", "0x55d398326f99059ff775485246999027b3197955", "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d",
               "0xe9e7cea3dedca5984780bafc599bd69add087d56", "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2", "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
@@ -116,6 +120,13 @@ def discover_evm(reg):
     rot = reg.get("gt_rot", 0); reg["gt_rot"] = rot + 1
     paths = ["new_pools?page=1", "new_pools?page=2", "trending_pools?duration=1h&page=1", "new_pools?page=3"]
     found = {}
+    for pg in (1, 2, 3):                                    # Solana launches incl. pre-graduation bonding curves
+        d = desk.get(f"{desk.GT}/networks/solana/new_pools?page={pg}", ttl=40) or {}
+        for p in d.get("data") or []:
+            rel = p["relationships"]
+            b = rel["base_token"]["data"]["id"].split("_", 1)[1]; q = rel["quote_token"]["data"]["id"].split("_", 1)[1]
+            tok = q if (b in desk.SOL_MAJORS and q not in desk.SOL_MAJORS) else b
+            if tok not in reg["tokens"] and tok not in desk.SOL_MAJORS: found.setdefault("solana", set()).add(tok)
     for ch, net in GT_NET.items():
         d = desk.get(f"{desk.GT}/networks/{net}/{paths[rot % len(paths)]}", ttl=45) or {}
         for p in d.get("data") or []:
@@ -147,7 +158,8 @@ def snapshot_fs(tok, ch, best):
     tx = best.get("txns") or {}; info = best.get("info") or {}
     created = best.get("pairCreatedAt")
     return {"k": "fs", "t": int(time.time()), "tok": tok, "ch": ch, "dex": best.get("dexId"), "pair": best.get("pairAddress"),
-            "lp": "fourmeme" if ch == "bsc" and tok.endswith("4444") else None, "sym": (best.get("baseToken") or {}).get("symbol"),
+            "lp": ("fourmeme" if ch == "bsc" and tok.endswith("4444") else "pumpfun" if tok.endswith("pump") else "letsbonk" if tok.endswith("bonk") else None),
+            "curve": best.get("dexId") in ("pumpfun", "pump-fun", "launchlab", "raydium-launchlab", "meteora-dbc", "meteoradbc", "letsbonk", "fourmeme", "zora"), "sym": (best.get("baseToken") or {}).get("symbol"),
             "age_h": round((time.time() * 1000 - created) / 3.6e6, 2) if created else None,
             "mc": round(desk.f(best.get("marketCap")) or desk.f(best.get("fdv")) or 0), "liq": round(desk.f((best.get("liquidity") or {}).get("usd"), 0)),
             "v24": round(desk.f((best.get("volume") or {}).get("h24"), 0)), "v1": round(desk.f((best.get("volume") or {}).get("h1"), 0)),
@@ -155,7 +167,7 @@ def snapshot_fs(tok, ch, best):
             "b1": (tx.get("h1") or {}).get("buys"), "s1": (tx.get("h1") or {}).get("sells"), "b5": (tx.get("m5") or {}).get("buys"), "s5": (tx.get("m5") or {}).get("sells"),
             "c1": (best.get("priceChange") or {}).get("h1"), "c5": (best.get("priceChange") or {}).get("m5"),
             "soc": len(info.get("socials") or []), "web": len(info.get("websites") or []), "img": bool(info.get("imageUrl")),
-            "boost": (best.get("boosts") or {}).get("active") or 0, "src": ["collector_gt"], "why": "not_evaluated (collector-only chain)"}
+            "boost": (best.get("boosts") or {}).get("active") or 0, "src": ["collector_gt"], "why": "not_evaluated (collector discovery)"}
 
 # ---- holders (free, capped) ----
 def holders(tok, ch, cap):
@@ -194,19 +206,26 @@ def followups(reg, budget_s):
                 row = {"k": "fu", "t": int(time.time()), "tok": tok, "ch": ch, "fu": name, "mc": mc, "liq": liq, "holders": hc,
                        "v24": round(desk.f((p.get("volume") or {}).get("h24"), 0)) if p else 0, "alive": bool(p)}
                 e["fu"][name] = {k: row[k] for k in ("t", "mc", "liq", "holders")}
+                age = time.time() - e["t0"]
                 if mc > e["max_mc"]: e["max_mc"], e["max_t"] = mc, row["t"]
                 e["max_liq"] = max(e["max_liq"], liq)
-                if not e.get("pair") and p: e["pair"] = p.get("pairAddress")
+                if p: e["pair"] = p.get("pairAddress")
                 raw(row); n += 1
-                if name == "7d": finalize(tok, e)
+                dead = (not p) or (age >= 6 * 3600 and mc < 6_000 and row["v24"] < 500) or (age >= 86400 and mc < 15_000 and row["v24"] < 1_000) \
+                       or (age >= 7 * 86400 and mc < 30_000 and liq < 5_000)
+                if name == FINAL or dead: finalize(tok, e, dead=dead and name != FINAL)
     return n
 
-def finalize(tok, e):
-    """True peak from GeckoTerminal 4h candles for tokens that moved (sampled max >= 2x or >= $500k); else sampled max."""
+def finalize(tok, e, dead=False):
+    """True peak from GeckoTerminal candles (4h for <= 10 days, else daily) for tokens that moved; else sampled max.
+    Note: a curve coin's pair changes at graduation, so the peak uses the latest pair seen (post-graduation), which is where big runs happen."""
     mc0 = e["fs"].get("mc") or 0; peak, peak_t, src = e["max_mc"], e["max_t"], "sampled"
-    if e.get("pair") and mc0 and (e["max_mc"] >= 2 * mc0 or e["max_mc"] >= 500_000 or (e["fu"].get("1h") or {}).get("mc", 0) >= 2 * mc0):
-        c = desk.gt_ohlcv(e["pair"], e["ch"] if e["ch"] in ("base", "solana") else {"bsc": "bsc", "ethereum": "eth"}[e["ch"]], tf="hour", agg=4, limit=60, ttl=3600)
-        last = (e["fu"].get("7d") or {}).get("mc") or 0
+    if e.get("pair") and mc0 and (e["max_mc"] >= 2 * mc0 or e["max_mc"] >= 500_000):
+        span = time.time() - e["t0"]
+        tf, agg, lim = ("hour", 4, 60) if span <= 10 * 86400 else ("day", 1, 31)
+        c = desk.gt_ohlcv(e["pair"], GT_ANY[e["ch"]], tf=tf, agg=agg, limit=lim, ttl=3600)
+        last_fu = max(e["fu"].values(), key=lambda x: x["t"]) if e["fu"] else {}
+        last = last_fu.get("mc") or 0
         if c and last:
             px_last = float(c[-1][4]); ratio = last / px_last if px_last else 0
             hi = max(c, key=lambda x: float(x[2]))
@@ -215,7 +234,7 @@ def finalize(tok, e):
     rug = bool(e["max_liq"] and min(liqs[-2:] or [0]) <= 0.2 * e["max_liq"])
     lab = {"tok": tok, "ch": e["ch"], "t0": e["t0"], "fs": e["fs"], "ev": e["ev"], "fu": e["fu"],
            "max_mc": peak, "peak_src": src, "max_mult": round(peak / mc0, 2) if mc0 else None,
-           "hit_1m": peak >= 1e6, "hit_5m": peak >= 5e6, "hit_10m": peak >= 10e6,
+           "hit_1m": peak >= 1e6, "hit_5m": peak >= 5e6, "hit_10m": peak >= 10e6, "early": bool(mc0 and mc0 <= EARLY_MC), "dead_early": dead,
            "t_peak_h": round((peak_t - e["t0"]) / 3600, 1), "rug": rug,
            "holders_growth": round(((e["fu"].get("24h") or {}).get("holders") or 0) / e["holders0"], 2) if e.get("holders0") else None,
            "final": True}
@@ -229,11 +248,11 @@ def provisional(reg):
             mc0 = e["fs"].get("mc") or 0; liqs = [f["liq"] for f in e["fu"].values()]
             fh.write(json.dumps({"tok": tok, "ch": e["ch"], "t0": e["t0"], "fs": e["fs"], "ev": e["ev"], "fu": e["fu"], "max_mc": e["max_mc"],
                                  "max_mult": round(e["max_mc"] / mc0, 2) if mc0 else None, "hit_1m": e["max_mc"] >= 1e6, "hit_5m": e["max_mc"] >= 5e6,
-                                 "hit_10m": e["max_mc"] >= 1e7, "t_peak_h": round((e["max_t"] - e["t0"]) / 3600, 1),
+                                 "hit_10m": e["max_mc"] >= 1e7, "early": bool(mc0 and mc0 <= EARLY_MC), "t_peak_h": round((e["max_t"] - e["t0"]) / 3600, 1),
                                  "rug": bool(e["max_liq"] and liqs[-1] <= 0.2 * e["max_liq"]), "final": False}, separators=(",", ":")) + "\n")
 
 def prune(reg):
-    cut = time.time() - 8 * 86400
+    cut = time.time() - 31 * 86400
     for k in [k for k, e in reg["tokens"].items() if e.get("done") or e["t0"] < cut]: reg["tokens"].pop(k)
 
 def main():

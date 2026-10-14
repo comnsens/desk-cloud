@@ -1,0 +1,31 @@
+name: desk-collector
+on:
+  schedule:
+    - cron: "2-59/10 * * * *"
+  workflow_dispatch: {}
+concurrency:
+  group: desk-collector
+  cancel-in-progress: false
+permissions:
+  contents: write
+  actions: write
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install --quiet requests
+      - name: Collect (~4.5 min; BNB/ETH discovery, watcher rows, follow-ups; Birdeye never used)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 collector/collect.py
+      - name: Chain the next run (skip if STOP exists on main)
+        if: ${{ !cancelled() }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh api "repos/${{ github.repository }}/contents/STOP?ref=main" >/dev/null 2>&1; then echo "STOP: not chaining"; exit 0; fi
+          gh workflow run desk-collector -R "${{ github.repository }}" --ref main
