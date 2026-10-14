@@ -52,5 +52,28 @@
       "title": "SEALS broke $1M",
       "message": "SEALS broke $1M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}. User level, not a desk signal."
     }
+  ],
+  "study": [
+    {
+      "symbol": "VEIL",
+      "chain": "solana",
+      "token": "HgTGdc29D5bDMrDvsCLnorxz899VyDj7ZN7FPa6vpump",
+      "pool": "2LhZHygydAYPBoxxhW95mEvN1yndL1JpoScakULSxgWo",
+      "ath_mcap": 18880000,
+      "every_s": 900,
+      "note": "close-watch study 2026-10-13; snapshots to state branch study/VEIL.jsonl",
+      "watch_wallets": [
+        {
+          "owner": "8683DyCsmWfBYK2rgbn4R7Ut9LFCK8SDnog6BrabxKgf",
+          "label": "20.9% top holder (RugCheck: Pump Fun program/AMM account)",
+          "move_pts": 2.0
+        },
+        {
+          "owner": "6TnWWZ2KshXpzJWrp6fExrbG6YLuBU2LA2uN8AGpYGNY",
+          "label": "top non-pool wallet 6TnW (Birdeye: fresh, bundler)",
+          "move_pts": 0.5
+        }
+      ]
+    }
   ]
 }

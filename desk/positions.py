@@ -169,3 +169,56 @@ def user_alerts(st, log):
             log.info("USER_ALERT %s %s mcap=%s push=%s", it["symbol"], it["id"], round(mc), res)
         elif rearm and s["fired"]:
             s["fired"] = None
+
+# ---------------------------------------------------------------- study entries (close-watch, snapshots + alerts)
+def study(st, log):
+    try: items = json.load(open(POS_FILE)).get("study") or []
+    except FileNotFoundError: items = []
+    S = st.setdefault("study", {}); st["study_loaded"] = [x["symbol"] for x in items]
+    sd = os.path.join(os.environ.get("DESK_STATE_DIR") or ".", "study"); os.makedirs(sd, exist_ok=True)
+    for it in items:
+        tok, ch = it["token"], it.get("chain", "solana")
+        s = S.setdefault(tok, {"fired": {}, "high": it.get("ath_mcap") or 0, "liq_max": 0, "snaps": [], "next": 0})
+        if time.time() < s["next"]: continue
+        s["next"] = time.time() + it.get("every_s", 900)
+        pairs = desk.ds_token_pairs([tok], chain=ch)
+        if not pairs: continue
+        tot_liq = sum(desk.f((p.get("liquidity") or {}).get("usd"), 0) for p in pairs)
+        best = max(pairs, key=lambda x: desk.f((x.get("liquidity") or {}).get("usd"), 0))
+        mc = desk.f(best.get("marketCap")) or desk.f(best.get("fdv")); h1 = (best.get("txns") or {}).get("h1") or {}
+        pa = desk.gt_pool_info(it.get("pool") or best["pairAddress"], ch) or {}
+        gh1 = ((pa.get("transactions") or {}).get("h1") or {})
+        r = desk.rugcheck(tok) if ch == "solana" else None
+        tops = [(h.get("owner"), round(desk.f(h.get("pct"), 0), 3)) for h in (r or {}).get("topHolders") or []][:10]
+        known = (r or {}).get("knownAccounts") or {}
+        snap = {"t": int(time.time()), "mc": round(mc or 0), "liq": round(tot_liq), "b1": h1.get("buys"), "s1": h1.get("sells"),
+                "ub1": gh1.get("buyers"), "us1": gh1.get("sellers"), "holders": (r or {}).get("totalHolders"), "top": tops[:5]}
+        with open(os.path.join(sd, f"{it['symbol']}.jsonl"), "a") as fh: fh.write(json.dumps(snap, separators=(",", ":")) + "\n")
+        ev = []
+        prev_high = s["high"]
+        if mc and mc > prev_high:
+            if prev_high and not s["fired"].get("ATH"): ev.append(("ATH", f"new ATH: {fmt(mc)} (old {fmt(prev_high)})"))
+            s["high"] = mc; s["fired"].pop("DD30", None)
+        elif s["fired"].get("ATH") and mc < prev_high * 0.9: s["fired"].pop("ATH")
+        old = [x for x in s["snaps"] if snap["t"] - x["t"] >= 3300]
+        if old and mc and old[-1]["mc"] and mc >= 1.25 * old[-1]["mc"] and not s["fired"].get("UP25"):
+            ev.append(("UP25", f"+{(mc / old[-1]['mc'] - 1) * 100:.0f}% in ~1h ({fmt(old[-1]['mc'])} -> {fmt(mc)})")); s["fired"]["UP25"] = 1
+        elif old and old[-1]["mc"] and mc < 1.10 * old[-1]["mc"]: s["fired"].pop("UP25", None)
+        if s["high"] and mc <= 0.70 * s["high"] and not s["fired"].get("DD30"):
+            ev.append(("DD30", f"-{(1 - mc / s['high']) * 100:.0f}% from high {fmt(s['high'])}")); s["fired"]["DD30"] = 1
+        elif s["fired"].get("DD30") and mc >= 0.77 * s["high"]: s["fired"].pop("DD30")
+        s["liq_max"] = max(s["liq_max"], tot_liq)
+        if tot_liq <= 0.70 * s["liq_max"] and not s["fired"].get("LIQ30"):
+            ev.append(("LIQ30", f"liquidity -30%+ ({fmt(s['liq_max'])} -> {fmt(tot_liq)})")); s["fired"]["LIQ30"] = 1
+        elif s["fired"].get("LIQ30") and tot_liq >= 0.77 * s["liq_max"]: s["fired"].pop("LIQ30")
+        for wch in it.get("watch_wallets", []):
+            cur = next((p for o, p in tops if o == wch["owner"]), 0.0); base = s.setdefault("wbase", {}).setdefault(wch["owner"], cur)
+            if abs(cur - base) >= wch.get("move_pts", 1.0):
+                kind = (known.get(wch["owner"]) or {}).get("type") or "wallet"
+                ev.append(("WALLET", f"{wch['label']} ({kind}) moved {base:.2f}% -> {cur:.2f}% of supply")); s["wbase"][wch["owner"]] = cur
+        s["snaps"] = (s["snaps"] + [{"t": snap["t"], "mc": snap["mc"]}])[-12:]
+        s["last"] = {k: snap[k] for k in ("t", "mc", "liq", "holders", "ub1", "us1")}
+        for k, msg in ev:
+            text = (f"{it['symbol']} STUDY ({ch}): {msg}\nmcap {fmt(mc)} | liq {fmt(tot_liq)} | 1h buys/sells {h1.get('buys')}/{h1.get('sells')} | "
+                    f"unique 1h {gh1.get('buyers')}/{gh1.get('sellers')} | holders {snap['holders']}\nStudy only, not a desk signal.\n{best.get('url') or ''}")
+            log.info("STUDY %s %s push=%s", it["symbol"], k, push(text, f"{it['symbol']} {k}", log, priority="default"))

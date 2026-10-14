@@ -12,6 +12,7 @@ import requests
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import desk  # noqa: E402
+import dsrows  # noqa: E402
 
 DESK = os.environ.get("DESK_DIR", "/workspace/desk")
 TOOLS = os.path.join(DESK, "tools")
@@ -241,6 +242,10 @@ def prefilter(st):
         elif ntx < MIN_TXNS24: why = "txns"
         elif liq and vol / liq > (MAX_VOL_LIQ_SOL if w.get("chain") == "solana" else MAX_VOL_LIQ): why = "wash_volume"
         w["why"] = why
+        if not w.get("ds0"):
+            w["ds0"] = 1
+            try: dsrows.first_seen(tok, w, best)
+            except Exception: pass
         if why == "too_old" or (why or "").startswith("copycat"): w["drop"] = True; continue
         if why == "first_hour":
             w["next"] = t + 300; continue                       # track brand-new pairs until 1h old
@@ -604,6 +609,8 @@ def prune_cache():
             except OSError: pass
 
 def heartbeat(st, cyc_s, gates, survivors, err):
+    try: st["stats"]["ds_rows_buffer"] = dsrows.trim()
+    except Exception: pass
     calls = calls_last_hour()
     bst = desk._be_state(); day = desk.now_utc().strftime("%Y-%m-%d"); mon = desk.now_utc().strftime("%Y-%m")
     hb = {"pid": os.getpid(), "status": "ok" if not err else "error", **stamp(), "unix": int(time.time()),
@@ -625,6 +632,7 @@ def heartbeat(st, cyc_s, gates, survivors, err):
     hb["positions"] = {"loaded": st.get("pos_loaded", []), **{k[:6]: {x: v.get(x) for x in ("mcap", "liq", "high", "fired")} for k, v in st.get("pos", {}).items()}}
     hb["reentry"] = {"loaded": st.get("reentry_loaded", []), **{k[:6]: {x: v.get(x) for x in ("peak_mcap", "floor_mcap", "floor_days", "dd", "mcap", "why")} for k, v in st.get("reentry", {}).items()}}
     hb["user_alerts"] = {"loaded": st.get("user_alerts_loaded", []), **{k[:6] + k.split(":")[-1]: v for k, v in st.get("user_alerts", {}).items()}}
+    hb["study"] = {"loaded": st.get("study_loaded", []), **{k[:6]: {"high": v.get("high"), "fired": v.get("fired"), "last": v.get("last")} for k, v in st.get("study", {}).items()}}
     hb["watch_reasons"] = dict(sorted(why.items(), key=lambda kv: -kv[1])[:12])
     tmp = HEART_F + ".tmp"; json.dump(hb, open(tmp, "w"), indent=1); os.replace(tmp, HEART_F)
 
@@ -653,6 +661,8 @@ def main():
                 if time.time() - t0 > 240: break             # keep cycles bounded
                 try:
                     rec = evaluate(st, tok, gates)
+                    try: dsrows.evaluated(tok, st["watch"][tok])
+                    except Exception: pass
                     if rec: flag(st, rec)
                 except Exception as e:
                     log.warning("eval %s: %s", tok, f"{type(e).__name__}: {e}"[:200])
@@ -669,7 +679,7 @@ def main():
         cyc = time.time() - t0
         try:
             try:
-                import positions; positions.check(st, log); positions.reentry_check(st, log, None); positions.user_alerts(st, log)
+                import positions; positions.check(st, log); positions.reentry_check(st, log, None); positions.user_alerts(st, log); positions.study(st, log)
             except Exception as e:
                 log.warning("position watch: %s", f"{type(e).__name__}: {e}"[:200])
             save_state(st); heartbeat(st, cyc, gates, survivors, err)
