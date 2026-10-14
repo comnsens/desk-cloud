@@ -14,3 +14,9 @@ Health check / wake routine: bash -lc /workspace/desk/tools/check_watcher.sh (st
 
 ## Liquidity-drop alerts (added 2026-10-13, live)
 Title "LIQ DROP <SYM>". Sent when total liquidity on an open, re-entry, user-alert, study or recently flagged coin falls 30%+ below its 24h high. Same two-message format (CA first). Treat it as an exit-risk alert. It re-arms after liquidity recovers above -20%.
+
+## Fastlane (added 2026-10-13, live)
+Workflow desk-fastlane polls every 2.5 s: positions, liq_watch, user_alerts, re-entry and study coins, plus coins flagged in the last 48h. It sends one batched DexScreener call per chain (cache-busted) and falls back to GeckoTerminal.
+It handles all level / stop / trail / user / liquidity-drop pushes at priority urgent. The watcher no longer sends these (DESK_FASTLANE=1). It still runs re-entry and study.
+Each run lasts about 5.5 min and starts its successor 80 s before it ends. Alert state is handed over via the private ntfy topic <topic>-ctl.
+If it stops: gh workflow run fastlane.yml -R comnsens/desk-cloud. The cron runs every 5 min as a backup.
