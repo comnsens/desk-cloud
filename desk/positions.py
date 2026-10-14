@@ -143,10 +143,26 @@ def reentry_check(st, log, watcher):
         log.info("REENTRY %s buyback push=%s", it["symbol"], push_pair(tok, text, f"{it['symbol']} re-entry setup", log))
 
 # ---------------------------------------------------------------- owner's own level alerts (not desk signals)
+def sync_loaded(st):
+    """Refresh *_loaded lists from positions.json without evaluating (for heartbeat when fastlane owns pushes)."""
+    try: cfg = json.load(open(POS_FILE))
+    except FileNotFoundError: cfg = {}
+    st["pos_loaded"] = [x.get("symbol") for x in (cfg.get("positions") or []) if x.get("symbol")]
+    st["reentry_loaded"] = [x.get("symbol") for x in (cfg.get("reentry") or []) if x.get("symbol")]
+    items = cfg.get("user_alerts") or []
+    st["user_alerts_loaded"] = [f"{x['symbol']}:{x['id']}" for x in items if x.get("symbol") and x.get("id")]
+    keep = {f"{x['token']}:{x['id']}" for x in items if x.get("token") and x.get("id")}
+    U = st.setdefault("user_alerts", {})
+    for k in [k for k in U if k not in keep]: U.pop(k)
+    st["study_loaded"] = [x.get("symbol") for x in (cfg.get("study") or []) if x.get("symbol")]
+    return st["user_alerts_loaded"]
+
 def user_alerts(st, log):
     try: items = json.load(open(POS_FILE)).get("user_alerts") or []
     except FileNotFoundError: items = []
     U = st.setdefault("user_alerts", {}); st["user_alerts_loaded"] = [f"{x['symbol']}:{x['id']}" for x in items]
+    keep = {f"{x['token']}:{x['id']}" for x in items}
+    for k in [k for k in U if k not in keep]: U.pop(k)  # drop alerts removed from positions.json
     cache = {}
     for it in items:
         tok, ch = it["token"], it.get("chain", "solana"); key = f"{tok}:{it['id']}"

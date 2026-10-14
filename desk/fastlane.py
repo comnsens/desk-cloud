@@ -108,13 +108,13 @@ def handoff_save(st):
 
 _orig_push = positions.push
 def urgent_push(text, title, log_, priority="urgent"):
-    STATS["pushes"] += 1
     t0 = time.time(); topic = TOPIC
     low = text.lower()
     for key, c in CHARTS.items():
         if key and key in low and "Chart:" not in text: text += "\n" + chart.line(c); break
     if not topic: log.info("push (no NTFY_TOPIC): %s", title); return "not_configured"
     if positions.quiet(): log.info("QUIET (study only, not pushed): %s", title); return "quiet"
+    STATS["pushes"] += 1
     for a in range(3):
         try:
             r = S.post(f"https://ntfy.sh/{topic}", data=text.encode(), timeout=8,
@@ -177,6 +177,13 @@ def main():
     st.update({k: v for k, v in prev.items() if k in KEEP and v}); CHARTS = st.setdefault("chart", {})
     end = time.time() + RUN_S
     log.info("fastlane start; handoff state %s", "loaded" if prev else "none")
+    try:
+        cfg = json.load(open(positions.POS_FILE))
+        log.info("user_alerts_loaded %s alerts_mode=%s",
+                 [f"{x['symbol']}:{x['id']}" for x in (cfg.get("user_alerts") or [])],
+                 cfg.get("alerts_mode"))
+    except Exception as e:
+        log.warning("user_alerts_loaded: %s", type(e).__name__)
     flags_at = 0; chart_loop()
     while time.time() < end:
         t0 = time.time(); TICK_T[0] = t0

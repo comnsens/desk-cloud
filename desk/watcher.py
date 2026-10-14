@@ -740,7 +740,7 @@ def main():
             try:
                 import positions
                 if os.environ.get("DESK_FASTLANE") == "1":       # levels / stops / user alerts / liquidity drops run in the fastlane workflow
-                    positions.reentry_check(st, log, None); positions.study(st, log)
+                    positions.sync_loaded(st); positions.reentry_check(st, log, None); positions.study(st, log)
                 else:
                     positions.check(st, log); positions.reentry_check(st, log, None); positions.user_alerts(st, log); positions.study(st, log); positions.liq_watch(st, log)
             except Exception as e:
