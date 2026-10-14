@@ -1,0 +1,332 @@
+{
+ "mode": "log",
+ "wallets": {
+  "0xad40395bd7af5a13bb9040975e5f0caa754c0b00": {
+   "chain": "base",
+   "coins": [
+    "BASECAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x7ff4a8ae602b4e9f3c54ceed64ed9ee595be50bd": {
+   "chain": "base",
+   "coins": [
+    "BASECAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xc66172bb475ffe2d4ece1d4bcc902c249a5fadab": {
+   "chain": "base",
+   "coins": [
+    "BASECAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x71cb8e60dfda0c6fc16a45babf9c6fee480b6d16": {
+   "chain": "base",
+   "coins": [
+    "BASECAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x5d56649019b6380020faa34900132968152e7f89": {
+   "chain": "base",
+   "coins": [
+    "BASECAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x6e0fb71bb501eb2da9e2961eb7b58f48de1ccc2b": {
+   "chain": "base",
+   "coins": [
+    "BASECAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x301168707b4740585ec80232ef020486f198cbf0": {
+   "chain": "base",
+   "coins": [
+    "BASECAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x6ae91bd238d640ef013ccb5935a14d6fded35463": {
+   "chain": "base",
+   "coins": [
+    "BASECAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xee408fb48b62a99cb4ed25ab5671b79a031c7b76": {
+   "chain": "base",
+   "coins": [
+    "BASECAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x44d72de7156db1554a8888c024afdf7359334fcd": {
+   "chain": "base",
+   "coins": [
+    "BASECAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xb5e7ec508eb9317328f204b10c9def713b7c0da1": {
+   "chain": "base",
+   "coins": [
+    "BASECAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xfae589ae7811966ccee24eb05c8a3bf39aca0a4a": {
+   "chain": "base",
+   "coins": [
+    "BASECAT"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x26c7347d8b5172f0abbf44a9bf2917f0fa74df65": {
+   "chain": "base",
+   "coins": [
+    "XDP"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x014de736d28e9a8880d935eccb0fbc9819117ea1": {
+   "chain": "base",
+   "coins": [
+    "BLUECHIP"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x875f9b82e53d93eef87b02bad8dba1c7d1c668e9": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xb97c89778a5bcf8541d473409f46a208f8a1d5f1": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x9100b23a89bc9145c01dace86a8de5abc0722d2a": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xc05abe98f2d7349d10339694c8f69c3f548ed9ce": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x16c823dd0a4497df3c78e0593610ad7090b1cd68": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x0712c6766a72a0d0eeacc98ea7c5f24a5d4159a2": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x7e2164b13de890e4142624d48e74dec2dd3684b1": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x3908b6ef7cbaf5dff6f2131b3a74306ee54167ea": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xc70ad5249bc432c7c69d71b017436441e9d6e37a": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x69ecddad90c5d89f909e919f4f9300ca71226587": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x607f7120c20476a482435ec69fc34370f7c92690": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x5c3e5b6780dc15b705f606f19b6a9206fea39cdf": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xf9694aedd7e8d18088fae6c9d961014799f94fac": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x6670c697e02255349cf78a7a04ebcce304e4b422": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x6c6d7d3fcce1a86695a4a4ef89becaefd9ffc5a9": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x1a53ba4e71abd8e89dae156e2271197a874f5c69": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x9bdc732e5650caf9a61633e65b5050713229f22c": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0xff34884a1a02dd6c14c056f398e80112d9d44be6": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x7c8b00ebfd529fb3052f88c0c8b6dafbac769490": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  },
+  "0x3e7044467df1beba16592e7c40e1be188f59fa6c": {
+   "chain": "base",
+   "coins": [
+    "STONKEX"
+   ],
+   "added": "2026-10-13",
+   "score": 1
+  }
+ },
+ "sources": [
+  {
+   "tok": "HgTGdc29D5bDMrDvsCLnorxz899VyDj7ZN7FPa6vpump",
+   "sym": "VEIL",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "3sKaoPryg4KrXubLWtoqF7MznLT7QNqKRxMMkkxTpump",
+   "sym": "SEALS",
+   "ch": "solana",
+   "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "0xd7c1d5b2bdf5d673c7757b2c61b427de3d2843c2",
+   "sym": "SYBT",
+   "ch": "base",
+   "peak": 595519616.0,
+   "added_wallets": 0,
+   "excluded": 2
+  },
+  {
+   "tok": "0xb2000000000000000000004c27f6523082f41d01",
+   "sym": "BASECAT",
+   "ch": "base",
+   "peak": 82697847.0,
+   "added_wallets": 12,
+   "excluded": 0
+  },
+  {
+   "tok": "0x07b3d902783c3c12b077508c3b5c00113d1291d0",
+   "sym": "XDP",
+   "ch": "base",
+   "peak": 38795450.0,
+   "added_wallets": 1,
+   "excluded": 1
+  },
+  {
+   "tok": "0xb200000000000000000000cfbdf64a8706a94a01",
+   "sym": "BLUECHIP",
+   "ch": "base",
+   "peak": 31374543.0,
+   "added_wallets": 1,
+   "excluded": 0
+  },
+  {
+   "tok": "0x5ab000ff9b9ffe0349ce5ffa5fd86f217c3680f5",
+   "sym": "STONKEX",
+   "ch": "base",
+   "peak": 30580044.0,
+   "added_wallets": 20,
+   "excluded": 4
+  }
+ ],
+ "updated": 1791944857
+}

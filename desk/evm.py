@@ -87,21 +87,46 @@ def audit_basic(tok, ch):
 def _selector(name):
     return "0x" + next(v for k, v in _ST["hashes"].items() if k.startswith(name + "("))
 
-def sell_test(tok, ch, pair, kind, liq_usd, native_usd, dex=""):
+def v4_key(ch, pool_id, created_ms):
+    def run():
+        pm = V4_PM.get(ch)
+        if not pm or not created_ms: return None
+        b0 = block_at(ch, int(created_ms / 1000) - 5); W = 45 if ch == "bsc" else 100
+        for start in range(b0 - W, b0 + 6 * W, W):
+            for lg in rpc(ch, "eth_getLogs", [{"address": pm, "fromBlock": hex(start), "toBlock": hex(start + W - 1), "topics": [None, pool_id]}], deep=True) or []:
+                if len(lg["topics"]) == 4:
+                    w = [lg["data"][2 + 64 * i: 66 + 64 * i] for i in range(3)]
+                    return {"c0": "0x" + lg["topics"][2][-40:], "c1": "0x" + lg["topics"][3][-40:], "fee": int(w[0], 16), "ts": w[1], "hooks": "0x" + w[2][-40:]}
+        return None
+    return _cache(f"v4key:{ch}:{pool_id}", run, 30 * 86400)
+
+def sell_test(tok, ch, pair, kind, liq_usd, native_usd, dex="", created_ms=None):
     """kind: 'v2' or 'v3'. Buys ~0.5% of liquidity (min $20) then sells it all; second buy at 1.5% of liquidity checks max-tx limits."""
-    if kind not in ("v2", "v3") or (kind == "v2" and "aerodrome" in dex):
+    if kind == "v2" and "aerodrome" in dex: kind = "aero"
+    if kind not in ("v2", "v3", "aero", "v4"):
         return {"status": "UNSUPPORTED", "detail": f"{kind}/{dex} pools not simulated (honeypot.is / GoPlus cover these)"}
+    key = None
+    if kind == "v4":
+        key = v4_key(ch, pair, created_ms)
+        if not key: return {"status": "UNKNOWN", "detail": "v4 pool key not found (Initialize log)"}
     w = WNATIVE[ch]; fee = 25 if "pancake" in dex else 30
     def one(usd):
         amt = int(max(usd, 20) / native_usd * 1e18)
         ov = {HELPER: {"code": _ST["runtime"], "balance": hex(amt * 2)}}
-        if kind == "v2":
+        if kind == "v4":
+            data = _selector("v4") + a32(V4_PM[ch]) + a32(key["c0"]) + a32(key["c1"]) + h32(key["fee"]) + key["ts"] + a32(key["hooks"]) + a32(tok) + h32(amt)
+        elif kind == "aero":
+            data = _selector("aero") + a32(pair) + a32(tok) + a32(w) + h32(amt)
+        elif kind == "v2":
             data = _selector("v2") + a32(pair) + a32(tok) + a32(w) + h32(amt) + h32(fee)
         else:
             data = _selector("v3") + a32(pair) + a32(tok) + a32(w) + h32(amt)
         r = call(ch, HELPER, data, override=ov, frm="0x1111111111111111111111111111111111111111")
         v = [int(r[2 + 64 * i: 66 + 64 * i], 16) for i in range((len(r) - 2) // 64)]
-        if kind == "v2":
+        if kind == "v4":
+            gb, gs = v
+            return {"round_trip_loss": round((1 - gs / amt) * 100, 2), "note": "v4: tax shows up as round-trip loss (includes hook fees)"}
+        if kind in ("v2", "aero"):
             eb, gb, tp, es, gs = v
             return {"buy_tax": round((1 - gb / eb) * 100, 2) if eb else None, "sell_tax": round((1 - tp / gb) * 100, 2) if gb else None,
                     "round_trip_loss": round((1 - gs / amt) * 100, 2)}
@@ -242,7 +267,7 @@ def deep_check(tok, ch, pair_info, deployer=None, pools=()):
         pn = desk.f(pair_info.get("priceNative")); pu = desk.f(pair_info.get("priceUsd"))
         native_usd = pu / pn if pn and pu else None
         liq = desk.f((pair_info.get("liquidity") or {}).get("usd"), 0)
-        out["sell"] = sell_test(tok, ch, pair_info["pairAddress"], kind, liq, native_usd, dex) if native_usd else {"status": "UNKNOWN", "detail": "no native price"}
+        out["sell"] = sell_test(tok, ch, pair_info["pairAddress"], kind, liq, native_usd, dex, pair_info.get("pairCreatedAt")) if native_usd else {"status": "UNKNOWN", "detail": "no native price"}
     except Exception as e: out["sell"] = {"status": "UNKNOWN", "detail": f"{type(e).__name__}: {e}"[:160]}
     try:
         lb = launch_buyers(tok, ch, pair_info["pairAddress"], pair_info.get("pairCreatedAt") or 0, pools)
