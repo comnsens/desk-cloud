@@ -151,23 +151,11 @@
       "symbol": "CATE",
       "chain": "solana",
       "token": "Ai66LHZG9MCzg1WKdawwqduVAXpNDUuV8M3uyq5ppump",
-      "pool": "2LhZHygydAYPBoxxhW95mEvN1yndL1JpoScakULSxgWo",
-      "ath_mcap": 18880000,
+      "pool": "HMzvsEEmtzHhvZNw9uwbaG85HCTmFnkbhzUx16cy7ca3",
+      "ath_mcap": 126100000,
       "every_s": 900,
-      "note": "user pick 2026-10-15: strong support ~$47-55M, looks primed; at $62.4M, ATH ~$126M (09-19)",
-      "watch_wallets": [
-        {
-          "owner": "8683DyCsmWfBYK2rgbn4R7Ut9LFCK8SDnog6BrabxKgf",
-          "label": "20.9% top holder (RugCheck: Pump Fun program/AMM account)",
-          "move_pts": 2.0
-        },
-        {
-          "owner": "6TnWWZ2KshXpzJWrp6fExrbG6YLuBU2LA2uN8AGpYGNY",
-          "label": "top non-pool wallet 6TnW (Birdeye: fresh, bundler)",
-          "move_pts": 0.5
-        }
-      ],
-      "pair": "HMzvsEEmtzHhvZNw9uwbaG85HCTmFnkbhzUx16cy7ca3"
+      "note": "user pick 2026-10-15: support ~$47-55M, looks primed; at $62.4M, ATH ~$126M on 09-19; snapshots to study/CATE.jsonl",
+      "watch_wallets": []
     }
   ],
   "liq_watch": [
