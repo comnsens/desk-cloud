@@ -20,6 +20,28 @@
       "two_messages": true,
       "title": "SI broke $25M",
       "message": "SI broke $25M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}"
+    },
+    {
+      "symbol": "SI",
+      "chain": "solana",
+      "token": "DEW9dSN6QpWyNthphCpMmAbZP1Q4cEKR9xQXAri98WDP",
+      "id": "UP_50M",
+      "above": 50000000,
+      "rearm_below": 45000000,
+      "two_messages": true,
+      "title": "SI broke $50M",
+      "message": "SI broke $50M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}"
+    },
+    {
+      "symbol": "SI",
+      "chain": "solana",
+      "token": "DEW9dSN6QpWyNthphCpMmAbZP1Q4cEKR9xQXAri98WDP",
+      "id": "UP_100M",
+      "above": 100000000,
+      "rearm_below": 90000000,
+      "two_messages": true,
+      "title": "SI hit $100M",
+      "message": "SI hit $100M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}"
     }
   ],
   "study": [
