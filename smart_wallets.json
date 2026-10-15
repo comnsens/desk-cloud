@@ -696,6 +696,495 @@
    ],
    "added": "2026-10-13",
    "score": 1
+  },
+  "9etBzBJ95hTbricssTC7DfEDKtjExVDUetuzZtUpLiKk": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 100,
+     "sold_pct": 100,
+     "pnl_usd": 0,
+     "n": 3
+    }
+   },
+   "label": "flipper"
+  },
+  "CUkKyTN2GnkLKSucTF24qjhFn6jgSDAUQHF3RzLKhsZf": {
+   "chain": "solana",
+   "coins": [
+    "Attention+",
+    "SCAT",
+    "Crime"
+   ],
+   "added": "2026-10-15",
+   "score": 3,
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": 0,
+     "n": 6
+    }
+   },
+   "label": "holder"
+  },
+  "AXA2k9FKgTyUaaQSAvB7qVHUsnRJJST2rsmF6EFDZBHZ": {
+   "chain": "solana",
+   "coins": [
+    "Attention+",
+    "SCAT",
+    "Crime"
+   ],
+   "added": "2026-10-15",
+   "score": 3,
+   "name": {
+    "username": "martialseal4653",
+    "followers": 11,
+    "x": null,
+    "kind": "person"
+   },
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": 0,
+     "n": 2
+    }
+   },
+   "label": "holder"
+  },
+  "5GjQkGJF1NtAsTt9P8Q3Ni6SD2QsSZ1sSnsi8GBqDnt5": {
+   "chain": "solana",
+   "coins": [
+    "Attention+",
+    "SCAT",
+    "Crime"
+   ],
+   "added": "2026-10-15",
+   "score": 3,
+   "name": {
+    "username": "rashsquid42152",
+    "followers": 41,
+    "x": null,
+    "kind": "person"
+   },
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": 0,
+     "n": 2
+    }
+   },
+   "label": "holder"
+  },
+  "ricEmGn6WZ9kN2ASm1MAt7LoE1hBgu1VcQrjRwkAPfc": {
+   "chain": "solana",
+   "coins": [
+    "Attention+",
+    "SCAT",
+    "Crime"
+   ],
+   "added": "2026-10-15",
+   "score": 3,
+   "name": {
+    "username": "vicetuna89359",
+    "followers": 33,
+    "x": null,
+    "kind": "person"
+   },
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": 0,
+     "n": 6
+    }
+   },
+   "label": "holder"
+  },
+  "3bsPkrcE9vL1Z4gjDVyiKKA2DTwHhGBryMYLZQ23HgYG": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 41,
+     "sold_pct": 41,
+     "pnl_usd": 6,
+     "n": 2
+    }
+   },
+   "label": "holder"
+  },
+  "6vs6Q6NS3GhTBs3uJq4NBb696fmPa2q7xHGDxqpXgnEm": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": -2,
+     "n": 1
+    }
+   },
+   "label": "holder"
+  },
+  "DuTE8ibXs9TTZYRKQQmEMKoWYctXKnXmuDjEpgKbUFAF": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 50,
+     "sold_pct": 50,
+     "pnl_usd": 0,
+     "n": 2
+    }
+   },
+   "label": "holder"
+  },
+  "93ZwSNHJUbVWBF7jYmPbPxQWip1zbsPnhgvR4kFQD5fi": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 100,
+     "sold_pct": 100,
+     "pnl_usd": 1,
+     "n": 3
+    }
+   },
+   "label": "flipper"
+  },
+  "DP8jtBcaiZjfhoedkTY9nYDFLa9xC5F5s5iafnn3cAXo": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": -3,
+     "n": 1
+    }
+   },
+   "label": "holder"
+  },
+  "4pQ74A2Q7FYEeHUdb4FtY5RLrPFRpfq8uqFzRuFc8354": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": -2,
+     "n": 1
+    }
+   },
+   "label": "holder"
+  },
+  "AURATa6wr79L4i3pv8JYNxWikj2QYVF6SJjyiYN2DDWw": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "name": {
+    "username": "LaserBrookQuit",
+    "followers": 43,
+    "x": null,
+    "kind": "person"
+   },
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 100,
+     "sold_pct": 100,
+     "pnl_usd": -8,
+     "n": 2
+    }
+   },
+   "label": "flipper"
+  },
+  "9gkBp8QDYPBND1sLYBf5mM6SgrLHoHyi7UXmH6h5bngr": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "name": {
+    "username": "FactualFogShell",
+    "followers": 9,
+    "x": null,
+    "kind": "person"
+   },
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 100,
+     "sold_pct": 100,
+     "pnl_usd": -2,
+     "n": 4
+    }
+   },
+   "label": "flipper"
+  },
+  "2iFW1xbpuAurUk7Cuqpr8Jp7LxD6j5mwYs9p8UYrhoAx": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": -1,
+     "n": 1
+    }
+   },
+   "label": "holder"
+  },
+  "75YPuvBT9ooMMEKQdpnypCruBvAJwy5F5TXZDLWmvi6R": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": -2,
+     "n": 1
+    }
+   },
+   "label": "holder"
+  },
+  "5hzu6Bze1fu2TRAarLAZEiDnrSRT4mYxtTxBU9kBCgue": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": -1,
+     "n": 1
+    }
+   },
+   "label": "holder"
+  },
+  "AnxboMKTSpJk9h2BJuyNPz32CcsyJGbqfpXSFtsnMAN4": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": -3,
+     "n": 1
+    }
+   },
+   "label": "holder"
+  },
+  "AAKp6EzSivpY9vkSBeCgywrjSBNMRhp7rSpUw7AAu4Zi": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": -3,
+     "n": 1
+    }
+   },
+   "label": "holder"
+  },
+  "8vLgFB3XhNUrQxJfY6B4Z3KM4Chm7NVYFCbmNhWicCC1": {
+   "chain": "solana",
+   "coins": [
+    "Attention+"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "name": {
+    "username": "errantwhale7579",
+    "followers": 11,
+    "x": null,
+    "kind": "person"
+   },
+   "behav": {
+    "Attention+": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": -2,
+     "n": 2
+    }
+   },
+   "label": "holder"
+  },
+  "FK3V7B79Rn5kXTzeFMQZczHjLChSWbAiadVm2rAykq1R": {
+   "chain": "solana",
+   "coins": [
+    "SCAT"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "behav": {
+    "SCAT": {
+     "sold_2h_pct": 100,
+     "sold_pct": 100,
+     "pnl_usd": 0,
+     "n": 3
+    }
+   },
+   "label": "flipper"
+  },
+  "JUMoMjBk1E1JHPYo9VCkgt5J3huQ3gCdawnSpNXTCqR": {
+   "chain": "solana",
+   "coins": [
+    "SCAT"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "label": "unknown"
+  },
+  "AFwdmM9eCy9jUfLzuAL57CvkKTEtZWqRWYtSZMeLzim4": {
+   "chain": "solana",
+   "coins": [
+    "SCAT"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "label": "unknown"
+  },
+  "F6F1ezHYTB89u4AnmQZQEaP16dhUjnmjXymeQwHLBYor": {
+   "chain": "solana",
+   "coins": [
+    "SCAT",
+    "Crime"
+   ],
+   "added": "2026-10-15",
+   "score": 2,
+   "label": "unknown"
+  },
+  "5xFZwCiYVBEXPiAD5bkC2gxVGRMRQQtXWsBkkvuKAoXP": {
+   "chain": "solana",
+   "coins": [
+    "SCAT"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "label": "unknown"
+  },
+  "2KZh7yZwJrm1Qe3CtnscXDrZfhsg2YjpeA83qatVFARE": {
+   "chain": "solana",
+   "coins": [
+    "Crime"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "label": "unknown"
+  },
+  "2CCkpJq1CXNCoc9JMbZKhsQcRLFu1S6UyerTCoVNYfYt": {
+   "chain": "solana",
+   "coins": [
+    "Crime"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "behav": {
+    "Crime": {
+     "sold_2h_pct": 100,
+     "sold_pct": 100,
+     "pnl_usd": 0,
+     "n": 2
+    }
+   },
+   "label": "flipper"
+  },
+  "9Hr89hNJgz16UWTF9dGbRL7iuBi1NW5g3u8gqoRTNUNe": {
+   "chain": "solana",
+   "coins": [
+    "Crime"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "label": "unknown"
+  },
+  "35vePNwUW5hutHN8WRfgHUTyS15P9b4w5u45w3iek8HB": {
+   "chain": "solana",
+   "coins": [
+    "Crime"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "label": "unknown"
+  },
+  "H8MJqWWnugp5p8Fz6XUYUtMFWTBajF9DsaKxR3qxdfma": {
+   "chain": "solana",
+   "coins": [
+    "Crime"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "name": {
+    "username": "QuillGiantFrog",
+    "followers": 1,
+    "x": null,
+    "kind": "person"
+   },
+   "label": "unknown"
+  },
+  "GYcp5Rf4gSS94z1eyCHzEKbkPsXBZvNqhSf3FVymnqVP": {
+   "chain": "solana",
+   "coins": [
+    "Crime"
+   ],
+   "added": "2026-10-15",
+   "score": 1,
+   "label": "unknown"
   }
  },
  "sources": [
@@ -988,7 +1477,1033 @@
    "sym": "BACKERS",
    "ch": "solana",
    "skipped": "more than 40k txs; oldest not reached"
+  },
+  {
+   "tok": "4WzZE4G5SZ1fixdTbvD8ctB4Rj1sMUFSQDuZ4V1QuiEM",
+   "sym": "Attention+",
+   "ch": "solana",
+   "peak": 994931904338,
+   "added_wallets": 19,
+   "excluded": 3
+  },
+  {
+   "tok": "2mEy3E1aL8whVu9QGhxT2MNcGHNknRFfoPacsR9kRMjx",
+   "sym": "SCAT",
+   "ch": "solana",
+   "peak": 486785116475979,
+   "added_wallets": 9,
+   "excluded": 3
+  },
+  {
+   "tok": "JAwLbsn9j1LZiZAj9koM1sVdCk2MuEnB4QeQWonASyKN",
+   "sym": "Crime",
+   "ch": "solana",
+   "peak": 1149943828,
+   "added_wallets": 11,
+   "excluded": 3
   }
  ],
- "updated": 1791945073
+ "updated": 1792022657,
+ "identities": [
+  {
+   "wallet": "CUkKyTN2GnkLKSucTF24qjhFn6jgSDAUQHF3RzLKhsZf",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 3,
+   "early_entries": 3,
+   "hit_rate": 1.0,
+   "label": "holder"
+  },
+  {
+   "wallet": "AXA2k9FKgTyUaaQSAvB7qVHUsnRJJST2rsmF6EFDZBHZ",
+   "name": "martialseal4653",
+   "x": null,
+   "followers": 11,
+   "runners": 3,
+   "early_entries": 3,
+   "hit_rate": 1.0,
+   "label": "holder"
+  },
+  {
+   "wallet": "5GjQkGJF1NtAsTt9P8Q3Ni6SD2QsSZ1sSnsi8GBqDnt5",
+   "name": "rashsquid42152",
+   "x": null,
+   "followers": 41,
+   "runners": 3,
+   "early_entries": 3,
+   "hit_rate": 1.0,
+   "label": "holder"
+  },
+  {
+   "wallet": "ricEmGn6WZ9kN2ASm1MAt7LoE1hBgu1VcQrjRwkAPfc",
+   "name": "vicetuna89359",
+   "x": null,
+   "followers": 33,
+   "runners": 3,
+   "early_entries": 3,
+   "hit_rate": 1.0,
+   "label": "holder"
+  },
+  {
+   "wallet": "F6F1ezHYTB89u4AnmQZQEaP16dhUjnmjXymeQwHLBYor",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 2,
+   "early_entries": 2,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xad40395bd7af5a13bb9040975e5f0caa754c0b00",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x7ff4a8ae602b4e9f3c54ceed64ed9ee595be50bd",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xc66172bb475ffe2d4ece1d4bcc902c249a5fadab",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x71cb8e60dfda0c6fc16a45babf9c6fee480b6d16",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x5d56649019b6380020faa34900132968152e7f89",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x6e0fb71bb501eb2da9e2961eb7b58f48de1ccc2b",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x301168707b4740585ec80232ef020486f198cbf0",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x6ae91bd238d640ef013ccb5935a14d6fded35463",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xee408fb48b62a99cb4ed25ab5671b79a031c7b76",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x44d72de7156db1554a8888c024afdf7359334fcd",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xb5e7ec508eb9317328f204b10c9def713b7c0da1",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xfae589ae7811966ccee24eb05c8a3bf39aca0a4a",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x26c7347d8b5172f0abbf44a9bf2917f0fa74df65",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x014de736d28e9a8880d935eccb0fbc9819117ea1",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x875f9b82e53d93eef87b02bad8dba1c7d1c668e9",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xb97c89778a5bcf8541d473409f46a208f8a1d5f1",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x9100b23a89bc9145c01dace86a8de5abc0722d2a",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xc05abe98f2d7349d10339694c8f69c3f548ed9ce",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x16c823dd0a4497df3c78e0593610ad7090b1cd68",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x0712c6766a72a0d0eeacc98ea7c5f24a5d4159a2",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x7e2164b13de890e4142624d48e74dec2dd3684b1",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x3908b6ef7cbaf5dff6f2131b3a74306ee54167ea",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xc70ad5249bc432c7c69d71b017436441e9d6e37a",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x69ecddad90c5d89f909e919f4f9300ca71226587",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x607f7120c20476a482435ec69fc34370f7c92690",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x5c3e5b6780dc15b705f606f19b6a9206fea39cdf",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xf9694aedd7e8d18088fae6c9d961014799f94fac",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x6670c697e02255349cf78a7a04ebcce304e4b422",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x6c6d7d3fcce1a86695a4a4ef89becaefd9ffc5a9",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x1a53ba4e71abd8e89dae156e2271197a874f5c69",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x9bdc732e5650caf9a61633e65b5050713229f22c",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xff34884a1a02dd6c14c056f398e80112d9d44be6",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x7c8b00ebfd529fb3052f88c0c8b6dafbac769490",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x3e7044467df1beba16592e7c40e1be188f59fa6c",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x9b35c3602c664773b99f0e2c1639ebe659be788a",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xe2114b9bc4ee596668d4228cf78277e90537bd4f",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x7f1e0a23396863c7784559b3b479db2c753e6b78",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x75484c9f5f3f5c3b6cf93edddaa751114eca4f32",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x7f08f9d711276d5433034355b899def1617ed7d1",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x2989a8202739172cd32ee3e0ebf8f92ee8b931c6",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x895f633b806adf8ff05b568a1602a1aab814a806",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x9f4eb92b6e93d4ec39c0a5e90388320af60466d3",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x5b9df8106f8796675d044a48fad50230c64671b4",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xeff3ea88e75b2d4b5296846cd3818eb33ff29dea",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x6835137ba435204f21c8ff4eb8b6d15fa98bea03",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xf9bd5a380b9cb513d5dcd1503c9e2fa773ffa043",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x5c8aeb99bcc9706fcf74f163ca4e94c68b509e20",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xa51eccf4ba0ab21c1683895395934d63c647551a",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x96bed53e78bb1bb4967ee55ab7cd1b6ca3801910",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x77209deda50b37b5fc13d7e65f6bb092cb4dfe33",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x9e8ebafb3489c077227ad499fea7fe774ab2af48",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xcb0e3a0dafe9653fd04046d447b3e57a0de0689e",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x6e6112a4e115ab4a447df966983a4134833e9cd9",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x387a2a766300c006c4ec495cbe9d647d8c9cc4cf",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x4be15875c92e179dad385531eb696cd6d35b5ef7",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xdf9811ab79a2331dd57aa39883e961c1fe9a867f",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x924f91e8378d562e8f3f95a692799d9dd75c6b62",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x235a611827325df84b1f4f27c2762b9bac6a8330",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xe4270acfd23dd60355546ff4bd4d88158e84a4cf",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xdf4060d5beed43d8582dedceb73d345091b89351",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x347706d28b4e55a52c7ea96723040c84537d4347",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xce624b2c822a1bfc8af96a72be90762d955e4155",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xadf75ed588b37dd2c0a648485652a8cf23780af5",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x2caaf4b44dd75b6ae99ee222b6a3325e09da2172",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x854f961acb56dac6ba1d6e5b537698a5ce094341",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x8f551d6ddbafb19f8f00717d3a16aa089bc8839b",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x806ad4e694022ebfb83c9303c4a30cbcabeae682",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xec45b673d279c94ab4e34c188172ec804790e730",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x525fb4cdf87d8a023b91a6e0e6c38cdf2b32108a",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x41b9c62f14ad4999ad947d895c42b40ed19bb23d",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x12613aae05c45b182c0b224dfd6a14ae1a00a25d",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x34b7fa39ecc13f8e1908d87313a20ef6248ed666",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xae1fbe928106733235bfa34f80d12f4ab12729b8",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xff8072f9c7e18259b85db106843b30ebfee36e92",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x3845654f7bce87480d91d37414d6ff4b7765e929",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xfec73897af84561cd2af2d726d4ed58ed9991aad",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x9cc644752c51e9a153a773e928961737b68b67cf",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x4998007d47f0c971d6bfa6166acea329680e7a5c",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x2aced1b1501f58f89317bb5e1d2684f43ba2ac9b",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xe23f42cd4d88e9e0f843b1516f8fcd6c6e6ebe81",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x039acade028870567a5a66c58b0b6c1884c2c9a2",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xa6d97c9538678e5b8545e2a0599f92e48fad5269",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x9c7a8e9dd10754420b8d239a0b5c17e4543bbde2",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0xb624c0897d8e58eb553909c7c8ed708149fffd0c",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x47282f17e6c6647785581018b73791135ac83695",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x58860d6bd8f4011afe7c9590b02a91f894ecfaf8",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "0x46b2261f447a318c185189163f42fab2e57165ae",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "unknown"
+  },
+  {
+   "wallet": "9etBzBJ95hTbricssTC7DfEDKtjExVDUetuzZtUpLiKk",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "flipper"
+  },
+  {
+   "wallet": "3bsPkrcE9vL1Z4gjDVyiKKA2DTwHhGBryMYLZQ23HgYG",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "holder"
+  },
+  {
+   "wallet": "6vs6Q6NS3GhTBs3uJq4NBb696fmPa2q7xHGDxqpXgnEm",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "holder"
+  },
+  {
+   "wallet": "DuTE8ibXs9TTZYRKQQmEMKoWYctXKnXmuDjEpgKbUFAF",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "holder"
+  },
+  {
+   "wallet": "93ZwSNHJUbVWBF7jYmPbPxQWip1zbsPnhgvR4kFQD5fi",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "flipper"
+  },
+  {
+   "wallet": "DP8jtBcaiZjfhoedkTY9nYDFLa9xC5F5s5iafnn3cAXo",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "holder"
+  },
+  {
+   "wallet": "4pQ74A2Q7FYEeHUdb4FtY5RLrPFRpfq8uqFzRuFc8354",
+   "name": null,
+   "x": null,
+   "followers": null,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "holder"
+  },
+  {
+   "wallet": "AURATa6wr79L4i3pv8JYNxWikj2QYVF6SJjyiYN2DDWw",
+   "name": "LaserBrookQuit",
+   "x": null,
+   "followers": 43,
+   "runners": 1,
+   "early_entries": 1,
+   "hit_rate": 1.0,
+   "label": "flipper"
+  }
+ ]
 }
