@@ -1,5 +1,5 @@
 mode: PAPER
-updated: 2026-10-15T10:03ET
+updated: 2026-10-15T12:05ET
 pot_usd: 2000
 cash_usd: 1900
 open_count: 1
@@ -26,5 +26,5 @@ closed:
   - id: PAPER-20260903-01
     symbol: WFOT
     result: VOID (old $5 drill, no fill time or price recorded; closed when pot reset to $2000)
-last_cycle: 2026-10-15 morning check 10:03 ET — 2 new cloud flags (BABYDOPE, FTR) re-checked, both REJECT; SEALS held at ~$283k mcap (+8% vs entry, high ~$466k, low ~$210k, stop/TP1 not hit); cash $1900 (95%); ETH filter clear (-4.9%); circuit breaker off; cloud watcher healthy
+last_cycle: 2026-10-15 paper cycle 12:05 ET — 0 new cloud flags (12 total, all reviewed); Base scan 72 checked -> 4 candidates, KOLECT skipped (>$1M), IFO/AFTS/CRAWLER audit REJECT (lp_lock; CRAWLER also unverified source); SEALS held at ~$295k mcap (+13% vs entry; since 10 AM ET low ~$230k / high ~$306k, stop/TP1 not hit; main liq $61.6k); cash $1900 (95%); ETH +0.2% 24h; circuit breaker off; cloud watcher healthy
 notes: Fake money only. Never copy these numbers into book.md. Rules: paper-limits.md v2.
