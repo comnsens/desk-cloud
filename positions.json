@@ -14,12 +14,50 @@
       "symbol": "SI",
       "chain": "solana",
       "token": "DEW9dSN6QpWyNthphCpMmAbZP1Q4cEKR9xQXAri98WDP",
+      "id": "UP_20M",
+      "above": 20000000,
+      "rearm_below": 18000000,
+      "two_messages": false,
+      "title": "SI above $20M",
+      "message": "SI above $20M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}",
+      "priority": "default"
+    },
+    {
+      "symbol": "SI",
+      "chain": "solana",
+      "token": "DEW9dSN6QpWyNthphCpMmAbZP1Q4cEKR9xQXAri98WDP",
       "id": "UP_25M",
       "above": 25000000,
       "rearm_below": 22500000,
       "two_messages": true,
-      "title": "SI broke $25M",
-      "message": "SI broke $25M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}"
+      "title": "\ud83d\udea8\ud83d\udea8 SI BROKE $25M \ud83d\udea8\ud83d\udea8",
+      "message": "\ud83d\udea8\ud83d\udea8 SI BROKE $25M \ud83d\udea8\ud83d\udea8: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}",
+      "priority": "urgent",
+      "repeat": 2
+    },
+    {
+      "symbol": "SI",
+      "chain": "solana",
+      "token": "DEW9dSN6QpWyNthphCpMmAbZP1Q4cEKR9xQXAri98WDP",
+      "id": "UP_30M",
+      "above": 30000000,
+      "rearm_below": 27000000,
+      "two_messages": false,
+      "title": "SI above $30M",
+      "message": "SI above $30M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}",
+      "priority": "default"
+    },
+    {
+      "symbol": "SI",
+      "chain": "solana",
+      "token": "DEW9dSN6QpWyNthphCpMmAbZP1Q4cEKR9xQXAri98WDP",
+      "id": "UP_40M",
+      "above": 40000000,
+      "rearm_below": 36000000,
+      "two_messages": false,
+      "title": "SI above $40M",
+      "message": "SI above $40M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}",
+      "priority": "default"
     },
     {
       "symbol": "SI",
@@ -29,8 +67,34 @@
       "above": 50000000,
       "rearm_below": 45000000,
       "two_messages": true,
-      "title": "SI broke $50M",
-      "message": "SI broke $50M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}"
+      "title": "\ud83d\udea8\ud83d\udea8 SI BROKE $50M \ud83d\udea8\ud83d\udea8",
+      "message": "\ud83d\udea8\ud83d\udea8 SI BROKE $50M \ud83d\udea8\ud83d\udea8: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}",
+      "priority": "urgent",
+      "repeat": 2
+    },
+    {
+      "symbol": "SI",
+      "chain": "solana",
+      "token": "DEW9dSN6QpWyNthphCpMmAbZP1Q4cEKR9xQXAri98WDP",
+      "id": "UP_60M",
+      "above": 60000000,
+      "rearm_below": 54000000,
+      "two_messages": false,
+      "title": "SI above $60M",
+      "message": "SI above $60M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}",
+      "priority": "default"
+    },
+    {
+      "symbol": "SI",
+      "chain": "solana",
+      "token": "DEW9dSN6QpWyNthphCpMmAbZP1Q4cEKR9xQXAri98WDP",
+      "id": "UP_70M",
+      "above": 70000000,
+      "rearm_below": 63000000,
+      "two_messages": false,
+      "title": "SI above $70M",
+      "message": "SI above $70M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}",
+      "priority": "default"
     },
     {
       "symbol": "SI",
@@ -39,9 +103,10 @@
       "id": "UP_100M",
       "above": 100000000,
       "rearm_below": 90000000,
-      "two_messages": true,
-      "title": "SI hit $100M",
-      "message": "SI hit $100M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}"
+      "two_messages": false,
+      "title": "SI above $100M",
+      "message": "SI above $100M: mcap {mcap}, liq {liq}, 1h buys/sells {buys}/{sells}",
+      "priority": "default"
     }
   ],
   "study": [

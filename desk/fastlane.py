@@ -118,7 +118,7 @@ def urgent_push(text, title, log_, priority="urgent"):
     for a in range(3):
         try:
             r = S.post(f"https://ntfy.sh/{topic}", data=text.encode(), timeout=8,
-                       headers={"Title": title, "Priority": "urgent", "Tags": "rotating_light"})
+                       headers={"Title": title, "Priority": positions.PRIO[0] or "urgent", "Tags": "rotating_light"})
             if r.status_code < 300:
                 log.info("PUSH %s %.2fs after tick start=%.2fs", title, time.time() - t0, time.time() - TICK_T[0]); return "ok"
         except requests.RequestException: pass

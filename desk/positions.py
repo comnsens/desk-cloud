@@ -8,6 +8,7 @@ REARM = 0.10
 
 def fmt(x): return "?" if x is None else (f"${x/1e6:.2f}M" if x >= 1e6 else f"${x/1e3:.0f}k")
 
+PRIO = [None]  # per-user-alert ntfy priority override ("default", "high", "urgent")
 ALLOW_NOW = [False]  # set True only while a user alert is pushing
 def quiet():
     """positions.json "alerts_mode": "user_alerts_only" -> every push except user_alerts is logged, not sent (study mode)."""
@@ -188,9 +189,12 @@ def user_alerts(st, log):
         if hit and not s["fired"]:
             s["fired"] = int(time.time())
             text = it["message"].format(mcap=fmt(mc), liq=fmt(liq), buys=h1.get("buys"), sells=h1.get("sells")) + f"\n{p.get('url') or ''}"
-            ALLOW_NOW[0] = True
-            try: res = push_pair(tok, text, it.get("title", it["id"]), log) if it.get("two_messages") else push(text, it.get("title", it["id"]), log)
-            finally: ALLOW_NOW[0] = False
+            ALLOW_NOW[0] = True; PRIO[0] = it.get("priority")
+            try:
+                res = push_pair(tok, text, it.get("title", it["id"]), log) if it.get("two_messages") else push(text, it.get("title", it["id"]), log)
+                for _ in range(int(it.get("repeat", 0))):   # "urgent-urgent": re-send the details so the phone keeps buzzing
+                    time.sleep(4); push(text, "REPEAT: " + it.get("title", it["id"]), log)
+            finally: ALLOW_NOW[0] = False; PRIO[0] = None
             log.info("USER_ALERT %s %s mcap=%s push=%s", it["symbol"], it["id"], round(mc), res)
         elif rearm and s["fired"]:
             s["fired"] = None
