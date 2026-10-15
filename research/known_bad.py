@@ -30,6 +30,12 @@ MANUAL_BAD = [
      "why": "manual rug 2026-10-14: flagged strong_trend $350-420k, audit PASS, 0% bundle, crashed ~95% to ~$2k mcap, liq ~$2.2-2.5k"},
     {"tok": "E5SzGqbAaXQwwtkRYsrL4NrcvJfcSFjm8aSwyMhCpump", "ch": "solana", "sym": "VEILDOGE", "label": "BAD", "pair": "yEmmw7mPXoaTga2oiD5bFEDvZ89TWcBebj9C69Kp3wH",
      "why": "manual rug 2026-10-14: flagged strong_trend $350-420k, audit PASS, 0% bundle, crashed ~95% to ~$2k mcap, liq ~$2.2-2.5k"},
+    {"tok": "DfxPxPLt7GqeF2ScAHKZdrPoQa5jFHH6bfjbe87fpump", "ch": "solana", "sym": "VEILTRUMP", "label": "BAD", "pair": "2HsbhCYbobZ32XR7Mg2Pm3JPS7ma9zfsK8BNd93v4iMy",
+     "why": "manual rug 2026-10-14: flagged strong_trend $367k, audit PASS, 0% bundle, crashed ~96% to ~$2.0k mcap, liq ~$2.2k"},
+    {"tok": "6hYydY7KpFsCVGg2GRMLwY6N43xLgMTEXKuXrmCgpump", "ch": "solana", "sym": "CONDOGE", "label": "BAD", "pair": "6LPPGEJAy5X7VwGCmLBogdJ4uZoRkNTUiNYP7nAKXwuF",
+     "why": "manual rug 2026-10-14: flagged strong_trend $346k, audit PASS, 0% bundle, crashed ~95% to ~$2.1k mcap, liq ~$2.3k"},
+    {"tok": "DoTNYbDHqs2xRcN7vkH2Tr7K6H7B6eSezNCPqjyapump", "ch": "solana", "sym": "BABYDOPE", "label": "BAD", "pair": "HGZ1b4MQUPzgbGoDuCGarhtTmUgRiLU4dsWFcqJrXWCm",
+     "why": "manual rug 2026-10-15: flagged strong_trend $395k, audit PASS, 0% bundle, crashed ~97.5% to ~$2.3k mcap, liq ~$2.6k"},
 ]
 for x in MANUAL_BAD: items[x["tok"]] = x
 out = {"built": int(time.time()), "n_bad": sum(1 for x in items.values() if x["label"] == "BAD"),

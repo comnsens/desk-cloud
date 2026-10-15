@@ -1,6 +1,6 @@
 {
- "built": 1791944952,
- "n_bad": 3,
+ "built": 1792078111,
+ "n_bad": 9,
  "n_good": 0,
  "items": [
   {
@@ -26,6 +26,54 @@
    "label": "BAD",
    "why": "liq 79626->3743 by 1h",
    "pair": "5DbEYwdjsteByrDgJe5xWFrVbwuotEANdQTFcYA1zTxU"
+  },
+  {
+   "tok": "5Z6LFstu6KBC1pcR9co3e1forvP5jRBQhgLvyStxpump",
+   "ch": "solana",
+   "sym": "VCAT",
+   "label": "BAD",
+   "pair": "22T6SEtZswEAeBtnJA9qHGrX6MGucyUfPBEXqGuUEKbV",
+   "why": "manual rug 2026-10-14: flagged $375k, -98% in 1h; LP 100% locked (no pull); sybil-spread supply (top10 1.13%) dumped into pool (pool now 99.3% of supply); ~4.7 buys/unique buyer"
+  },
+  {
+   "tok": "5kbUKCWs7ZS5EVqdY9Ci9e5GXH4bbXrHD2vTfn41pump",
+   "ch": "solana",
+   "sym": "JEANGUY",
+   "label": "BAD",
+   "pair": "Ezs3x8qpnA1SQsXzS3DEYsj68WXyy6cZtgVdNNv91SQJ",
+   "why": "manual rug 2026-10-14: flagged strong_trend $350-420k, audit PASS, 0% bundle, crashed ~95% to ~$2k mcap, liq ~$2.2-2.5k"
+  },
+  {
+   "tok": "E5SzGqbAaXQwwtkRYsrL4NrcvJfcSFjm8aSwyMhCpump",
+   "ch": "solana",
+   "sym": "VEILDOGE",
+   "label": "BAD",
+   "pair": "yEmmw7mPXoaTga2oiD5bFEDvZ89TWcBebj9C69Kp3wH",
+   "why": "manual rug 2026-10-14: flagged strong_trend $350-420k, audit PASS, 0% bundle, crashed ~95% to ~$2k mcap, liq ~$2.2-2.5k"
+  },
+  {
+   "tok": "DfxPxPLt7GqeF2ScAHKZdrPoQa5jFHH6bfjbe87fpump",
+   "ch": "solana",
+   "sym": "VEILTRUMP",
+   "label": "BAD",
+   "pair": "2HsbhCYbobZ32XR7Mg2Pm3JPS7ma9zfsK8BNd93v4iMy",
+   "why": "manual rug 2026-10-14: flagged strong_trend $367k, audit PASS, 0% bundle, crashed ~96% to ~$2.0k mcap, liq ~$2.2k"
+  },
+  {
+   "tok": "6hYydY7KpFsCVGg2GRMLwY6N43xLgMTEXKuXrmCgpump",
+   "ch": "solana",
+   "sym": "CONDOGE",
+   "label": "BAD",
+   "pair": "6LPPGEJAy5X7VwGCmLBogdJ4uZoRkNTUiNYP7nAKXwuF",
+   "why": "manual rug 2026-10-14: flagged strong_trend $346k, audit PASS, 0% bundle, crashed ~95% to ~$2.1k mcap, liq ~$2.3k"
+  },
+  {
+   "tok": "DoTNYbDHqs2xRcN7vkH2Tr7K6H7B6eSezNCPqjyapump",
+   "ch": "solana",
+   "sym": "BABYDOPE",
+   "label": "BAD",
+   "pair": "HGZ1b4MQUPzgbGoDuCGarhtTmUgRiLU4dsWFcqJrXWCm",
+   "why": "manual rug 2026-10-15: flagged strong_trend $395k, audit PASS, 0% bundle, crashed ~97.5% to ~$2.3k mcap, liq ~$2.6k"
   }
  ]
 }
