@@ -1,5 +1,5 @@
 mode: PAPER
-updated: 2026-10-14T20:59ET
+updated: 2026-10-15T10:03ET
 pot_usd: 2000
 cash_usd: 1900
 open_count: 1
@@ -21,10 +21,10 @@ open:
     after_tp1: stop to entry ($261k)
     time_stop: close 2026-10-16 20:59 ET if no TP1 and no big-wallet buying
     liquidity_exit: total liq down 40% from entry ($56.6k main pool) = exit all
-    high_mcap: 261248
+    high_mcap: 465600 (15m candle high overnight Oct 15; low since entry ~$210k)
 closed:
   - id: PAPER-20260903-01
     symbol: WFOT
     result: VOID (old $5 drill, no fill time or price recorded; closed when pot reset to $2000)
-last_cycle: 2026-10-14 night check 20:59 ET — 1 new cloud flag (SEALS) re-checked PASS under v2, paper buy $100 at $261k mcap; cash $1900 (95%); ETH filter clear (-3.9%); circuit breaker off; cloud watcher healthy
+last_cycle: 2026-10-15 morning check 10:03 ET — 2 new cloud flags (BABYDOPE, FTR) re-checked, both REJECT; SEALS held at ~$283k mcap (+8% vs entry, high ~$466k, low ~$210k, stop/TP1 not hit); cash $1900 (95%); ETH filter clear (-4.9%); circuit breaker off; cloud watcher healthy
 notes: Fake money only. Never copy these numbers into book.md. Rules: paper-limits.md v2.
