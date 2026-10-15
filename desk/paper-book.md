@@ -1,9 +1,10 @@
 mode: PAPER
-updated: 2026-10-15T17:10ET
-pot_usd: 1948.29
-cash_usd: 1850.88
-open_count: 1
-open:
+updated: 2026-10-15T18:34ET
+pot_usd: 1912.98
+cash_usd: 1912.98
+open_count: 0
+open: []
+closed:
   - id: PAPER-20261015-01
     symbol: Macca
     chain: solana
@@ -13,17 +14,20 @@ open:
     opened: 2026-10-15 17:10 ET
     entry_mcap: 285865
     entry_liq: 51489
-    size_usd: 97.41 (5% of pot $1948.29; max 1.5% of liq = $772)
+    size_usd: 97.41
     costs_buy_usd: 5.37 (5% slippage, liq < $100k, + $0.50 gas)
     position_value_at_entry_usd: 92.04
-    remaining_pct: 100
-    stop_mcap: 214399 (hard -25%)
-    take_profits: 25% at $500k / 25% at $1M / 25% at $2.5M / runner 25% (quarters at $5M/$10M/$20M, trail -35% from high; top exit rules from $30M)
-    time_stop: 2026-10-17 17:10 ET (close if no TP1 and no big-wallet buying)
-    liquidity_exit: total liq down 40% from entry (below ~$30.9k) = exit all
+    closed: 2026-10-15 18:34 ET
+    exit_reason: STOP HIT (hard -25% at $214399; discovered at proactive pass with live mcap below stop)
+    exit_mcap: 204657
+    exit_liq: 43365
     high_mcap: 285865
-    note: Audit PASS live at 17:10 ET (RugCheck no risks, mint/freeze off, no transfer fee, pump AMM LP 100% locked, top10 non-pool ~26%, bundle 4.8% in 3 clusters (max 2.53%), graphInsiders 28; Jupiter $200 buy impact 3.2%, sell impact 3.1%). Smart money not checked (Birdeye 790/800 CU today).
-closed:
+    remaining_pct_at_exit: 100
+    costs_sell_usd: 3.79 (5% slippage on $65.89 + $0.50 gas; liq < $100k)
+    net_proceeds_usd: 62.10
+    pnl_usd: -35.31
+    pnl_pct: -36.2
+    note: Mark-to-market at discovery (paper stops enforced on scheduled/proactive checks, not continuous). Live PumpSwap ~$205k / Gecko FDV ~$213k vs stop $214k. Liq ~$43k (above liquidity-exit ~$30.9k). High since entry stayed at entry (~$286k); never hit TP1 $500k. Study: strong_trend PASS that failed to hold after entry (same pattern as many ~1h-age flags).
   - id: PAPER-20261014-01
     symbol: SEALS
     chain: solana
@@ -49,5 +53,5 @@ closed:
   - id: PAPER-20260903-01
     symbol: WFOT
     result: VOID (old $5 drill, no fill time or price recorded; closed when pot reset to $2000)
-last_cycle: 2026-10-15 17:10 ET — mid-day check: 4 new flags (FOMO, DADOGE, MIM REJECT; Macca PASS). PAPER BUY PAPER-20261015-01 Macca $97.41 at ~$286k mcap; pot $1948.29 (after SEALS loss), cash $1850.88; open 1; cloud watcher healthy
+last_cycle: 2026-10-15 18:34 ET — proactive desk pass: Macca PAPER-20261015-01 STOP HIT at ~$205k (stop $214k); pot $1912.98, cash $1912.98, open 0; cloud watcher healthy; study-only unchanged
 notes: Fake money only. Never copy these numbers into book.md. Rules: paper-limits.md v2.
