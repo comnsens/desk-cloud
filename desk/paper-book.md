@@ -1,9 +1,27 @@
 mode: PAPER
-updated: 2026-10-15T18:34ET
+updated: 2026-10-15T20:58ET
 pot_usd: 1912.98
-cash_usd: 1912.98
-open_count: 0
-open: []
+cash_usd: 1817.33
+open_count: 1
+open:
+  - id: PAPER-20261015-02
+    symbol: Starman
+    chain: solana
+    token: H2pkmDKUio79yzzj5cRF6fqf6Xeq6AmpTsVVGG9wpump
+    pair: AW1NPKi2JC6zw17hUv4GttiMDECoengd6eWG62WRusFy (PumpSwap)
+    setup: strong_trend (cloud flag 2026-10-15 17:43 ET at $458k)
+    opened: 2026-10-15 20:58 ET
+    entry_mcap: 888089
+    entry_liq: 82648
+    size_usd: 95.65
+    costs_buy_usd: 5.28 (5% slippage, liq < $100k, + $0.50 gas)
+    position_value_at_entry_usd: 90.37
+    stop_mcap: 666067 (hard -25%)
+    take_profits: entry already past $500k rung, so next rungs - 25% at $1M, 25% at $2.5M, 25% at $5M, runner after (big-wallet hold, 35% trail)
+    liquidity_exit_below: 49589 (-40% from entry liq)
+    time_stop: 2026-10-17 20:58 ET if no TP1 and no big-wallet buying
+    high_mcap: 888089
+    remaining_pct: 100
 closed:
   - id: PAPER-20261015-01
     symbol: Macca
@@ -53,5 +71,5 @@ closed:
   - id: PAPER-20260903-01
     symbol: WFOT
     result: VOID (old $5 drill, no fill time or price recorded; closed when pot reset to $2000)
-last_cycle: 2026-10-15 18:34 ET — proactive desk pass: Macca PAPER-20261015-01 STOP HIT at ~$205k (stop $214k); pot $1912.98, cash $1912.98, open 0; cloud watcher healthy; study-only unchanged
+last_cycle: 2026-10-15 20:58 ET — night check: cloud watcher healthy; 3 new flags (1 REJECT >$1M, 250 REJECT dumped, Starman PASS -> PAPER BUY PAPER-20261015-02 $95.65 at ~$888k); pot $1912.98, cash $1817.33, open 1/3, new today 2/2; study-only unchanged
 notes: Fake money only. Never copy these numbers into book.md. Rules: paper-limits.md v2.
