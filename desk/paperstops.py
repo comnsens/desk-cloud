@@ -18,6 +18,8 @@ STOP_PCT, GAP_TOL, GAS = 0.25, 0.03, 0.50
 S = requests.Session(); S.headers["User-Agent"] = "desk-paperstops/1"
 _BOOK = {"at": 0, "open": []}
 DONE = set()          # (id, event) already recorded (loaded from branch at start)
+BUYS = {}             # cloud official paper buys (event BUY) from paper_fills.jsonl, by id (2026-10-15, Craig approved)
+EVENTS = {}           # id -> set of events seen
 
 def parse_open(md):
     """Minimal parser for the 'open:' list in paper-book.md (key: value lines, '- id:' starts an item)."""
@@ -55,7 +57,9 @@ def load_done():
         r = S.get(f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{FILE}?t={int(time.time())}", timeout=8)
         if r.ok:
             for l in r.text.splitlines():
-                try: x = json.loads(l); DONE.add((x["id"], x["event"]))
+                try:
+                    x = json.loads(l); DONE.add((x["id"], x["event"])); EVENTS.setdefault(x["id"], set()).add(x["event"])
+                    if x["event"] == "BUY": BUYS[x["id"]] = x
                 except Exception: pass
     except Exception as e: log.warning("paperstops load: %s", type(e).__name__)
 
@@ -86,9 +90,26 @@ def refresh_book(every=30):
     _BOOK["at"] = time.time()
     try:
         r = S.get(f"{BOOK_URL}?t={int(time.time())}", timeout=5)
-        if r.ok: _BOOK["open"] = parse_open(r.text)
+        if r.ok:
+            book_open = parse_open(r.text); txt = r.text
+            DONE.clear(); BUYS.clear(); EVENTS.clear(); load_done()
+            _BOOK["open"] = book_open + unsynced_cloud_open(txt)
     except Exception as e: log.warning("paperstops book: %s", type(e).__name__)
     return _BOOK["open"]
+
+def unsynced_cloud_open(book_txt):
+    """Cloud BUYs not yet synced into paper-book.md and not fully closed: keep watching their stops/TPs."""
+    out = []
+    for i, b in BUYS.items():
+        if i in book_txt: continue                      # routine already synced it; the book entry is authoritative
+        ev = EVENTS.get(i, set())
+        if "STOP" in ev: continue
+        tps = sum(1 for e in ev if e.startswith("TP"))
+        if tps >= 3: continue
+        out.append({"id": i, "symbol": b.get("symbol"), "token": b["token"], "chain": b.get("chain"),
+                    "entry_mcap": str(b["entry_mcap"]), "position_value_at_entry_usd": str(b["position_value_at_entry_usd"]),
+                    "remaining_pct": str(100 - 25 * tps), "tp1_hit": "true" if "TP1" in ev else "false"})
+    return out
 
 def watch_tokens():
     return [(p.get("chain", "solana"), p["token"]) for p in _BOOK["open"] if p.get("token")]

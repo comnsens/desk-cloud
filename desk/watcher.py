@@ -35,7 +35,7 @@ MIN_VOL24 = 25_000; MIN_TXNS24 = 150; MAX_VOL_LIQ = 30; MAX_VOL_LIQ_SOL = 80  # 
 MIN_AGE_H = 1.0; MAX_AGE_H = 48.0
 DEPLOYER_LINKED_MAX = 5.0; TOP10_MAX = 40.0
 SIZE_PCT = 0.05; SIZE_PCT_LOSING = 0.025; MAX_BUY_LIQ = 0.015; MIN_CASH = 0.70
-MAX_OPEN = 3; MAX_NEW_PER_DAY = 2
+MAX_OPEN = 5; MAX_NEW_PER_DAY = 12   # 2026-10-15 Craig approved (was 3 open / 2 per day)
 ETH_HALF = -7.0; ETH_STOP = -12.0
 CB_DAY = -10.0; CB_WEEK = -20.0
 # strong-trend definition (documented in README)
@@ -280,6 +280,18 @@ def read_book():
     results = re.findall(r"pnl_usd:\s*([-\d.]+)", txt)
     book["pnls"] = [float(x) for x in results]
     book["opened_today"] = len(re.findall(rf"opened:\s*{dt.datetime.now(PT).strftime('%Y-%m-%d')}", txt))
+    # cloud official buys not yet synced into the book (paper-fills branch) count toward open / today / cash
+    try:
+        import paperstops
+        paperstops.DONE.clear(); paperstops.BUYS.clear(); paperstops.EVENTS.clear(); paperstops.load_done()
+        today = dt.datetime.now(PT).strftime("%Y-%m-%d")
+        un = [b for i, b in paperstops.BUYS.items() if i not in txt]
+        book["opened_today"] += sum(1 for b in un if b.get("opened_pt", "").startswith(today))
+        book["open"] += len(paperstops.unsynced_cloud_open(txt))
+        book["cash"] = (book["cash"] or 0) - sum(b.get("size_usd", 0) for b in un)
+        book["open_tokens"] = [b["token"] for b in un] + re.findall(r"token:\s*(\S+)", txt.split("closed:")[0])
+    except Exception as e:
+        log.warning("cloud buys read: %s", e); book["open_tokens"] = []
     book["breaker_flag"] = bool(re.search(r"circuit_breaker:\s*(on|tripped|true)", txt, re.I))
     return book
 
@@ -303,7 +315,7 @@ def account_gates(st):
     if d <= CB_DAY: g["ok"] = False; g["reasons"].append(f"circuit breaker: pot {d:.1f}% in a day")
     if wk <= CB_WEEK: g["ok"] = False; g["reasons"].append(f"circuit breaker: pot {wk:.1f}% in a week")
     if b["open"] >= MAX_OPEN: g["ok"] = False; g["reasons"].append(f"{b['open']} names open (max {MAX_OPEN})")
-    if b["opened_today"] >= MAX_NEW_PER_DAY: g["ok"] = False; g["reasons"].append("2 new trades already today")
+    if b["opened_today"] >= MAX_NEW_PER_DAY: g["ok"] = False; g["reasons"].append(f"{MAX_NEW_PER_DAY} new trades already today")
     p = b["pnls"]; streak = 0
     for x in reversed(p):
         if x < 0: streak += 1
@@ -319,6 +331,7 @@ def account_gates(st):
     if b["cash"] is not None and b["cash"] - size < MIN_CASH * pot:
         g["ok"] = False; g["reasons"].append("cash would fall under 70% of pot")
     g["size_usd"] = round(size, 2)
+    g["open_tokens"] = b.get("open_tokens", [])
     return g
 
 def eth_change(st):
@@ -582,6 +595,23 @@ def flag(st, rec):
     st["stats"]["flags"] = st["stats"].get("flags", 0) + 1
     return True
 
+def cloud_buy(st, rec, gates):
+    """OFFICIAL paper buy placed by the cloud 24/7 (Craig approved 2026-10-15). Writes a BUY line to paper_fills.jsonl on
+    the paper-fills branch; routines only sync it into paper-book.md. Never trades real money, never pushes ntfy."""
+    import paperstops
+    t = now(); size = rec["sizing"]["paper_size_usd"]; slip = 0.05 if rec["liquidity"] < 100_000 else 0.03
+    n = 1 + sum(1 for i in paperstops.BUYS if i.startswith("PAPER-" + t.astimezone(PT).strftime("%Y%m%d") + "-C"))
+    b = {"id": f"PAPER-{t.astimezone(PT).strftime('%Y%m%d')}-C{n:02d}", "event": "BUY", "source": "cloud watcher 24/7",
+         "symbol": rec["symbol"], "token": rec["token"], "chain": rec["chain"], "pair": rec.get("pair"), "link": rec.get("link"),
+         "flag_mcap": rec["mcap"], "entry_mcap": round(rec["mcap"] * (1 + slip)), "slippage": slip, "gas_usd": 0.5,
+         "size_usd": round(size, 2), "position_value_at_entry_usd": round(size - 0.5, 2), "remaining_pct": 100,
+         "setup": rec["setup"], "entry_zone": rec.get("entry_zone"), "rule_checks": rec.get("rule_checks"),
+         "time_utc": stamp(t)["time_utc"], "opened_pt": stamp(t)["time_pt"]}
+    ok = paperstops.append_fill(b)
+    if ok: paperstops.BUYS[b["id"]] = b
+    log.info("CLOUD PAPER BUY %s %s %s size=$%s entry_mcap=%s ok=%s", b["id"], b["symbol"], b["token"], b["size_usd"], b["entry_mcap"], ok)
+    return ok
+
 # ---- 30-day long watchlist + floor-watch ----
 def long_add(st, tok, w):
     L = st.setdefault("long", {})
@@ -771,7 +801,9 @@ def main():
                 if time.time() - t0 > 240: break             # keep cycles bounded
                 try:
                     rec = evaluate(st, tok, gates)
-                    if rec: flag(st, rec)
+                    if rec and tok in gates.get("open_tokens", []): w_ = st["watch"][tok]; w_["why"] = "already_open"; rec = None
+                    if rec and flag(st, rec):
+                        if cloud_buy(st, rec, gates): gates = account_gates(st)   # refresh caps after every buy
                     try:
                         import shadow; shadow.record(st, tok, st["watch"][tok], rec)   # LOG-ONLY ENTER/SKIP + per-rule reasons
                     except Exception as e: log.warning("shadow %s: %s", tok, e)

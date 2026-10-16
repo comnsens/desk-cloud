@@ -37,6 +37,7 @@ jobs:
           NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
           STATE: ${{ github.workspace }}/state
           DESK_FASTLANE: "1"
+          GH_TOKEN: ${{ github.token }}   # cloud official paper BUYs -> paper-fills branch
           DESK_CYCLE_S: "20"      # 3x more cycles per run (was 60s with ~10s of work)
           DESK_DS_BATCHES: "8"    # 240 rechecks/cycle; DexScreener free limit is 300 req/min
         run: ./run_cloud.sh

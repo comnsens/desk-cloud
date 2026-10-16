@@ -6,10 +6,10 @@ mode: PAPER until the user says REAL ON. real_execution: off
 ## Sizing (never all in)
 pot_start_usd: 2000
 size_per_trade: 5% of current pot (about $100 at start)
-max_names_open: 3
+max_names_open: 5   # 2026-10-15 Craig approved (was 3)
 min_cash: 70% of pot at all times
 never_add_to_loser: true
-max_new_trades_per_day: 2
+max_new_trades_per_day: 12   # 2026-10-15 Craig approved (was 2)
 
 ## Entry
 entry_market_cap: under $400k preferred; under $1M preferred; over $1M allowed if all other checks pass (tag WARN: entry over $1M for the study)
@@ -113,3 +113,13 @@ at each milestone, or when the pot doubles since the last withdrawal: tell the u
 
 ## Copy-top-traders book (copybook.py)
 - starts at $1,000 by design (paper pot $2,000); the weekly study compares the books by % return, win rate and expectancy, not dollars.
+
+## Added 2026-10-15 (Craig approved, training speedup)
+- The cloud watcher places OFFICIAL paper buys 24/7 using every current rule above. Each buy is a "BUY" line in
+  paper_fills.jsonl on the desk-cloud "paper-fills" branch (id PAPER-YYYYMMDD-Cnn, entry_mcap includes slippage, size after gas).
+- Routines no longer place paper buys. They only sync BUY/STOP/TP lines from paper-fills into paper-book.md and journal/paper-log.md, and report.
+- Daily new-trade cap 12 (was 2); max 5 open (was 3). Unchanged: 5% sizing, 2.5% after 3 losses in a row, -10% day / -20% week pause,
+  cash floor 70% of pot, 1.5%-of-liquidity max buy, all safety checks. Unsynced cloud buys count toward open/today/cash.
+- Stops/TPs of cloud buys are watched continuously by fastlane from the moment the BUY line lands (before the book sync).
+- Shadow ENTER/SKIP decisions (state/shadow.jsonl + shadow_outcomes.jsonl, 1h/6h/24h/72h) go in the Sunday study as a
+  SEPARATE section. They do NOT count toward the 30-closed-trade freeze; shadow fills are idealized.
