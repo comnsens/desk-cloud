@@ -123,3 +123,13 @@ at each milestone, or when the pot doubles since the last withdrawal: tell the u
 - Stops/TPs of cloud buys are watched continuously by fastlane from the moment the BUY line lands (before the book sync).
 - Shadow ENTER/SKIP decisions (state/shadow.jsonl + shadow_outcomes.jsonl, 1h/6h/24h/72h) go in the Sunday study as a
   SEPARATE section. They do NOT count toward the 30-closed-trade freeze; shadow fills are idealized.
+
+## LOTTERY sleeve (added 2026-10-15, Craig approved) — separate from the main book
+- Coins at $5k-$100k mcap, bonding curve allowed, first 6h after discovery. Only HARD safety checks: sellable / not honeypot,
+  mint + freeze revoked where applicable, no transfer-tax trap, no RugCheck danger flag. Main-book rules (age, liquidity, volume,
+  setups, top-10, deployer-linked, near-even) do NOT apply.
+- Size 1% of pot per trade; max 10 lottery buys/day; open lottery cost <= 10% of pot. Daily/weekly loss pause applies.
+- Stop -60% (not -25%). Take profit 25% at 3x, 10x, 50x, 100x (entry mcap). Fastlane fills them continuously.
+- Placed by the cloud 24/7: BUY lines with sleeve "LOTTERY", id LOT-YYYYMMDD-nn, on the paper-fills branch.
+- Tag every trade LOTTERY. Never write lottery trades into paper-book.md; log them in journal/lottery-log.md.
+  They never count toward main stats, main caps (12/day, 5 open) or the 30-trade freeze. Sunday study reports them separately.

@@ -285,10 +285,11 @@ def read_book():
         import paperstops
         paperstops.DONE.clear(); paperstops.BUYS.clear(); paperstops.EVENTS.clear(); paperstops.load_done()
         today = dt.datetime.now(PT).strftime("%Y-%m-%d")
-        un = [b for i, b in paperstops.BUYS.items() if i not in txt]
+        un = [b for i, b in paperstops.BUYS.items() if i not in txt and b.get("sleeve") != "LOTTERY"]
         book["opened_today"] += sum(1 for b in un if b.get("opened_pt", "").startswith(today))
-        book["open"] += len(paperstops.unsynced_cloud_open(txt))
-        book["cash"] = (book["cash"] or 0) - sum(b.get("size_usd", 0) for b in un)
+        book["open"] += sum(1 for x in paperstops.unsynced_cloud_open(txt) if x.get("sleeve") != "LOTTERY")
+        book["cash"] = (book["cash"] or 0) - sum(b.get("size_usd", 0) for b in un) - sum(
+            b.get("size_usd", 0) for i, b in paperstops.BUYS.items() if b.get("sleeve") == "LOTTERY" and "STOP" not in paperstops.EVENTS.get(i, set()))
         book["open_tokens"] = [b["token"] for b in un] + re.findall(r"token:\s*(\S+)", txt.split("closed:")[0])
     except Exception as e:
         log.warning("cloud buys read: %s", e); book["open_tokens"] = []
@@ -795,6 +796,13 @@ def main():
             discover(st)
             sv = prefilter(st); survivors = len(sv)
             gates = account_gates(st)
+            try:
+                import lottery
+                tnow = time.time()
+                lot = [(k, w) for k, w in st["watch"].items() if w.get("mcap") and not w.get("lot_seen") and tnow - w["first_seen"] < 6 * 3600
+                       and not (w.get("why") or "").startswith(("copycat", "too_old"))]
+                lottery.step(st, lot, gates, log)                  # LOTTERY sleeve (separate budget/caps)
+            except Exception as e: log.warning("lottery: %s", f"{type(e).__name__}: {e}"[:200])
             for k in [k for k, ts in st["flagged"].items() if time.time() - ts > 86400]: st["flagged"].pop(k)
             for tok in sv:
                 if tok in st["flagged"]: continue          # 24h dedupe

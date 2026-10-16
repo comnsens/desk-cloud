@@ -41,6 +41,8 @@ def num(x):
 
 def levels(p):
     e = num(p.get("entry_mcap")) or 0
+    if p.get("sleeve") == "LOTTERY":                       # Craig 2026-10-15: stop -60%, TPs 3x/10x/50x/100x
+        return e * 0.40, [e * m for m in (3, 10, 50, 100)]
     tp1_done = str(p.get("tp1_hit", "")).lower() in ("true", "yes", "1") or (num(p.get("remaining_pct")) or 100) < 100
     stop = num(p.get("stop_mcap")) or (e if tp1_done else e * (1 - STOP_PCT))   # breakeven after first TP
     rungs = [r for r in RUNGS if r > e][:3]
@@ -105,10 +107,10 @@ def unsynced_cloud_open(book_txt):
         ev = EVENTS.get(i, set())
         if "STOP" in ev: continue
         tps = sum(1 for e in ev if e.startswith("TP"))
-        if tps >= 3: continue
+        if tps >= (4 if b.get("sleeve") == "LOTTERY" else 3): continue
         out.append({"id": i, "symbol": b.get("symbol"), "token": b["token"], "chain": b.get("chain"),
                     "entry_mcap": str(b["entry_mcap"]), "position_value_at_entry_usd": str(b["position_value_at_entry_usd"]),
-                    "remaining_pct": str(100 - 25 * tps), "tp1_hit": "true" if "TP1" in ev else "false"})
+                    "remaining_pct": str(100 - 25 * tps), "sleeve": b.get("sleeve", "MAIN"), "tp1_hit": "true" if "TP1" in ev else "false"})
     return out
 
 def watch_tokens():
@@ -124,7 +126,7 @@ def fill(p, event, level, obs_mcap, liq, frac):
     rec = {"id": p.get("id"), "symbol": p.get("symbol"), "token": p["token"], "chain": p.get("chain"), "event": event,
            "level_mcap": round(level), "first_observed_mcap": round(obs_mcap), "fill_mcap": round(px), "gap_fill": gap,
            "fraction_sold": frac, "slippage": slip, "gas_usd": GAS, "gross_usd": round(gross, 2), "net_usd": round(net, 2),
-           "liq": round(liq or 0), "time_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "source": "fastlane continuous"}
+           "liq": round(liq or 0), "sleeve": p.get("sleeve", "MAIN"), "time_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "source": "fastlane continuous"}
     log.info("PAPER %s %s level=%s observed=%s fill=%s gap=%s", event, p.get("symbol"), round(level), round(obs_mcap), round(px), gap)
     DONE.add((rec["id"], event))
     if not append_fill(rec): DONE.discard((rec["id"], event))   # retry next tick
