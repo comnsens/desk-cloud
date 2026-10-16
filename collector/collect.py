@@ -93,6 +93,10 @@ def new_token(reg, tok, ch, fs):
     if tok in T: return False
     T[tok] = {"ch": ch, "t0": fs["t"], "fs": fs, "ev": None, "fu": {}, "max_mc": fs.get("mc") or 0, "max_t": fs["t"],
               "max_liq": fs.get("liq") or 0, "pair": fs.get("pair"), "holders0": None}
+    try:
+        import signals
+        T[tok]["sig"] = signals.tags(fs)          # LOG-ONLY study tags
+    except Exception: pass
     return True
 
 # ---- watcher rows ----
@@ -376,6 +380,11 @@ def weekly_study():
                     lines.append(f"| {w}… | {c.get('runners')} | {c.get('trades')} | {c.get('win_rate')} | {c.get('pnl_usd')} | {c.get('months_active')} | {c.get('proven')} |")
     except Exception as ex:
         lines += [f"scorecard section error: {ex}"]
+    try:
+        import signals
+        lines += ["", "## Signal tags (log-only, see research/signal-survey.md)", ""] + signals.lift_table(reg.get("tokens") or {})
+    except Exception as ex:
+        lines += [f"signals section error: {ex}"]
     outp = os.path.join(WORK, f"weekly-{day}.md")
     open(outp, "w").write("\n".join(lines) + "\n")
     # also refresh research/runner-signals.md graduation section via analyze if labels exist
