@@ -419,6 +419,13 @@ def evaluate(st, tok, gates, setup_override=None):
         w["why"] = f"linked_unknown:{w['linked']['err']}"; w["next"] = t + 1800; return None
     if w["linked"]["pct"] > DEPLOYER_LINKED_MAX:
         w["why"] = f"deployer_linked_{w['linked']['pct']}%>5%"; w["next"] = t + 3600; return None
+    # 2026-10-15 user-approved (signal-survey): skip flat buy/sell (45-55% buys, >=20 trades last 1h)
+    hb, hs = w.get("h1_buys") or 0, w.get("h1_sells") or 0
+    br = hb / (hb + hs) if hb + hs >= 20 else None
+    if br is not None and 0.45 <= br <= 0.55:
+        w["why"] = f"flat_buysell:{br:.0%}"; w["next"] = t + 1800; return None
+    vm = (w.get("vol_h1") or 0) / (w.get("mcap") or 1e18)
+    support = [x for x, ok in (("vol_mcap_4x", vm >= 4), ("buys_60pct", br is not None and br >= 0.6)) if ok]
     # setups
     strong = ((desk.f(w.get("chg_h1"), 0) >= TREND_H1_CHG) and (w.get("h1_buys") or 0) >= TREND_H1_BUYSELL * max(w.get("h1_sells") or 0, 1)
               and (w.get("vol_h1") or 0) >= TREND_H1_VOL)
@@ -431,6 +438,9 @@ def evaluate(st, tok, gates, setup_override=None):
     wl = w["wallets"]
     cluster = wl["smart"] in ("BUYING", "HOLDING") or wl["signal"] == "ACCUMULATING"
     setups = [s for s, ok in (("big_buyer_cluster", cluster), ("strong_trend", strong)) if ok]
+    # support may pass a borderline trend (half the 1h-change bar, vol bar met) only when BOTH supports hold; safety already passed above
+    if not setups and len(support) == 2 and desk.f(w.get("chg_h1"), 0) >= TREND_H1_CHG / 2 and (w.get("vol_h1") or 0) >= TREND_H1_VOL:
+        setups = ["supported_trend"]
     if setup_override: setups = setup_override + [s for s in setups if s not in setup_override]
     if not setups:
         w["why"] = f"no_setup(wallets={wl['signal']}/{wl['smart']},trend={'listed' if listed else 'no'})"; return None
@@ -442,7 +452,7 @@ def evaluate(st, tok, gates, setup_override=None):
             "launchpad": ac.get("launchpad") or next((s.replace("grad_", "") for s in w["src"] if s.startswith(("grad_", "clanker", "zora"))), None),
             "mcap": w.get("mcap"), "liquidity": liq, "vol24": w.get("vol24"), "age_h": w.get("age_h"),
             "entry_zone": "preferred" if (w.get("mcap") or 0) < PREF_MCAP else "ok",
-            "setup": setups, "trend_listed": listed,
+            "setup": setups, "trend_listed": listed, "support": support,
             "evidence": {"audit": "PASS", "wallets_signal": wl["signal"], "smart_money": wl["smart"], "wallets": wl["evidence"],
                          "chg_h1": w.get("chg_h1"), "h1_buys": w.get("h1_buys"), "h1_sells": w.get("h1_sells"), "vol_h1": w.get("vol_h1"),
                          "top10_pct": ac["top10"], "deployer_linked_pct": w["linked"]["pct"], "bundle_pct": ac.get("bundle_pct", "n/a (EVM: no free cluster data)"), "sources": w["src"],

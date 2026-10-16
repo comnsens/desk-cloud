@@ -89,3 +89,8 @@ at each milestone, or when the pot doubles since the last withdrawal: tell the u
 
 ## Added 2026-10-15 (user approved)
 - entry over $1M is no longer a hard reject. Prefer entries under $1M (more coins for the same $); coins over $1M that pass every other check are allowed and tagged "WARN: entry over $1M" in logs/book notes so the study can compare. All other limits unchanged (5% sizing, max open, daily trade cap, stops, safety checks).
+
+## Added 2026-10-15 (user approved, from research/signal-survey.md)
+- SKIP practice buys when last-hour buys are 45-55% of trades (min 20 trades): logged as `flat_buysell:NN%`.
+- SUPPORT (logged in rec["support"]): "vol_mcap_4x" (1h volume >= 4x mcap) and "buys_60pct" (buys >= 60%). When both hold, a borderline trend (1h change >= 7.5%, i.e. half the 15% bar, with 1h vol >= $25k) can qualify as setup "supported_trend". Never overrides safety checks (audit, top10, deployer-linked, bundle, gates all still apply first).
+- "still on bonding curve" stays a WARN/SIG tag only, not a skip. All other rules and study-only alerts (user_alerts_only, SI only) unchanged.
