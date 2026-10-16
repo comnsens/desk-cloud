@@ -1,0 +1,137 @@
+{
+ "start_cash": 1000.0,
+ "cash": 1000.0,
+ "open": {},
+ "closed": [],
+ "events": [
+  {
+   "t": 1792129273,
+   "side": "buy",
+   "wallet": "93ZwSNHJUbVWBF7jYmPbPxQWip1zbsPnhgvR4kFQD5fi",
+   "ch": "solana",
+   "tok": "A8GVM5hPNNHXGNfiRwAMUVcLm2x8PNvTVCN2pvzkgDxo",
+   "sym": "FTR",
+   "mc": 3665.0,
+   "liq": 210.48,
+   "tag": "SKIP",
+   "verdict": "REJECT",
+   "why": [
+    "token2022_extensions",
+    "rugcheck_danger_risks",
+    "holder_concentration",
+    "deployer_linked"
+   ]
+  }
+ ],
+ "seen": {
+  "4h5UBaakHeaZ9zMJ7zFuFJsUCowbDesJE7Xs44NCYa8eEeP5K2VNeExkbyTGKGMsvTALQ1FrCmSmJ8cK2b1uzFXT": 1792123921,
+  "4b2TEhtCEPGUQVGSQ3583nLvF4km7gzJe7FzbamhPwyKuLHaJ2hN7aEiwj9ASRCdFPC2WxaGdeMUCEQzmsMGmbsS": 1792123921,
+  "4epYxu14WHRGkN6j8EuD4Bw2NF2ut1AMwsoBSX2V2k97fRdN1faAc6Sf15Aocwg9AmgN7Ka5bGvtzrbzwuXDkKdR": 1792123921,
+  "2tj7N4vEUP4H4ir8RxEYTAgJ7ZdoDa7sbfgrKFEsqgNtfjS5geAGByDAk6rcEhHkddQQQwUwmdBppeFPPq3imxRm": 1792123921,
+  "3DDt3R19YxcGk9Zf7bdUze8QUiGNgYJFKsgpwLpvyUNmTm49eiriQdHvDSt1srVfcjhmTEdYtL52HC6Cw1YjG6m6": 1792123921,
+  "27yxhStHpEkH8Je8YzBhQ41v8z4WpPPjWPp7K3hLNnnYTpskQctc6wNDZcEEHTyG5xxCZASQZCstmakLekcH6UnW": 1792123921,
+  "3yJrH9u7cFLyawjF2wBzdZQyNBmTUQ23df6qwwVYdDH4r4SgMddx5wuZ3Em5xxfHERYaxtJJG5Fr2KmadGvHNY7j": 1792123921,
+  "5c8pwMjWzN4JkQfBQCwQ5dmEJBSbAAFBpufPyanXjyKBkYs6rhtNKSRnLSdLF7xEFQ8dNKGdoLzT486UuQ9eoRZm": 1792123921,
+  "Da6WTukNs4fQ3BFVSx7by19oPgZqeHbh62NzfWZACakvZowrFjFjWBK69U8mjAA2Gu52Wz38MpUzrXtorYEAKp7": 1792123921,
+  "2ahFS5eJKnXatMz9WXcXgZP69UKKj3N93Gw97sXyJbnUt1dXXHt7xXQKJB3eGAGVAWTdnRtZxvsrRoGRjHZf8AUn": 1792123921,
+  "2Z96zZDLHzA5GDiyuAbvoD1c8THVkworLx6mynGNVQc2Up5tixVH2dXSv9SyMNVWfvo8Dvsc8KVg8FihUj5znr1B": 1792123921,
+  "37oFieBKjCsVDj3TpNnofkVeHnKBmVySjDuGxiuFsxaHrHk6RUxyFbauym2TLWGgbKZwjk5MxDTBAWj3adgCRRV6": 1792123921,
+  "4BwHxZg2doTQuXBHAHJkD4EMBR1D8Ri4fRwrD9BunGEgR6TPHUhEUKb2A62oi65mRXxiHnRrsfqskYjJgNFSZbd4": 1792123921,
+  "5rgdR3AMFsMKHPcMxMAK9A12Ry31jZo7EaFzRQfiy5PbVg3jSe2ekhYNCsv4JA4C6gyhjdxKYGsyFTnGZmzo51ys": 1792123921,
+  "4GdHGczEkwDnH6Lfma2wPVWJPgU8yAoYqg9zzDGmDVG2pENNB9Y47e2xng7tsGAj7Riz9pys8v3HKhCW2sHweviY": 1792123921,
+  "58mfFz9tTHvKw3Xahe9NeUpeU9pRUtzyuJRxCG1FhjsXwSq4VFnWaQXcRNPUFsyDJext8uQFfivddN9ycDFGQz22": 1792123921,
+  "3ou4doVCeB3DF4YzbVsQL1uGTLC5gntagmjDS3ysMxTs7xtnvfMYrZSP7SG4utmoubegFsdL2MaaA7xLffHJ1YhD": 1792125879,
+  "3hi5kTAskNur6ZRaDq12K2cRc5uSdBqTpVm7PJVSLsTGv25QUZC69b7hE6gqhUNv5HRiTqLGTNgJ8cy6vV9kPRmQ": 1792129273,
+  "93ZwSNHJUbVWBF7jYmPbPxQWip1zbsPnhgvR4kFQD5fi:A8GVM5hPNNHXGNfiRwAMUVcLm2x8PNvTVCN2pvzkgDxo": 1792129273
+ },
+ "top": [
+  {
+   "wallet": "3bsPkrcE9vL1Z4gjDVyiKKA2DTwHhGBryMYLZQ23HgYG",
+   "chain": "solana",
+   "proven": false,
+   "pnl": 6,
+   "wr": 1.0,
+   "trades": 2,
+   "runners": 1,
+   "thin": false
+  },
+  {
+   "wallet": "5JpYS6VQXzgUCEeqkgQZBT1B8MiLM6m9ArWxZzqHG9pv",
+   "chain": "solana",
+   "proven": false,
+   "pnl": 2,
+   "wr": 1.0,
+   "trades": 3,
+   "runners": 1,
+   "thin": false
+  },
+  {
+   "wallet": "93ZwSNHJUbVWBF7jYmPbPxQWip1zbsPnhgvR4kFQD5fi",
+   "chain": "solana",
+   "proven": false,
+   "pnl": 1,
+   "wr": 1.0,
+   "trades": 3,
+   "runners": 1,
+   "thin": false
+  },
+  {
+   "wallet": "F6F1ezHYTB89u4AnmQZQEaP16dhUjnmjXymeQwHLBYor",
+   "chain": "solana",
+   "proven": false,
+   "pnl": null,
+   "wr": null,
+   "trades": 0,
+   "runners": 2,
+   "thin": true
+  },
+  {
+   "wallet": "0xad40395bd7af5a13bb9040975e5f0caa754c0b00",
+   "chain": "base",
+   "proven": false,
+   "pnl": null,
+   "wr": null,
+   "trades": 0,
+   "runners": 1,
+   "thin": true
+  },
+  {
+   "wallet": "0x7ff4a8ae602b4e9f3c54ceed64ed9ee595be50bd",
+   "chain": "base",
+   "proven": false,
+   "pnl": null,
+   "wr": null,
+   "trades": 0,
+   "runners": 1,
+   "thin": true
+  },
+  {
+   "wallet": "0xc66172bb475ffe2d4ece1d4bcc902c249a5fadab",
+   "chain": "base",
+   "proven": false,
+   "pnl": null,
+   "wr": null,
+   "trades": 0,
+   "runners": 1,
+   "thin": true
+  },
+  {
+   "wallet": "0x71cb8e60dfda0c6fc16a45babf9c6fee480b6d16",
+   "chain": "base",
+   "proven": false,
+   "pnl": null,
+   "wr": null,
+   "trades": 0,
+   "runners": 1,
+   "thin": true
+  }
+ ],
+ "cyc": 127,
+ "top_at": 1792129717,
+ "init": {
+  "3bsPkrcE9vL1Z4gjDVyiKKA2DTwHhGBryMYLZQ23HgYG": 1792129717,
+  "5JpYS6VQXzgUCEeqkgQZBT1B8MiLM6m9ArWxZzqHG9pv": 1792129717,
+  "93ZwSNHJUbVWBF7jYmPbPxQWip1zbsPnhgvR4kFQD5fi": 1792129717,
+  "F6F1ezHYTB89u4AnmQZQEaP16dhUjnmjXymeQwHLBYor": 1792129717
+ }
+}

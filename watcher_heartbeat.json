@@ -1,0 +1,304 @@
+{
+ "pid": 2396,
+ "status": "ok",
+ "time_utc": "2026-10-16T05:49:06Z",
+ "time_et": "2026-10-16 01:49 ET",
+ "time_pt": "2026-10-15 22:49 PT",
+ "unix": 1792129746,
+ "cycle_s": 8.2,
+ "cycles": 3263,
+ "watchlist": 1481,
+ "survivors_last_cycle": 2,
+ "audits_total": 148,
+ "flags_total": 19,
+ "api_calls_last_hour": 214,
+ "api_calls_by_host": {
+  "api.geckoterminal.com": 11,
+  "api.dexscreener.com": 36,
+  "api.gopluslabs.io": 21,
+  "api.honeypot.is": 21,
+  "api.rugcheck.xyz": 6,
+  "api.jup.ag": 5,
+  "api.mainnet-beta.solana.com": 94,
+  "base.gateway.tenderly.co": 18,
+  "solana-rpc.publicnode.com": 2
+ },
+ "birdeye": {
+  "cu_today": 800,
+  "cu_cap_day": 800,
+  "cu_month": 3430,
+  "calls_month": 146,
+  "key_present": true
+ },
+ "gates": {
+  "ok": true,
+  "reasons": [],
+  "size_usd": 45.43,
+  "eth_24h": 3.5846137544,
+  "pot_chg_day": -9.13,
+  "pot_chg_week": -9.13,
+  "loss_streak": 3
+ },
+ "webhook_configured": false,
+ "last_error": null,
+ "long_watch": {
+  "n": 400,
+  "armed": 13,
+  "by_chain": {
+   "base": 255,
+   "solana": 145
+  }
+ },
+ "watch_by_chain": {
+  "base": 1092,
+  "solana": 389
+ },
+ "positions": {
+  "loaded": [],
+  "Gjd3JU": {
+   "mcap": 689607,
+   "liq": 83477,
+   "high": null,
+   "fired": {
+    "WARN": 1791932204
+   }
+  }
+ },
+ "reentry": {
+  "loaded": [
+   "FLOYD"
+  ],
+  "Gjd3JU": {
+   "peak_mcap": 1102367,
+   "floor_mcap": 13303,
+   "floor_days": 2,
+   "dd": 0.989,
+   "mcap": 12595,
+   "why": "buy-back conditions not met"
+  }
+ },
+ "user_alerts": {
+  "loaded": [
+   "SI:UP_20M",
+   "SI:UP_25M",
+   "SI:UP_30M",
+   "SI:UP_40M",
+   "SI:UP_50M",
+   "SI:UP_60M",
+   "SI:UP_70M",
+   "SI:UP_100M"
+  ]
+ },
+ "study": {
+  "loaded": [
+   "VEIL",
+   "JEANGUY",
+   "VCAT",
+   "CATE"
+  ],
+  "HgTGdc": {
+   "high": 18880000,
+   "fired": {
+    "DD30": 1,
+    "LIQ30": 1
+   },
+   "last": {
+    "t": 1792129508,
+    "mc": 4481475,
+    "liq": 207545,
+    "holders": 31584,
+    "ub1": 15,
+    "us1": 8
+   }
+  },
+  "5kbUKC": {
+   "high": 511224.0,
+   "fired": {
+    "DD30": 1,
+    "LIQ30": 1
+   },
+   "last": {
+    "t": 1792129104,
+    "mc": 2032,
+    "liq": 2193,
+    "holders": 128,
+    "ub1": 0,
+    "us1": 0
+   }
+  },
+  "63A9mF": {
+   "high": 631073.0,
+   "fired": {},
+   "last": {
+    "t": 1791957034,
+    "mc": 631073,
+    "liq": 73839,
+    "holders": 2599,
+    "ub1": 399,
+    "us1": 354
+   }
+  },
+  "5Z6LFs": {
+   "high": 2199.0,
+   "fired": {},
+   "last": {
+    "t": 1792128890,
+    "mc": 2150,
+    "liq": 2453,
+    "holders": 132,
+    "ub1": 0,
+    "us1": 1
+   }
+  },
+  "Ai66LH": {
+   "high": 126100000,
+   "fired": {
+    "DD30": 1
+   },
+   "last": {
+    "t": 1792129293,
+    "mc": 58162995,
+    "liq": 2805254,
+    "holders": 396569,
+    "ub1": 27,
+    "us1": 33
+   }
+  }
+ },
+ "smart_wallets": {
+  "tracked": 122,
+  "hits": [
+   {
+    "t": 1792128844,
+    "tok": "7KEPApdbBMByrmqihz3bht2uMhFQcatjfSFQCKq66kH3",
+    "ch": "solana",
+    "wallets": [
+     "35vePNwUW5hutHN8WRfgHUTyS15P9b4w5u45w3iek8HB",
+     "AXA2k9FKgTyUaaQSAvB7qVHUsnRJJST2rsmF6EFDZBHZ"
+    ],
+    "mode": "log",
+    "names": [
+     "35vePN [unknown, 1 runners]",
+     "martialseal4653 [holder, 3 runners]"
+    ],
+    "proven": false,
+    "proven_wallets": []
+   },
+   {
+    "t": 1792128844,
+    "tok": "DBAg9ut7wgabf4wahzTQGF2UtYHuh6WHVy4UW4MNgHRs",
+    "ch": "solana",
+    "wallets": [
+     "35vePNwUW5hutHN8WRfgHUTyS15P9b4w5u45w3iek8HB",
+     "5GjQkGJF1NtAsTt9P8Q3Ni6SD2QsSZ1sSnsi8GBqDnt5",
+     "AXA2k9FKgTyUaaQSAvB7qVHUsnRJJST2rsmF6EFDZBHZ",
+     "CUkKyTN2GnkLKSucTF24qjhFn6jgSDAUQHF3RzLKhsZf",
+     "GYcp5Rf4gSS94z1eyCHzEKbkPsXBZvNqhSf3FVymnqVP",
+     "H8MJqWWnugp5p8Fz6XUYUtMFWTBajF9DsaKxR3qxdfma"
+    ],
+    "mode": "log",
+    "names": [
+     "35vePN [unknown, 1 runners]",
+     "rashsquid42152 [holder, 4 runners]",
+     "martialseal4653 [holder, 3 runners]",
+     "CUkKyT [holder, 3 runners]",
+     "GYcp5R [unknown, 1 runners]",
+     "QuillGiantFrog [unknown, 1 runners]"
+    ],
+    "proven": false,
+    "proven_wallets": []
+   },
+   {
+    "t": 1792128844,
+    "tok": "BKtVbWgg5AVsjjtPUUqsq2Yyydv2P6mDpkFh5dXRmwQ1",
+    "ch": "solana",
+    "wallets": [
+     "2CCkpJq1CXNCoc9JMbZKhsQcRLFu1S6UyerTCoVNYfYt",
+     "5GjQkGJF1NtAsTt9P8Q3Ni6SD2QsSZ1sSnsi8GBqDnt5",
+     "AXA2k9FKgTyUaaQSAvB7qVHUsnRJJST2rsmF6EFDZBHZ",
+     "CUkKyTN2GnkLKSucTF24qjhFn6jgSDAUQHF3RzLKhsZf",
+     "ricEmGn6WZ9kN2ASm1MAt7LoE1hBgu1VcQrjRwkAPfc"
+    ],
+    "mode": "log",
+    "names": [
+     "2CCkpJ [flipper, 1 runners]",
+     "rashsquid42152 [holder, 4 runners]",
+     "martialseal4653 [holder, 3 runners]",
+     "CUkKyT [holder, 3 runners]",
+     "vicetuna89359 [holder, 3 runners]"
+    ],
+    "proven": false,
+    "proven_wallets": []
+   },
+   {
+    "t": 1792129713,
+    "tok": "GFdmoDtdQGps3QyAD6FJrGtWx1JYPa2TfeqUW1Frsqc7",
+    "ch": "solana",
+    "wallets": [
+     "35vePNwUW5hutHN8WRfgHUTyS15P9b4w5u45w3iek8HB",
+     "H8MJqWWnugp5p8Fz6XUYUtMFWTBajF9DsaKxR3qxdfma",
+     "ricEmGn6WZ9kN2ASm1MAt7LoE1hBgu1VcQrjRwkAPfc"
+    ],
+    "mode": "log",
+    "names": [
+     "35vePN [unknown, 1 runners]",
+     "QuillGiantFrog [unknown, 1 runners]",
+     "vicetuna89359 [holder, 3 runners]"
+    ],
+    "proven": false,
+    "proven_wallets": []
+   },
+   {
+    "t": 1792129743,
+    "tok": "BejAMbSPv2MxY2TbsFsyj5WFY5CND18UEhFaiow3BirR",
+    "ch": "solana",
+    "wallets": [
+     "35vePNwUW5hutHN8WRfgHUTyS15P9b4w5u45w3iek8HB",
+     "5GjQkGJF1NtAsTt9P8Q3Ni6SD2QsSZ1sSnsi8GBqDnt5",
+     "CUkKyTN2GnkLKSucTF24qjhFn6jgSDAUQHF3RzLKhsZf",
+     "GYcp5Rf4gSS94z1eyCHzEKbkPsXBZvNqhSf3FVymnqVP",
+     "H8MJqWWnugp5p8Fz6XUYUtMFWTBajF9DsaKxR3qxdfma",
+     "ricEmGn6WZ9kN2ASm1MAt7LoE1hBgu1VcQrjRwkAPfc"
+    ],
+    "mode": "log",
+    "names": [
+     "35vePN [unknown, 1 runners]",
+     "rashsquid42152 [holder, 4 runners]",
+     "CUkKyT [holder, 3 runners]",
+     "GYcp5R [unknown, 1 runners]",
+     "QuillGiantFrog [unknown, 1 runners]",
+     "vicetuna89359 [holder, 3 runners]"
+    ],
+    "proven": false,
+    "proven_wallets": []
+   }
+  ],
+  "pending": 132,
+  "evm_err": null,
+  "proven_n": 0,
+  "high_score_n": 1,
+  "proven_buys": 3
+ },
+ "throughput": {
+  "discovered_last_1h": 63,
+  "overdue_rechecks": 0,
+  "shadow_decisions_total": 158,
+  "shadow_pending_outcomes": 158,
+  "cycle_target_s": 20,
+  "ds_batches": 8
+ },
+ "watch_reasons": {
+  "liquidity": 1137,
+  "no_pair": 108,
+  "volume": 86,
+  "no_age": 78,
+  "first_hour": 39,
+  "fake_mcap": 16,
+  "wash": 4,
+  "audit_REJECT": 4,
+  "flat_buysell": 3,
+  "no_setup": 2,
+  "wash_volume": 2,
+  "pending": 1
+ }
+}
