@@ -46,6 +46,9 @@ def step(st, cands, main_gates, log):
         mc = w.get("mcap") or 0
         if not (MIN_MC <= mc <= MAX_MC) or w.get("lot_seen"): continue
         w["lot_seen"] = time.time(); done += 1
+        try:
+            paperstops.DONE.clear(); paperstops.BUYS.clear(); paperstops.EVENTS.clear(); paperstops.load_done()
+        except Exception: log.warning("lottery: paper-fills unreadable, no buys this cycle"); return
         g = gates(pot, None)
         rc = {"sleeve": "LOTTERY", "mcap_5k_100k": "PASS", "hard_safety": hard_safety(tok, w.get("chain", "base"))}
         dec = "SKIP"
@@ -56,7 +59,7 @@ def step(st, cands, main_gates, log):
             why = None; dec = "ENTER"
             t = watcher.now(); liq = w.get("liq") or 0; slip = 0.05 if liq < 100_000 else 0.03
             day = t.astimezone(watcher.PT).strftime("%Y%m%d")
-            n = 1 + sum(1 for i in paperstops.BUYS if i.startswith(f"LOT-{day}-"))
+            n = 1 + max([int(i.split("-")[-1]) for i in paperstops.BUYS if i.startswith(f"LOT-{day}-")] or [0])
             b = {"id": f"LOT-{day}-{n:02d}", "event": "BUY", "sleeve": "LOTTERY", "tag": "LOTTERY", "source": "cloud watcher 24/7",
                  "symbol": w.get("sym"), "token": tok, "chain": w.get("chain", "base"), "pair": w.get("pair"), "link": w.get("url"),
                  "flag_mcap": mc, "entry_mcap": round(mc * (1 + slip)), "slippage": slip, "gas_usd": 0.5, "size_usd": g["size"],

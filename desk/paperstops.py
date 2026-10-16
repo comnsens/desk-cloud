@@ -20,6 +20,7 @@ _BOOK = {"at": 0, "open": []}
 DONE = set()          # (id, event) already recorded (loaded from branch at start)
 BUYS = {}             # cloud official paper buys (event BUY) from paper_fills.jsonl, by id (2026-10-15, Craig approved)
 EVENTS = {}           # id -> set of events seen
+LOCAL = {}            # lines this process wrote (merged on every reload so a stale read can never drop them)
 
 def parse_open(md):
     """Minimal parser for the 'open:' list in paper-book.md (key: value lines, '- id:' starts an item)."""
@@ -56,14 +57,26 @@ def gh(method, path, **kw):
 
 def load_done():
     try:
-        r = S.get(f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{FILE}?t={int(time.time())}", timeout=8)
-        if r.ok:
-            for l in r.text.splitlines():
+        txt = None
+        g = gh("GET", f"contents/{FILE}?ref={BRANCH}")          # fresh read (raw.githubusercontent is cached ~5 min)
+        if g is not None and g.status_code == 200: txt = base64.b64decode(g.json()["content"]).decode()
+        elif g is not None and g.status_code == 404: txt = ""
+        if txt is None:
+            r = S.get(f"https://raw.githubusercontent.com/{REPO}/{BRANCH}/{FILE}?t={int(time.time())}", timeout=8)
+            txt = r.text if r.ok else None
+        if txt is None: raise RuntimeError("paper-fills unreadable")
+        if True:
+            for l in txt.splitlines():
                 try:
                     x = json.loads(l); DONE.add((x["id"], x["event"])); EVENTS.setdefault(x["id"], set()).add(x["event"])
                     if x["event"] == "BUY": BUYS[x["id"]] = x
                 except Exception: pass
-    except Exception as e: log.warning("paperstops load: %s", type(e).__name__)
+    except Exception as e:
+        log.warning("paperstops load: %s", type(e).__name__); raise
+    finally:
+        for x in LOCAL.values():
+            DONE.add((x["id"], x["event"])); EVENTS.setdefault(x["id"], set()).add(x["event"])
+            if x["event"] == "BUY": BUYS[x["id"]] = x
 
 def append_fill(rec):
     """Append one JSON line to paper_fills.jsonl on the paper-fills branch (creates branch/file if missing). 3 tries."""
@@ -82,7 +95,8 @@ def append_fill(rec):
             body += json.dumps(rec, separators=(",", ":")) + "\n"
             put = {"message": f"paper fill {rec['id']} {rec['event']}", "branch": BRANCH, "content": base64.b64encode(body.encode()).decode()}
             if sha: put["sha"] = sha
-            if gh("PUT", f"contents/{FILE}", json=put).status_code in (200, 201): return True
+            if gh("PUT", f"contents/{FILE}", json=put).status_code in (200, 201):
+                LOCAL[rec["id"] + ":" + rec["event"]] = rec; return True
         except Exception as e: log.warning("paperstops append: %s", type(e).__name__)
         time.sleep(1)
     return False
@@ -94,7 +108,10 @@ def refresh_book(every=30):
         r = S.get(f"{BOOK_URL}?t={int(time.time())}", timeout=5)
         if r.ok:
             book_open = parse_open(r.text); txt = r.text
-            DONE.clear(); BUYS.clear(); EVENTS.clear(); load_done()
+            keep = (set(DONE), dict(BUYS), {k: set(v) for k, v in EVENTS.items()})
+            try: DONE.clear(); BUYS.clear(); EVENTS.clear(); load_done()
+            except Exception:
+                DONE.update(keep[0]); BUYS.update(keep[1]); EVENTS.update(keep[2])   # stale read: keep what we had
             _BOOK["open"] = book_open + unsynced_cloud_open(txt)
     except Exception as e: log.warning("paperstops book: %s", type(e).__name__)
     return _BOOK["open"]

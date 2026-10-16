@@ -292,8 +292,8 @@ def read_book():
             b.get("size_usd", 0) for i, b in paperstops.BUYS.items() if b.get("sleeve") == "LOTTERY" and "STOP" not in paperstops.EVENTS.get(i, set()))
         book["open_tokens"] = [b["token"] for b in un] + re.findall(r"token:\s*(\S+)", txt.split("closed:")[0])
     except Exception as e:
-        log.warning("cloud buys read: %s", e); book["open_tokens"] = []
-    book["breaker_flag"] = bool(re.search(r"circuit_breaker:\s*(on|tripped|true)", txt, re.I))
+        log.warning("cloud buys read: %s", e); book["open_tokens"] = []; book["breaker_flag"] = True   # unreadable fills = no buys
+    book["breaker_flag"] = book.get("breaker_flag") or bool(re.search(r"circuit_breaker:\s*(on|tripped|true)", txt, re.I))
     return book
 
 def account_gates(st):
@@ -601,7 +601,8 @@ def cloud_buy(st, rec, gates):
     the paper-fills branch; routines only sync it into paper-book.md. Never trades real money, never pushes ntfy."""
     import paperstops
     t = now(); size = rec["sizing"]["paper_size_usd"]; slip = 0.05 if rec["liquidity"] < 100_000 else 0.03
-    n = 1 + sum(1 for i in paperstops.BUYS if i.startswith("PAPER-" + t.astimezone(PT).strftime("%Y%m%d") + "-C"))
+    pre = "PAPER-" + t.astimezone(PT).strftime("%Y%m%d") + "-C"
+    n = 1 + max([int(i[len(pre):]) for i in paperstops.BUYS if i.startswith(pre)] or [0])
     b = {"id": f"PAPER-{t.astimezone(PT).strftime('%Y%m%d')}-C{n:02d}", "event": "BUY", "source": "cloud watcher 24/7",
          "symbol": rec["symbol"], "token": rec["token"], "chain": rec["chain"], "pair": rec.get("pair"), "link": rec.get("link"),
          "flag_mcap": rec["mcap"], "entry_mcap": round(rec["mcap"] * (1 + slip)), "slippage": slip, "gas_usd": 0.5,
