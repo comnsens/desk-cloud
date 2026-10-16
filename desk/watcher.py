@@ -28,7 +28,7 @@ WEBHOOK_FILE = "/home/box/.desk_webhook"
 ET = ZoneInfo("America/New_York"); PT = ZoneInfo("America/Los_Angeles")
 WETH = "0x4200000000000000000000000000000000000006"
 
-CYCLE_S = 60
+CYCLE_S = int(os.environ.get("DESK_CYCLE_S", "60"))   # cloud: 20 (2026-10-15 speedup)
 # ---- rules (paper-limits.md v2 + "Added 2026-10-11") ----
 MIN_LIQ = 50_000; MAX_MCAP = 1_000_000; PREF_MCAP = 400_000  # MAX_MCAP = warn threshold (not hard reject; user 2026-10-15)
 MIN_VOL24 = 25_000; MIN_TXNS24 = 150; MAX_VOL_LIQ = 30; MAX_VOL_LIQ_SOL = 80  # pump.fun graduates trade 30-60x liq; unique-trader wash screen still applies
@@ -47,7 +47,7 @@ ROTATE = ([f"pools?sort=h24_volume_usd_desc&page={i}" for i in range(1, 9)] +
           [f"pools?sort=h24_tx_count_desc&page={i}" for i in (1, 2)] +
           [f"new_pools?page={i}" for i in range(2, 11)] +
           ["trending_pools?duration=1h&page=1", "trending_pools?duration=6h&page=1", "trending_pools?duration=24h&page=1"])
-DS_BATCHES_PER_CYCLE = 4
+DS_BATCHES_PER_CYCLE = int(os.environ.get("DESK_DS_BATCHES", "4"))   # DexScreener allows 300 req/min; cloud uses 8
 WATCH_MAX = 4000
 # ---- 2026-10-13 additions ----
 SOL = desk.SOL
@@ -156,6 +156,7 @@ def catch_up(st, gap):
     log.info("catch-up after %.0f min gap: scanned %s Base new-pool pages + Solana graduation lists", gap / 60, pages)
 
 def discover(st):
+    if not due(st, "gt_disc", 55): return discover_free(st)
     gt_list(st, "new_pools?page=1", "gt_new")
     sp = SOL_ROTATE[st.get("srot", 0) % len(SOL_ROTATE)]; st["srot"] = st.get("srot", 0) + 1
     gt_sol_list(st, sp)
@@ -182,6 +183,16 @@ def discover(st):
     if due(st, "be_new", EVERY["be_new"]):
         d = desk.be_get("/defi/v2/tokens/new_listing", {"limit": 20}, ttl=600)
         for x in (d or {}).get("items") or []: add(st, x.get("address", ""), "be_new")
+
+def discover_free(st):
+    """Between GeckoTerminal slots: DexScreener-only discovery (separate 300/min budget), so new pairs are still caught
+    every cycle without adding GT load."""
+    if due(st, "ds_fast", 60):
+        for u, src in (("/token-profiles/latest/v1", "ds_profile"), ("/token-boosts/latest/v1", "ds_boost")):
+            for x in desk.get(desk.DS + u, ttl=50) or []:
+                if x.get("chainId") == "base": add(st, x.get("tokenAddress", ""), src)
+                elif x.get("chainId") == SOL: add(st, x.get("tokenAddress", ""), src, chain=SOL)
+    if due(st, "ds_grad_fast", 120): ds_grad_search(st)
 
 # ---- cheap pre-filter (DexScreener batch, 30 tokens/call) ----
 def prefilter(st):
@@ -712,6 +723,11 @@ def heartbeat(st, cyc_s, gates, survivors, err):
     hb["user_alerts"] = {"loaded": st.get("user_alerts_loaded", []), **{k[:6] + k.split(":")[-1]: v for k, v in st.get("user_alerts", {}).items()}}
     hb["study"] = {"loaded": st.get("study_loaded", []), **{k[:6]: {"high": v.get("high"), "fired": v.get("fired"), "last": v.get("last")} for k, v in st.get("study", {}).items()}}
     sm = st.get("smart", {}); hb["smart_wallets"] = {"tracked": sm.get("tracked"), "hits": sm.get("hits", [])[-5:], "pending": len(sm.get("buys", {})), "evm_err": sm.get("evm_err"), "proven_n": sm.get("proven_n"), "high_score_n": sm.get("high_score_n"), "proven_buys": len(sm.get("proven_buys") or {})}
+    sh = st.get("shadow") or {}; t_ = time.time()
+    hb["throughput"] = {"discovered_last_1h": sum(1 for w in st["watch"].values() if t_ - w["first_seen"] < 3600),
+                        "overdue_rechecks": sum(1 for w in st["watch"].values() if w["next"] < t_ - 60),
+                        "shadow_decisions_total": sh.get("n", 0), "shadow_pending_outcomes": len(sh.get("pending") or {}),
+                        "cycle_target_s": CYCLE_S, "ds_batches": DS_BATCHES_PER_CYCLE}
     hb["watch_reasons"] = dict(sorted(why.items(), key=lambda kv: -kv[1])[:12])
     tmp = HEART_F + ".tmp"; json.dump(hb, open(tmp, "w"), indent=1); os.replace(tmp, HEART_F)
 
@@ -756,6 +772,9 @@ def main():
                 try:
                     rec = evaluate(st, tok, gates)
                     if rec: flag(st, rec)
+                    try:
+                        import shadow; shadow.record(st, tok, st["watch"][tok], rec)   # LOG-ONLY ENTER/SKIP + per-rule reasons
+                    except Exception as e: log.warning("shadow %s: %s", tok, e)
                     try: dsrows.evaluated(tok, st["watch"][tok])
                     except Exception: pass
                 except Exception as e:
@@ -784,6 +803,10 @@ def main():
                 import smart; smart.detect(st, log, push_fn=smart_push)
             except Exception as e:
                 log.warning("smart wallets: %s", f"{type(e).__name__}: {e}"[:200])
+            try:
+                import shadow; shadow.outcomes(st, log)          # 1h/6h/24h/72h forward results for every shadow decision
+            except Exception as e:
+                log.warning("shadow outcomes: %s", f"{type(e).__name__}: {e}"[:200])
             try:
                 import copybook; copybook.step(st, log)          # LOG-ONLY shadow copy-top-traders book, never pushes
             except Exception as e:
