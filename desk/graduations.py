@@ -102,11 +102,17 @@ def discover_solana(reg, cap, budget):
     """New PumpSwap / Raydium / Meteora pools = Solana launchpad graduations."""
     n, found = 0, []
     # GeckoTerminal dex new pools
-    for dex, lp in (("pumpswap", "pumpfun"), ("raydium", "letsbonk"), ("meteora", "meteora"), ("meteora-damm-v2", "meteora")):
+    # GT has no per-dex new_pools endpoint (404); use network new_pools and filter by dex id.
+    GT_LP = {"pumpswap": "pumpfun", "raydium": "letsbonk", "raydium-launchlab": "letsbonk",
+             "meteora": "meteora", "meteora-damm-v2": "meteora"}
+    for page in (1, 2):
         if time.time() > budget or n >= MAX_NEW: break
-        d = desk.get(f"{desk.GT}/networks/solana/dexes/{dex}/new_pools?page=1", ttl=60) or {}
+        d = desk.get(f"{desk.GT}/networks/solana/new_pools?page={page}", ttl=60) or {}
         for p in d.get("data") or []:
             rel = p.get("relationships") or {}
+            dex = (((rel.get("dex") or {}).get("data") or {}).get("id") or "")
+            lp = GT_LP.get(dex)
+            if not lp: continue
             try:
                 b = rel["base_token"]["data"]["id"].split("_", 1)[1]
                 q = rel["quote_token"]["data"]["id"].split("_", 1)[1]
