@@ -1,5 +1,5 @@
-# Paper limits (v2, same rules as risk-limits.md, fake money, updated 2026-10-11 by user request)
-chain: Base
+# Paper limits — CANONICAL list of every current rule (fake money). Superseded rules live only in journal/rule-changes.md.
+chains: Solana, Base, BNB, ETH (alerts name the chain; Fomo app)
 leverage: off
 mode: PAPER until the user says REAL ON. real_execution: off
 
@@ -13,7 +13,7 @@ max_new_trades_per_day: 2
 
 ## Entry
 entry_market_cap: under $400k preferred; under $1M preferred; over $1M allowed if all other checks pass (tag WARN: entry over $1M for the study)
-must pass Auditor (sellable, low tax, no mint/blacklist/pause/tax powers, no outsized wallet)
+must pass the safety audit (cloud watcher: sellable, low tax, no mint/blacklist/pause/tax powers, no outsized wallet)
 liquidity: at least $50k
 note big-wallet early buying as a plus
 
@@ -36,7 +36,7 @@ runner max hold on the desk: 14 days. Past that, flag the user to move it to the
 
 ## Buy-back (re-entry) after a big run
 - after a full exit on a name that ran, put it on /workspace/desk/rebuy-watch.md
-- re-enter only if ALL: price is down 50-90% from the peak; it has held a floor (no new low) for at least 3 days; several big wallets are still holding; liquidity steady; still passes Auditor
+- re-enter only if ALL: price is down 50-90% from the peak; it has held a floor (no new low) for at least 3 days; several big wallets are still holding; liquidity steady; still passes the safety audit
 - size: normal 5% of pot. Stop: 15% below the floor.
 - targets: sell 25% at 2x, 25% at 3x, rest trails (out on 35% drop from high), all out near the old peak
 - drop from the watch list after 30 days or if it makes a new low
