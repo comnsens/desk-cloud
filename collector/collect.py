@@ -381,6 +381,21 @@ def weekly_study():
     except Exception as ex:
         lines += [f"scorecard section error: {ex}"]
     try:
+        import copybook, base64, re as _re
+        r = gh("api", f"repos/{REPO}/contents/copybook.json?ref=state", check=False)
+        cb = copybook.summary(json.loads(base64.b64decode(json.loads(r.stdout)["content"]))) if r.returncode == 0 else None
+        pb = open(os.path.join(ROOT, "desk", "paper-book.md")).read()
+        pp = [float(x) for x in _re.findall(r"^\s+pnl_usd:\s*(-?[\d.]+)", pb, _re.M)]
+        pw = sum(1 for x in pp if x > 0)
+        lines += ["", "## Copy-top-traders shadow book vs our paper book (log-only)", "",
+                  "| book | closed | open | win rate | realized pnl | copy/skip |", "|---|---|---|---|---|---|"]
+        if cb:
+            lines.append(f"| copy top ~8 | {cb['closed']} | {cb['open']} | {cb['win_rate']} | ${cb['pnl']} on ${cb['start']:.0f} | {cb['copy']}/{cb['skip']} |")
+        else: lines.append("| copy top ~8 | no state yet | | | | |")
+        lines.append(f"| our paper book | {len(pp)} | - | {round(pw/len(pp),2) if pp else None} | ${round(sum(pp),2)} | - |")
+    except Exception as ex:
+        lines += [f"copybook section error: {ex}"]
+    try:
         import signals
         lines += ["", "## Signal tags (log-only, see research/signal-survey.md)", ""] + signals.lift_table(reg.get("tokens") or {})
     except Exception as ex:

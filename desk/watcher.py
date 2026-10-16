@@ -768,6 +768,10 @@ def main():
                 import smart; smart.detect(st, log, push_fn=smart_push)
             except Exception as e:
                 log.warning("smart wallets: %s", f"{type(e).__name__}: {e}"[:200])
+            try:
+                import copybook; copybook.step(st, log)          # LOG-ONLY shadow copy-top-traders book, never pushes
+            except Exception as e:
+                log.warning("copybook: %s", f"{type(e).__name__}: {e}"[:200])
             save_state(st); heartbeat(st, cyc, gates, survivors, err)
         except Exception as e:
             log.error("state/heartbeat write failed: %s", e)
