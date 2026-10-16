@@ -763,10 +763,11 @@
    "coins": [
     "Attention+",
     "SCAT",
-    "Crime"
+    "Crime",
+    "DOPE"
    ],
    "added": "2026-10-15",
-   "score": 3,
+   "score": 4,
    "name": {
     "username": "rashsquid42152",
     "followers": 41,
@@ -775,6 +776,12 @@
    },
    "behav": {
     "Attention+": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": 0,
+     "n": 2
+    },
+    "DOPE": {
      "sold_2h_pct": 0,
      "sold_pct": 0,
      "pnl_usd": 0,
@@ -1185,6 +1192,97 @@
    "added": "2026-10-15",
    "score": 1,
    "label": "unknown"
+  },
+  "A7BvwLhyxYjhKtraKwjgCV3e1EGR5URcLqA2naGXLqkf": {
+   "chain": "solana",
+   "coins": [
+    "FOMO"
+   ],
+   "added": "2026-10-16",
+   "score": 1,
+   "behav": {
+    "FOMO": {
+     "sold_2h_pct": 100,
+     "sold_pct": 100,
+     "pnl_usd": 0,
+     "n": 2
+    }
+   },
+   "label": "flipper"
+  },
+  "CLwbyUVuz3VuazzLKJu389aHyGd1momVC9CTtxqjwmXW": {
+   "chain": "solana",
+   "coins": [
+    "FOMO"
+   ],
+   "added": "2026-10-16",
+   "score": 1,
+   "behav": {
+    "FOMO": {
+     "sold_2h_pct": 100,
+     "sold_pct": 100,
+     "pnl_usd": 0,
+     "n": 2
+    }
+   },
+   "label": "flipper"
+  },
+  "5JpYS6VQXzgUCEeqkgQZBT1B8MiLM6m9ArWxZzqHG9pv": {
+   "chain": "solana",
+   "coins": [
+    "DOPE"
+   ],
+   "added": "2026-10-16",
+   "score": 1,
+   "name": {
+    "username": "LaserGravelGold",
+    "followers": 6,
+    "x": null,
+    "kind": "person"
+   },
+   "behav": {
+    "DOPE": {
+     "sold_2h_pct": 100,
+     "sold_pct": 100,
+     "pnl_usd": 2,
+     "n": 3
+    }
+   },
+   "label": "flipper"
+  },
+  "B3zPNt92gTQkvjabPGDEoqizpdvK6Dsdrnj5H5EDfo2z": {
+   "chain": "solana",
+   "coins": [
+    "DOPE"
+   ],
+   "added": "2026-10-16",
+   "score": 1,
+   "behav": {
+    "DOPE": {
+     "sold_2h_pct": 100,
+     "sold_pct": 100,
+     "pnl_usd": 0,
+     "n": 4
+    }
+   },
+   "label": "flipper"
+  },
+  "BWDfdGgtkawZndJxPyLQ3fhQkZQSxk7dZfzGGdzWdeby": {
+   "chain": "solana",
+   "coins": [
+    "DOPE"
+   ],
+   "added": "2026-10-16",
+   "score": 1,
+   "behav": {
+    "DOPE": {
+     "sold_2h_pct": 0,
+     "sold_pct": 0,
+     "pnl_usd": 0,
+     "n": 1
+    }
+   },
+   "label": "holder"
   }
  },
  "sources": [
@@ -1501,10 +1599,42 @@
    "peak": 1149943828,
    "added_wallets": 11,
    "excluded": 3
+  },
+  {
+   "tok": "0x3d28f987c6c0a06cd7e79dc3aea3866b55f3e760",
+   "sym": "ATM",
+   "ch": "bsc",
+   "skipped": "'NoneType' object is not subscriptable"
+  },
+  {
+   "tok": "DFe8xVoXwRGUZjeTMfXraT9kx4qJuiP56sQCjtxW2CRA",
+   "sym": "FOMO",
+   "ch": "solana",
+   "peak": 1582657,
+   "added_wallets": 2,
+   "excluded": 5
+  },
+  {
+   "tok": "CVdBRKKFqV9tnAuTZgQvAu3Qu8yDsFxX5pS8f89hhbLE",
+   "sym": "DOPE",
+   "ch": "solana",
+   "peak": 84936416802,
+   "added_wallets": 4,
+   "excluded": 3
   }
  ],
- "updated": 1792022657,
+ "updated": 1792108928,
  "identities": [
+  {
+   "wallet": "5GjQkGJF1NtAsTt9P8Q3Ni6SD2QsSZ1sSnsi8GBqDnt5",
+   "name": "rashsquid42152",
+   "x": null,
+   "followers": 41,
+   "runners": 4,
+   "early_entries": 4,
+   "hit_rate": 1.0,
+   "label": "holder"
+  },
   {
    "wallet": "CUkKyTN2GnkLKSucTF24qjhFn6jgSDAUQHF3RzLKhsZf",
    "name": null,
@@ -1520,16 +1650,6 @@
    "name": "martialseal4653",
    "x": null,
    "followers": 11,
-   "runners": 3,
-   "early_entries": 3,
-   "hit_rate": 1.0,
-   "label": "holder"
-  },
-  {
-   "wallet": "5GjQkGJF1NtAsTt9P8Q3Ni6SD2QsSZ1sSnsi8GBqDnt5",
-   "name": "rashsquid42152",
-   "x": null,
-   "followers": 41,
    "runners": 3,
    "early_entries": 3,
    "hit_rate": 1.0,
