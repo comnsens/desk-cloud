@@ -6,7 +6,7 @@ Hand-off between overlapping runs: the outgoing run posts its alert state to a p
 subscribed on the phone); the incoming run waits for the outgoing run's end time, then loads that state, so nothing double-fires."""
 import json, logging, os, sys, time, requests
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import desk, positions, chart
+import desk, positions, chart, paperstops
 
 log = logging.getLogger("fastlane"); logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
 TICK = float(os.environ.get("FAST_TICK_S", "2.5"))
@@ -58,6 +58,7 @@ def watch_set(st):
     try: cfg = json.load(open(positions.POS_FILE))
     except FileNotFoundError: cfg = {}
     w = {}
+    for ch, tok in paperstops.watch_tokens(): w[(ch, tok)] = 1      # open paper positions: continuous stop/TP checks
     for key in ("positions", "liq_watch", "user_alerts", "reentry", "study"):
         for it in cfg.get(key) or []:
             if it.get("token"): w[(it.get("chain", "solana"), it["token"])] = 1
@@ -184,7 +185,7 @@ def main():
                  cfg.get("alerts_mode"))
     except Exception as e:
         log.warning("user_alerts_loaded: %s", type(e).__name__)
-    flags_at = 0; chart_loop()
+    flags_at = 0; chart_loop(); paperstops.load_done(); paperstops.refresh_book(0)
     while time.time() < end:
         t0 = time.time(); TICK_T[0] = t0
         if t0 - flags_at > 60: load_flags(st); flags_at = t0
@@ -203,6 +204,9 @@ def main():
         try:
             positions.check(st, log); positions.user_alerts(st, log); positions.ladder(st, log, chart_cached); positions.study_moves(st, log)
             st["liqw_next"] = 0; positions.liq_watch(st, log)
+        except Exception as e:
+            STATS["errors"] += 1; log.warning("alert eval: %s", f"{type(e).__name__}: {e}"[:200])
+        try: paperstops.check(lambda ch, t: TICK_CACHE.get((ch, t)) or [], desk.f)
         except Exception as e:
             STATS["errors"] += 1; log.warning("alert eval: %s", f"{type(e).__name__}: {e}"[:200])
         STATS["ticks"] += 1; dt_ = time.time() - t0; STATS["max_tick_s"] = max(STATS["max_tick_s"], round(dt_, 2))

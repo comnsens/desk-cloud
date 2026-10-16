@@ -392,7 +392,11 @@ def run_audit(w, tok):
 
 def evaluate(st, tok, gates, setup_override=None):
     w = st["watch"][tok]; t = time.time(); ch = w.get("chain", "base")
+    rc = w["rule_checks"] = {"at": stamp()["time_utc"]}     # per-rule PASS/FAIL/WARN/INFO log (audits verify every rule)
+    rc["mcap_over_1M"] = "WARN" if (w.get("mcap") or 0) > MAX_MCAP else "PASS"   # tag only, never a skip (user 2026-10-15)
+    rc["bonding_curve"] = "WARN" if w.get("on_curve") or any("curve" in str(x) for x in (w.get("sig") or [])) else "PASS(warn-only rule)"  # warn-only
     sc = screens(w, tok)
+    rc["fake_wash_screens"] = ("FAIL:" + sc) if sc else "PASS"
     if sc:
         w["why"] = sc; w["next"] = t + (12 * 3600 if sc.startswith("fake_mcap:already") else 1800); return None
     ac = w.get("audit")
@@ -400,11 +404,13 @@ def evaluate(st, tok, gates, setup_override=None):
         ac = run_audit(w, tok)
         w["audit"] = ac
         st["stats"]["audits"] = st["stats"].get("audits", 0) + 1
+    rc["audit"] = "PASS" if ac["verdict"] == "PASS" else f"FAIL:{ac['verdict']}"
     if ac["verdict"] != "PASS":
         w["why"] = f"audit_{ac['verdict']}:{','.join(ac['because'])}"
         if ac["verdict"] == "REJECT": w["next"] = t + 12 * 3600
         return None
     long_add(st, tok, w)                                 # every audit PASS goes on the 30-day long watchlist
+    rc["top10_le_40"] = "PASS" if ac["top10"] is not None and ac["top10"] <= TOP10_MAX else f"FAIL:{ac['top10']}"
     if ac["top10"] is None or ac["top10"] > TOP10_MAX:
         w["why"] = f"top10_{ac['top10']}%>40%"; w["next"] = t + 3600; return None
     # deployer + linked wallets (Base: on-chain transfer scan; Solana: RugCheck creator + insider-flagged holders)
@@ -415,17 +421,25 @@ def evaluate(st, tok, gates, setup_override=None):
         extra = [x for x in (ac.get("owner"), lpd.get("admin"), lpd.get("creator")) if x and desk.is_addr(x)]
         lk = desk.deployer_linked(tok, ac.get("creator") or "", extra, hours=min((w.get("age_h") or 48) + 0.5, 48))
         w["linked"] = {"at": t, "pct": lk["pct_total"], "err": lk["error"], "n": len(lk["wallets"])}
+    rc["deployer_linked_le_5"] = "PASS" if w["linked"]["pct"] is not None and w["linked"]["pct"] <= DEPLOYER_LINKED_MAX else f"FAIL:{w['linked']['pct']}"
     if w["linked"]["pct"] is None:
         w["why"] = f"linked_unknown:{w['linked']['err']}"; w["next"] = t + 1800; return None
     if w["linked"]["pct"] > DEPLOYER_LINKED_MAX:
         w["why"] = f"deployer_linked_{w['linked']['pct']}%>5%"; w["next"] = t + 3600; return None
-    # 2026-10-15 user-approved (signal-survey): skip flat buy/sell (45-55% buys, >=20 trades last 1h)
+    # 2026-10-15 user-approved (signal-survey): skip flat buy/sell (45-55% buys, >=20 trades last 1h).
+    # Basis: unique buyer/seller wallets (GT 1h) when available, else txns. Both are logged.
     hb, hs = w.get("h1_buys") or 0, w.get("h1_sells") or 0
-    br = hb / (hb + hs) if hb + hs >= 20 else None
+    br_tx = hb / (hb + hs) if hb + hs >= 20 else None
+    wa = w.get("wash") or {}; ub, us = wa.get("h1_unique_buyers"), wa.get("h1_unique_sellers")
+    br_u = ub / (ub + us) if ub is not None and us is not None and ub + us >= 20 else None
+    br, basis = (br_u, "unique_wallets") if br_u is not None else (br_tx, "txns")
+    rc["buy_share"] = {"basis": basis, "unique_wallets": round(br_u, 3) if br_u is not None else None, "txns": round(br_tx, 3) if br_tx is not None else None}
+    rc["near_even_45_55_skip"] = ("FAIL:" + f"{br:.0%}") if br is not None and 0.45 <= br <= 0.55 else ("PASS" if br is not None else "INFO:<20 trades")
     if br is not None and 0.45 <= br <= 0.55:
-        w["why"] = f"flat_buysell:{br:.0%}"; w["next"] = t + 1800; return None
+        w["why"] = f"flat_buysell:{br:.0%}({basis})"; w["next"] = t + 1800; return None
     vm = (w.get("vol_h1") or 0) / (w.get("mcap") or 1e18)
     support = [x for x, ok in (("vol_mcap_4x", vm >= 4), ("buys_60pct", br is not None and br >= 0.6)) if ok]
+    rc["support_vol4x_buys60"] = {"vol_h1_over_mcap": round(vm, 2), "vol_mcap_4x": vm >= 4, "buys_60pct": br is not None and br >= 0.6, "both": len(support) == 2}
     # setups
     strong = ((desk.f(w.get("chg_h1"), 0) >= TREND_H1_CHG) and (w.get("h1_buys") or 0) >= TREND_H1_BUYSELL * max(w.get("h1_sells") or 0, 1)
               and (w.get("vol_h1") or 0) >= TREND_H1_VOL)
@@ -442,8 +456,10 @@ def evaluate(st, tok, gates, setup_override=None):
     if not setups and len(support) == 2 and desk.f(w.get("chg_h1"), 0) >= TREND_H1_CHG / 2 and (w.get("vol_h1") or 0) >= TREND_H1_VOL:
         setups = ["supported_trend"]
     if setup_override: setups = setup_override + [s for s in setups if s not in setup_override]
+    rc["setup"] = setups or "FAIL:none"
     if not setups:
         w["why"] = f"no_setup(wallets={wl['signal']}/{wl['smart']},trend={'listed' if listed else 'no'})"; return None
+    rc["account_gates"] = "PASS" if gates["ok"] else "FAIL:" + ";".join(gates["reasons"])
     if not gates["ok"]:
         w["why"] = "blocked:" + ";".join(gates["reasons"]); return None
     liq = w["liq"]; size = min(gates["size_usd"], MAX_BUY_LIQ * liq)
@@ -452,7 +468,7 @@ def evaluate(st, tok, gates, setup_override=None):
             "launchpad": ac.get("launchpad") or next((s.replace("grad_", "") for s in w["src"] if s.startswith(("grad_", "clanker", "zora"))), None),
             "mcap": w.get("mcap"), "liquidity": liq, "vol24": w.get("vol24"), "age_h": w.get("age_h"),
             "entry_zone": "preferred" if (w.get("mcap") or 0) < PREF_MCAP else "ok",
-            "setup": setups, "trend_listed": listed, "support": support,
+            "setup": setups, "trend_listed": listed, "support": support, "rule_checks": rc,
             "evidence": {"audit": "PASS", "wallets_signal": wl["signal"], "smart_money": wl["smart"], "wallets": wl["evidence"],
                          "chg_h1": w.get("chg_h1"), "h1_buys": w.get("h1_buys"), "h1_sells": w.get("h1_sells"), "vol_h1": w.get("vol_h1"),
                          "top10_pct": ac["top10"], "deployer_linked_pct": w["linked"]["pct"], "bundle_pct": ac.get("bundle_pct", "n/a (EVM: no free cluster data)"), "sources": w["src"],

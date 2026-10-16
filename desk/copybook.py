@@ -6,6 +6,7 @@ Separate from paper-book.md / paper rules: never pushes ntfy, never trades, neve
   -> COPY (verdict PASS) or SKIP (anything else, reason logged).
 - COPY opens a hypothetical position: 5% of copy cash, slippage 5% (liq < $100k) else 3%, $0.50 gas each side.
 - sells are mirrored: when the wallet's balance of the token drops >=50% (or to 0) we close at the live price.
+start_cash $1,000 BY DESIGN (paper pot is $2,000): compare the two books by % return, win rate and expectancy, never by $.
 State: $DESK_STATE_DIR/copybook.json (state branch). Weekly study reads it."""
 import json, os, time
 import desk

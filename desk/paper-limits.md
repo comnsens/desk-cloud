@@ -94,3 +94,22 @@ at each milestone, or when the pot doubles since the last withdrawal: tell the u
 - SKIP practice buys when last-hour buys are 45-55% of trades (min 20 trades): logged as `flat_buysell:NN%`.
 - SUPPORT (logged in rec["support"]): "vol_mcap_4x" (1h volume >= 4x mcap) and "buys_60pct" (buys >= 60%). When both hold, a borderline trend (1h change >= 7.5%, i.e. half the 15% bar, with 1h vol >= $25k) can qualify as setup "supported_trend". Never overrides safety checks (audit, top10, deployer-linked, bundle, gates all still apply first).
 - "still on bonding curve" stays a WARN/SIG tag only, not a skip. All other rules and study-only alerts (user_alerts_only, SI only) unchanged.
+
+## Added 2026-10-15 (user Craig approved): exact thresholds (enforced in desk-cloud desk/watcher.py evaluate/flag)
+- COUNT BASIS for buy share: unique buyer / unique seller wallets in the last 1h (GeckoTerminal) when available; else 1h txns (DexScreener buys/sells). Minimum 20 (wallets or txns). Both values are logged in rule_checks.buy_share {basis, unique_wallets, txns}.
+- NEAR-EVEN SKIP: buy share >= 45% and <= 55% (inclusive) => SKIP, logged `flat_buysell:NN%(basis)`. Under 20 counted = rule not applied (INFO).
+- SUPPORT: vol_mcap_4x = last-1h volume >= 4.0x current market cap; buys_60pct = buy share (same basis) >= 60%. Only when BOTH hold may a borderline trend qualify as setup `supported_trend` (1h change >= 7.5% and 1h volume >= $25k). Never overrides safety (screens, audit, top10 <= 40%, deployer-linked <= 5%, bundle, account gates run first).
+- BONDING CURVE: still on the launchpad curve = WARN tag only (SIG: still on curve), never a skip.
+- OVER $1M: entry mcap > $1,000,000 is allowed when every other check passes; tagged `WARN: entry over $1M` / rule_checks.mcap_over_1M = WARN. Under $400k preferred, under $1M preferred. There is NO "> $1M skip" any more.
+- AUDIT LOG: every evaluation stores rule_checks (PASS / FAIL:value / WARN / INFO per rule) on the watch entry; every flag in flags.jsonl carries rec.rule_checks.
+- Missed case under the old rule: flag "1" (Solana 2bCC…pump, flagged 5:35 PM ET at $427k) was REJECTED on Oct 15 for "mcap > $1M skip" after the change was live. Logged as a missed case only; no trade backfilled.
+
+## Paper fills (2026-10-15, fixes stop overruns: Macca -36%, Starman -100% vs -25% hard stop)
+- Open paper positions in desk/paper-book.md are checked every ~2.5 s by the always-on fastlane (desk/paperstops.py), not just on scheduled passes.
+- STOP (-25% from entry mcap, or entry after TP1 / explicit stop_mcap): fill at the stop mcap; if the first observed mcap after the cross is more than 3% below the stop (price gapped), fill at that first observed mcap (gap fill).
+- TAKE-PROFIT rungs (next 3 of $500k / $1M / $2.5M / ... above entry): 25% at the rung mcap.
+- Every fill then pays the normal sell cost: 3% slippage (5% if liquidity < $100k) + $0.50 gas.
+- Fills append to paper_fills.jsonl on the desk-cloud "paper-fills" branch. The routine syncs paper-book.md and journal/paper-log.md from it (it does not re-mark at discovery time).
+
+## Copy-top-traders book (copybook.py)
+- starts at $1,000 by design (paper pot $2,000); the weekly study compares the books by % return, win rate and expectancy, not dollars.

@@ -8,7 +8,7 @@ on:
     inputs:
       prev_end: { description: "unix end time of the run being replaced", required: false, default: "" }
 permissions:
-  contents: read
+  contents: write   # paperstops appends fills to the paper-fills branch only
   actions: write
 jobs:
   fast:
