@@ -30,7 +30,7 @@ WETH = "0x4200000000000000000000000000000000000006"
 
 CYCLE_S = 60
 # ---- rules (paper-limits.md v2 + "Added 2026-10-11") ----
-MIN_LIQ = 50_000; MAX_MCAP = 1_000_000; PREF_MCAP = 400_000
+MIN_LIQ = 50_000; MAX_MCAP = 1_000_000; PREF_MCAP = 400_000  # MAX_MCAP = warn threshold (not hard reject; user 2026-10-15)
 MIN_VOL24 = 25_000; MIN_TXNS24 = 150; MAX_VOL_LIQ = 30; MAX_VOL_LIQ_SOL = 80  # pump.fun graduates trade 30-60x liq; unique-trader wash screen still applies
 MIN_AGE_H = 1.0; MAX_AGE_H = 48.0
 DEPLOYER_LINKED_MAX = 5.0; TOP10_MAX = 40.0
@@ -237,7 +237,6 @@ def prefilter(st):
         elif age < MIN_AGE_H: why = "first_hour"
         elif liq < MIN_LIQ: why = "liquidity"
         elif not mc: why = "no_mcap"
-        elif mc > MAX_MCAP: why = "mcap_over_1M"
         elif vol < MIN_VOL24: why = "volume"
         elif ntx < MIN_TXNS24: why = "txns"
         elif liq and vol / liq > (MAX_VOL_LIQ_SOL if w.get("chain") == "solana" else MAX_VOL_LIQ): why = "wash_volume"
@@ -512,6 +511,9 @@ def flag(st, rec):
     rec["warn"] = [why] if why else []
     sy = sybil_spread(rec)
     if sy: rec["warn"].append(sy); st["stats"]["sybil_warns"] = st["stats"].get("sybil_warns", 0) + 1
+    if (rec.get("mcap") or 0) > MAX_MCAP:
+        rec["warn"].append(f"entry_over_1M:{rec['mcap']}")
+        st["stats"]["over_1m_warns"] = st["stats"].get("over_1m_warns", 0) + 1
     w = st["watch"].get(rec["token"])
     if w is not None: w["warn"] = rec["warn"]
     if why: st["stats"]["late_chase_warns"] = st["stats"].get("late_chase_warns", 0) + 1
@@ -525,6 +527,7 @@ def flag(st, rec):
     except Exception: pass
     for x in rec.get("warn") or []:
         if x.startswith("sybil_spread"): rec["message_2"] = "WARN: sybil-spread (" + x.split(":")[1].replace("_", " ") + ")\n" + rec["message_2"]; continue
+        if x.startswith("entry_over_1M"): rec["message_2"] = "WARN: entry over $1M\n" + rec["message_2"]; continue
         rec["message_2"] = ("WARN: chart breakdown" if "BREAKDOWN" in x else "WARN: chasing " + x.split("mcap")[1].split("x")[0] + "x pump (1h " + x.split("h1")[1].split("_")[0] + ")") + "\n" + rec["message_2"]
     with open(ALERTS, "a") as fh: fh.write(json.dumps(rec, separators=(",", ":")) + "\n")
     st["flagged"][rec["token"]] = time.time()

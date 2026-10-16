@@ -469,7 +469,7 @@ def cmd_scan(a):
         g = cands.get(tok) or {}
         gtx = (g.get("transactions") or {}).get("h24") or {}
         mc = f(best.get("marketCap")) or f(best.get("fdv"))
-        zone = "preferred" if mc and mc < 400e3 else ("ok" if mc and mc <= 1e6 else ("skip_over_1M" if mc else "unknown"))
+        zone = "preferred" if mc and mc < 400e3 else ("ok" if mc and mc <= 1e6 else ("warn_over_1M" if mc else "unknown"))
         out.append({"symbol": best["baseToken"]["symbol"] if low(best["baseToken"]["address"]) == tok else best["quoteToken"]["symbol"],
                     "token": tok, "pair": low(best["pairAddress"]), "dex": best["dexId"] + ("-" + best["labels"][0] if best.get("labels") else ""),
                     "age_h": round(age, 1), "mcap": r0(mc), "liq": r0(liq), "vol24": r0(vol), "buys24": tx.get("buys"), "sells24": tx.get("sells"),
@@ -477,10 +477,11 @@ def cmd_scan(a):
                     "chg_h1": (best.get("priceChange") or {}).get("h1"), "chg_h24": (best.get("priceChange") or {}).get("h24"),
                     "vol_liq": round(vol / liq, 1) if liq else None, "entry_zone": zone,
                     "flags": [x for x in ["mcap_below_liquidity(odd pricing)" if mc and mc < liq else None,
-                                          "vol_liq>30(possible wash volume)" if liq and vol / liq > 30 else None] if x]})
-    order = {"preferred": 0, "ok": 1, "unknown": 2, "skip_over_1M": 3}
+                                          "vol_liq>30(possible wash volume)" if liq and vol / liq > 30 else None,
+                                          "WARN: entry over $1M" if zone == "warn_over_1M" else None] if x]})
+    order = {"preferred": 0, "ok": 1, "unknown": 2, "warn_over_1M": 3}
     out.sort(key=lambda x: (order[x["entry_zone"]], -x["vol24"]))
-    for r in [x for x in out if x["entry_zone"] != "skip_over_1M"][:a.birdeye_top]:
+    for r in out[:a.birdeye_top]:
         be = be_overview(r["token"])
         if be: r["birdeye"] = {k: be[k] for k in ("holders", "unique_wallets_24h", "buy_usd_24h", "sell_usd_24h", "buy_usd_1h", "sell_usd_1h")}
     return {"cmd": "scan", "at": pt(now), "filters": {"age_h": [a.min_age, a.max_age], "min_liq": a.min_liq, "min_vol24": a.min_vol, "min_txns24": a.min_txns},

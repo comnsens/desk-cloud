@@ -12,7 +12,7 @@ never_add_to_loser: true
 max_new_trades_per_day: 2
 
 ## Entry
-entry_market_cap: under $400k preferred; skip if above $1M
+entry_market_cap: under $400k preferred; under $1M preferred; over $1M allowed if all other checks pass (tag WARN: entry over $1M for the study)
 must pass Auditor (sellable, low tax, no mint/blacklist/pause/tax powers, no outsized wallet)
 liquidity: at least $50k
 note big-wallet early buying as a plus
@@ -86,3 +86,6 @@ at each milestone, or when the pot doubles since the last withdrawal: tell the u
   - Combined risk: hard flags + soft 0-100. The existing hard rejects stay as they are.
 - Promotion rule: precision >= 0.9 on >= 30 bad (rug/dead within 7d) cases in research/tool-accuracy.md, and no worse than GoPlus/honeypot.is.
 - Existing rules (pool lock, holders, sell test, 1h skip, Solana bundle filter) are unchanged.
+
+## Added 2026-10-15 (user approved)
+- entry over $1M is no longer a hard reject. Prefer entries under $1M (more coins for the same $); coins over $1M that pass every other check are allowed and tagged "WARN: entry over $1M" in logs/book notes so the study can compare. All other limits unchanged (5% sizing, max open, daily trade cap, stops, safety checks).
