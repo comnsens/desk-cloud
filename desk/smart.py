@@ -150,6 +150,97 @@ def rank(d, early_counts):
     out.sort(key=lambda x: (-(x["runners"]), -(x["hit_rate"] or 0)))
     d["identities"] = out[:100]
 
+
+# ---------------------------------------------------------------- proven-wallet scorecard (LOG-ONLY study signal)
+# Full realized history from coins we already tracked this wallet on (identity.behaviour + runner score),
+# not cherry-picked screenshots. "proven" matches the desk rule: >=20 trades, win rate >=50%, profit > 0.
+# "high_score" is the study tag threshold: proven OR (runners >= 2 and pnl > 0 and not a dumper).
+
+def scorecard_one(e):
+    """Build win_rate / pnl / trades / months_active for one tracked wallet entry."""
+    behav = list((e.get("behav") or {}).values())
+    trades = sum(int(s.get("n") or 0) for s in behav if s)
+    pnls = [s.get("pnl_usd") for s in behav if s and s.get("pnl_usd") is not None]
+    wins = sum(1 for x in pnls if x > 0)
+    losses = sum(1 for x in pnls if x < 0)
+    decided = wins + losses
+    pnl = round(sum(pnls), 2) if pnls else None
+    wr = round(wins / decided, 3) if decided else None
+    added = e.get("added") or ""
+    months = None
+    try:
+        import datetime as _dt
+        a = _dt.datetime.strptime(added[:10], "%Y-%m-%d").replace(tzinfo=_dt.timezone.utc)
+        months = max(0, round((time.time() - a.timestamp()) / (30.44 * 86400), 1))
+    except Exception:
+        months = None
+    runners = int(e.get("score") or len(e.get("coins") or []))
+    label = e.get("label") or "unknown"
+    proven = bool(trades >= 20 and (wr or 0) >= 0.5 and (pnl or 0) > 0)
+    # high_score: proven, or 2+ runners and not a dumper; exclude when realized pnl is known-negative
+    high = bool(proven or (runners >= 2 and "dumper" not in label and (pnl is None or pnl > 0)))
+    return {"trades": trades, "wins": wins, "losses": losses, "win_rate": wr, "pnl_usd": pnl,
+            "runners": runners, "months_active": months, "label": label, "proven": proven, "high_score": high,
+            "coins": list(e.get("coins") or [])}
+
+def refresh_scorecards(d, max_enrich=5):
+    """Recompute scorecards for all wallets. Optionally enrich up to max_enrich Solana wallets
+    missing behaviour via pump.fun public trades (free, capped)."""
+    W = d.get("wallets") or {}
+    enriched = 0
+    for w, e in list(W.items()):
+        if e.get("chain") == "solana" and enriched < max_enrich:
+            behav = e.get("behav") or {}
+            for sym_tok in list(e.get("coins") or [])[:3]:
+                # coins list holds symbols; sources hold toks — skip if we already have enough behav
+                if len(behav) >= 2: break
+            # Enrich from sources that named this wallet's coins when behaviour is thin
+            if len(behav) < 2:
+                for src in (d.get("sources") or []):
+                    if src.get("ch") != "solana" or src.get("skipped"): continue
+                    if (src.get("sym") in (e.get("coins") or [])) and src.get("tok"):
+                        if src["sym"] in behav: continue
+                        try:
+                            import identity
+                            b = identity.behaviour(src["tok"], w)
+                            if b:
+                                e.setdefault("behav", {})[src["sym"]] = b
+                                behav = e["behav"]; enriched += 1
+                                if enriched >= max_enrich: break
+                        except Exception:
+                            pass
+                    if enriched >= max_enrich: break
+        sc = scorecard_one(e)
+        e["scorecard"] = sc
+        e["proven"] = sc["proven"]
+        e["high_score"] = sc["high_score"]
+    cards = sorted(
+        [{"wallet": w, **(e.get("scorecard") or scorecard_one(e)),
+          "name": (e.get("name") or {}).get("username"), "chain": e.get("chain")}
+         for w, e in W.items()],
+        key=lambda x: (-int(x.get("proven") or 0), -(x.get("pnl_usd") or -1e18), -(x.get("runners") or 0)))
+    d["scorecards"] = cards[:200]
+    d["scorecard_updated"] = int(time.time())
+    return {"n": len(cards), "proven": sum(1 for c in cards if c.get("proven")),
+            "high_score": sum(1 for c in cards if c.get("high_score")), "enriched": enriched}
+
+def is_high_score(e):
+    if not e: return False
+    if e.get("high_score") or e.get("proven"): return True
+    sc = e.get("scorecard")
+    if sc: return bool(sc.get("high_score") or sc.get("proven"))
+    return bool(scorecard_one(e).get("high_score"))
+
+def _log_proven_buy(tok, ch, wallets, names):
+    """Append a compact ds_rows study row (collector ingests). Never pushes."""
+    try:
+        import dsrows
+        row = {"k": "proven_buy", "t": int(time.time()), "tok": tok, "ch": ch,
+               "wallets": wallets[:6], "names": names[:6], "tag": "proven wallet in"}
+        dsrows._append(row)
+    except Exception:
+        pass
+
 # ---------------------------------------------------------------- detection (watcher, each cycle)
 PER_CYCLE = int(os.environ.get("SMART_PER_CYCLE", "8"))
 def detect(st, log, push_fn=None):
@@ -192,17 +283,31 @@ def detect(st, log, push_fn=None):
                 if tok in evm.WNATIVE.values(): continue
                 S["buys"].setdefault(tok, {})["0x" + lg["topics"][2][-40:]] = int(now)
     except Exception as e: S["evm_err"] = str(e)[:100]
-    # hits
+    # hits (2+ tracked wallets) + proven-wallet study tags (1+ high-score wallet; LOG-ONLY)
+    S.setdefault("proven_buys", {})
     for tok, b in list(S["buys"].items()):
         b = {w: t for w, t in b.items() if now - t < 6 * 3600}
         if not b: S["buys"].pop(tok); continue
         S["buys"][tok] = b
+        hi = [w for w in b if is_high_score(W.get(w))]
+        if hi and tok not in S["proven_buys"]:
+            ch = (W.get(hi[0]) or {}).get("chain") or (W.get(next(iter(b))) or {}).get("chain") or "?"
+            names = [who(W.get(w) or {}, w) for w in hi[:6]]
+            S["proven_buys"][tok] = {"t": int(now), "wallets": hi[:6], "names": names, "ch": ch}
+            _log_proven_buy(tok, ch, hi[:6], names)
+            log.info("PROVEN_WALLET_IN %s %s n=%d (log-only)", ch, tok, len(hi))
         if len(b) >= 2 and tok not in {h["tok"] for h in S["hits"]}:
             ch = W[next(iter(b))]["chain"]
             hit = {"t": int(now), "tok": tok, "ch": ch, "wallets": sorted(b)[:6], "mode": d.get("mode", "log"),
-                   "names": [who(W.get(w) or {}, w) for w in sorted(b)[:6]]}
+                   "names": [who(W.get(w) or {}, w) for w in sorted(b)[:6]],
+                   "proven": bool(hi), "proven_wallets": hi[:6]}
             if d.get("mode") == "push" and len(W) >= 20 and push_fn:
                 hit["push"] = push_fn(tok, ch, hit)
             S["hits"] = (S["hits"] + [hit])[-50:]
-            log.info("SMART_HIT %s %s wallets=%d mode=%s", ch, tok, len(b), hit["mode"])
+            log.info("SMART_HIT %s %s wallets=%d mode=%s proven=%s", ch, tok, len(b), hit["mode"], bool(hi))
+    # drop stale proven_buys
+    for tok in [t for t, v in S["proven_buys"].items() if now - v.get("t", 0) > 6 * 3600]:
+        S["proven_buys"].pop(tok, None)
     S["tracked"] = len(W); S["calls"] = CALLS["n"]
+    S["proven_n"] = sum(1 for e in W.values() if e.get("proven") or (e.get("scorecard") or {}).get("proven"))
+    S["high_score_n"] = sum(1 for e in W.values() if is_high_score(e))

@@ -144,6 +144,57 @@ def matrix(rows, names, stats=None):
          [1.0 if x[j] is None else 0.0 for j in range(len(names))] for x in raw]
     return X, stats
 
+
+def append_study_feeds(out, data_dir):
+    """Launchpad graduation + proven-wallet sections (always included, even when too few runners)."""
+    try:
+        import sys as _sys
+        _sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "desk"))
+        import graduations
+        glabs = graduations.load_labels(data_dir)
+        out += ["", "## Launchpad graduations (72h labels)", ""]
+        if not glabs:
+            out += ["No finalized graduation labels yet. Collector logs Pump.fun/LetsBonk/Meteora + Clanker/Zora at graduation and follow-ups at 1h/6h/24h/72h."]
+        else:
+            by_lp = {}
+            for r in glabs: by_lp.setdefault(r.get("lp") or "?", []).append(r)
+            out += [f"Finalized graduations: {len(glabs)}.", "",
+                    "| launchpad | n | hit $1M | hit $5M | hit $10M | median mult |", "|---|---|---|---|---|---|"]
+            for lp, v in sorted(by_lp.items()):
+                mults = sorted(x["mult"] for x in v if x.get("mult") is not None)
+                med = mults[len(mults)//2] if mults else "-"
+                out.append(f"| {lp} | {len(v)} | {sum(1 for x in v if x.get('hit_1m'))} | {sum(1 for x in v if x.get('hit_5m'))} | {sum(1 for x in v if x.get('hit_10m'))} | {med} |")
+            out += ["", "Graduation traits -> later $1M (bins with n >= 5):", ""]
+            for lo, hi, lab in [(0, 5e4, "<$50k"), (5e4, 2e5, "$50-200k"), (2e5, 1e6, "$200k-1M"), (1e6, 1e12, ">$1M")]:
+                g = [r for r in glabs if lo <= ((r.get("grad") or {}).get("mc") or 0) < hi]
+                if len(g) < 5: continue
+                out.append(f"- grad mcap {lab}: n={len(g)}, hit_1m={sum(1 for r in g if r.get('hit_1m'))/len(g)*100:.0f}%, "
+                           f"hit_5m={sum(1 for r in g if r.get('hit_5m'))/len(g)*100:.0f}%")
+            for lo, hi, lab in [(0, 20, "top10<20%"), (20, 40, "top10 20-40%"), (40, 100, "top10>=40%")]:
+                g = [r for r in glabs if (r.get("grad") or {}).get("top10") is not None and lo <= (r["grad"]["top10"] or 0) < hi]
+                if len(g) < 5: continue
+                out.append(f"- {lab}: n={len(g)}, hit_1m={sum(1 for r in g if r.get('hit_1m'))/len(g)*100:.0f}%")
+    except Exception as e:
+        out += ["", "## Launchpad graduations", f"_unavailable: {e}_"]
+    try:
+        sw = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "smart_wallets.json")
+        cards = (json.load(open(sw)).get("scorecards") or []) if os.path.exists(sw) else []
+        out += ["", "## Proven-wallet scorecards", ""]
+        if not cards:
+            out += ["No scorecards yet (collector refreshes them daily from tracked big-buyer wallets)."]
+        else:
+            out += [f"Wallets scored: {len(cards)}. Proven (>=20 trades, wr>=50%, pnl>0): {sum(1 for c in cards if c.get('proven'))}. "
+                    f"High-score (study tag 'proven wallet in'): {sum(1 for c in cards if c.get('high_score'))}.", "",
+                    "Top high-score wallets (full realized history, not cherry-picked wins):", "",
+                    "| wallet | chain | runners | trades | win_rate | pnl_usd | months | proven |",
+                    "|---|---|---|---|---|---|---|---|"]
+            for c in [x for x in cards if x.get("high_score") or x.get("proven")][:20]:
+                w = (c.get("wallet") or "")
+                out.append(f"| {w[:10]}… | {c.get('chain')} | {c.get('runners')} | {c.get('trades')} | {c.get('win_rate')} | {c.get('pnl_usd')} | {c.get('months_active')} | {c.get('proven')} |")
+    except Exception as e:
+        out += ["", "## Proven-wallet scorecards", f"_unavailable: {e}_"]
+
+
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument("--data", default="data"); ap.add_argument("--provisional", action="store_true")
     ap.add_argument("--out", default=os.path.join(os.path.dirname(os.path.abspath(__file__)), "runner-signals.md")); ap.add_argument("--fetch", action="store_true")
@@ -175,6 +226,8 @@ def main():
     out += [f"| {c} | {len(v)} | {v.count('runner') / len(v) * 100:.1f} | {v.count('rug') / len(v) * 100:.1f} |" for c, v in sorted(by_ch.items())]
     if cnt["runner"] < 15:
         out += ["", f"Only {cnt['runner']} runners so far: too few for lift or models. Re-run when the dataset has 7-day labels (at least ~50 runners)."]
+        append_study_feeds(out, a.data)
+        out += ["", "Notes: graduation + proven-wallet feeds are log-only study signals."]
         open(a.out, "w").write("\n".join(out) + "\n"); print("\n".join(out)); return
     base = cnt["runner"] / n
     # ---- per-feature lift ----
@@ -237,6 +290,9 @@ def main():
                    "pooled_auc": pooled, "validated": bool(pooled and pooled >= 0.70 and sum(yv) >= 30)},
                   open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "runner-model.json"), "w"))
     except Exception as e: out += ["", f"runner-model.json not written: {e}"]
+
+    append_study_feeds(out, a.data)
+
     out += ["", "Notes: features are what the desk saw at first sight (+ its audit within 2h). Peaks are sampled at 1h/6h/24h/3d/7d and refined with 4h candles for movers, so short wicks between samples are missed."]
     open(a.out, "w").write("\n".join(out) + "\n"); print("\n".join(out))
 

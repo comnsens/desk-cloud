@@ -54,3 +54,8 @@ Heartbeat: .../state/watcher_heartbeat.json  (unix field = last cycle)
 - Follow-ups: 1h, 6h, 24h, 3d, 7d, then 14d/21d/30d for survivors. Dead coins are finalized early. Labels are final at 30d.
 - Storage: GitHub release `data` assets (not in git): `raw-YYYY-MM-DD.jsonl.gz` (pruned after 90 days), `labels-YYYY-MM.jsonl.gz` (kept), `registry.json.gz` (working set).
 - Analysis: `python3 research/analyze.py --fetch --data data` -> research/runner-signals.md
+
+## Study feeds (2026-10-15, LOG-ONLY)
+- Launchpad graduations: `desk/graduations.py` via collector; assets `grads-*.jsonl.gz` on the `data` release.
+- Proven-wallet scorecards: refreshed in `smart_wallets.json` daily; flag tag `proven wallet in` is log-only.
+- Sunday addendum: collector writes `weekly-YYYY-MM-DD.md`. Full report: `python3 research/analyze.py --fetch --data data`.

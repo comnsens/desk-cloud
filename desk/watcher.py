@@ -514,6 +514,11 @@ def flag(st, rec):
     if (rec.get("mcap") or 0) > MAX_MCAP:
         rec["warn"].append(f"entry_over_1M:{rec['mcap']}")
         st["stats"]["over_1m_warns"] = st["stats"].get("over_1m_warns", 0) + 1
+    # LOG-ONLY study tag: high-score / proven tracked wallet bought this token (no new phone alert)
+    pb = (st.get("smart") or {}).get("proven_buys") or {}
+    if rec["token"] in pb or any(h.get("tok") == rec["token"] and h.get("proven") for h in ((st.get("smart") or {}).get("hits") or [])):
+        rec.setdefault("warn", []).append("proven_wallet_in")
+        st["stats"]["proven_wallet_tags"] = st["stats"].get("proven_wallet_tags", 0) + 1
     w = st["watch"].get(rec["token"])
     if w is not None: w["warn"] = rec["warn"]
     if why: st["stats"]["late_chase_warns"] = st["stats"].get("late_chase_warns", 0) + 1
@@ -527,6 +532,7 @@ def flag(st, rec):
     except Exception: pass
     for x in rec.get("warn") or []:
         if x.startswith("sybil_spread"): rec["message_2"] = "WARN: sybil-spread (" + x.split(":")[1].replace("_", " ") + ")\n" + rec["message_2"]; continue
+        if x.startswith("proven_wallet_in"): rec["message_2"] = "proven wallet in\n" + rec["message_2"]; continue
         if x.startswith("entry_over_1M"): rec["message_2"] = "WARN: entry over $1M\n" + rec["message_2"]; continue
         rec["message_2"] = ("WARN: chart breakdown" if "BREAKDOWN" in x else "WARN: chasing " + x.split("mcap")[1].split("x")[0] + "x pump (1h " + x.split("h1")[1].split("_")[0] + ")") + "\n" + rec["message_2"]
     with open(ALERTS, "a") as fh: fh.write(json.dumps(rec, separators=(",", ":")) + "\n")
@@ -679,7 +685,7 @@ def heartbeat(st, cyc_s, gates, survivors, err):
     hb["reentry"] = {"loaded": st.get("reentry_loaded", []), **{k[:6]: {x: v.get(x) for x in ("peak_mcap", "floor_mcap", "floor_days", "dd", "mcap", "why")} for k, v in st.get("reentry", {}).items()}}
     hb["user_alerts"] = {"loaded": st.get("user_alerts_loaded", []), **{k[:6] + k.split(":")[-1]: v for k, v in st.get("user_alerts", {}).items()}}
     hb["study"] = {"loaded": st.get("study_loaded", []), **{k[:6]: {"high": v.get("high"), "fired": v.get("fired"), "last": v.get("last")} for k, v in st.get("study", {}).items()}}
-    sm = st.get("smart", {}); hb["smart_wallets"] = {"tracked": sm.get("tracked"), "hits": sm.get("hits", [])[-5:], "pending": len(sm.get("buys", {})), "evm_err": sm.get("evm_err")}
+    sm = st.get("smart", {}); hb["smart_wallets"] = {"tracked": sm.get("tracked"), "hits": sm.get("hits", [])[-5:], "pending": len(sm.get("buys", {})), "evm_err": sm.get("evm_err"), "proven_n": sm.get("proven_n"), "high_score_n": sm.get("high_score_n"), "proven_buys": len(sm.get("proven_buys") or {})}
     hb["watch_reasons"] = dict(sorted(why.items(), key=lambda kv: -kv[1])[:12])
     tmp = HEART_F + ".tmp"; json.dump(hb, open(tmp, "w"), indent=1); os.replace(tmp, HEART_F)
 

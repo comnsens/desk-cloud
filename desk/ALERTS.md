@@ -30,3 +30,8 @@ If it stops: gh workflow run fastlane.yml -R comnsens/desk-cloud. The cron runs 
 
 ## Study-only mode (2026-10-14)
 positions.json "alerts_mode": "user_alerts_only" = every phone push is logged as QUIET except user_alerts entries. Everything else (flags, study moves, ladder, liq watch, smart wallets) keeps running and logging for the study. Remove the key to restore all pushes.
+
+## Study feeds added 2026-10-15 (LOG-ONLY; user approved)
+- **Launchpad graduations:** collector logs Pump.fun/LetsBonk/Meteora graduations and Base Clanker/Zora launches (mcap, liq, holders, top10, buys/sells) plus 1h/6h/24h/72h mcap follow-ups. Weekly study grades which graduation traits lead to runners. No phone alerts.
+- **Proven-wallet scorecards:** smart_wallets.json gets full realized history (win rate, P&L, trades, months active). Flags that a high-score wallet bought are tagged "proven wallet in" in the log only. Still mode=log; study-only alerts_mode unchanged (only SI user_alerts push).
+- Docs: research/README.md. Sunday: collector writes weekly-YYYY-MM-DD.md; run research/analyze.py for the full report.

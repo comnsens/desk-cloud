@@ -44,7 +44,8 @@ def restore():
         gh("release", "create", "data", "-R", REPO, "-t", "dataset", "-n", "Collector dataset (raw rows 90 days, labels kept). Machine-written.", check=False)
         return
     names = set(r.stdout.split())
-    want = ["registry.json.gz", f"raw-{today()}.jsonl.gz", f"labels-{today()[:7]}.jsonl.gz"]
+    want = ["registry.json.gz", "grads_registry.json.gz", f"raw-{today()}.jsonl.gz",
+            f"labels-{today()[:7]}.jsonl.gz", f"grads-{today()[:7]}.jsonl.gz"]
     for n in want:
         if n in names and not os.path.exists(os.path.join(WORK, n.replace(".gz", ""))):
             gh("release", "download", "data", "-R", REPO, "-p", n, "-D", WORK, "--clobber", check=False)
@@ -56,7 +57,7 @@ def restore():
 def upload(reg_changed=True):
     if OFFLINE: return
     files = []
-    for n in ("registry.json", f"raw-{today()}.jsonl", f"labels-{today()[:7]}.jsonl"):
+    for n in ("registry.json", "grads_registry.json", f"raw-{today()}.jsonl", f"labels-{today()[:7]}.jsonl", f"grads-{today()[:7]}.jsonl"):
         p = os.path.join(WORK, n)
         if os.path.exists(p):
             with open(p, "rb") as fi, gzip.open(p + ".gz", "wb", compresslevel=6) as fo: fo.write(fi.read())
@@ -316,11 +317,76 @@ def smart_refresh(reg):
     for e in reg["tokens"].values():
         for w in ((e.get("eb") or {}).get("buyers") or {}): ec[w] = ec.get(w, 0) + 1
     smart.rank(d, ec)
+    try: smart.refresh_scorecards(d, max_enrich=5)
+    except Exception as ex: d["scorecard_err"] = str(ex)[:80]
     if True:
         body = json.dumps({"message": f"smart wallets daily refresh {day} (+{n})", "sha": meta["sha"],
                            "content": base64.b64encode(json.dumps(d, indent=1).encode()).decode()})
         subprocess.run(["gh", "api", "-X", "PUT", f"repos/{REPO}/contents/smart_wallets.json", "--input", "-"], input=body, text=True, capture_output=True)
     return n
+
+# ---- Sunday weekly study snippet (graduation + proven-wallet sections into data release) ----
+def weekly_study():
+    """Once each Sunday UTC, write a compact study addendum from grads + scorecards. LOG-ONLY."""
+    now = dt.datetime.now(dt.timezone.utc)
+    if now.weekday() != 6: return {"skipped": "not_sunday"}
+    day = today()
+    reg = load_reg()
+    if reg.get("weekly_day") == day: return {"skipped": "already"}
+    reg["weekly_day"] = day; save_reg(reg)
+    lines = [f"# Weekly study addendum {day} (collector, zero AI)", ""]
+    try:
+        import graduations
+        labs = graduations.load_labels(WORK)
+        lines += [f"## Launchpad graduations (finalized 72h labels: {len(labs)})", ""]
+        if labs:
+            by_lp = {}
+            for r in labs: by_lp.setdefault(r.get("lp") or "?", []).append(r)
+            lines += ["| launchpad | n | hit $1M | hit $5M | median mult |", "|---|---|---|---|---|"]
+            for lp, v in sorted(by_lp.items()):
+                mults = sorted(x["mult"] for x in v if x.get("mult"))
+                med = mults[len(mults)//2] if mults else None
+                lines.append(f"| {lp} | {len(v)} | {sum(1 for x in v if x.get('hit_1m'))} | {sum(1 for x in v if x.get('hit_5m'))} | {med if med is not None else '-'} |")
+            # trait bins at graduation
+            lines += ["", "Graduation mcap bins -> later $1M hit rate:", ""]
+            bins = [(0, 50_000), (50_000, 200_000), (200_000, 1_000_000), (1_000_000, 1e12)]
+            for lo, hi in bins:
+                g = [r for r in labs if lo <= ((r.get("grad") or {}).get("mc") or 0) < hi]
+                if len(g) < 3: continue
+                rate = sum(1 for r in g if r.get("hit_1m")) / len(g) * 100
+                lines.append(f"- grad mcap ${lo:,.0f}-${hi:,.0f}: n={len(g)}, hit_1m={rate:.0f}%")
+        else:
+            lines.append("_No finalized graduation labels yet (need 72h follow-ups)._")
+    except Exception as ex:
+        lines += [f"graduations section error: {ex}"]
+    try:
+        import smart, base64
+        r = gh("api", f"repos/{REPO}/contents/smart_wallets.json?ref=main", check=False)
+        if r.returncode == 0:
+            d = json.loads(base64.b64decode(json.loads(r.stdout)["content"]))
+            cards = d.get("scorecards") or []
+            lines += ["", f"## Proven-wallet scorecards ({len(cards)} wallets)", "",
+                      f"Proven (>=20 trades, wr>=50%, pnl>0): {sum(1 for c in cards if c.get('proven'))}. "
+                      f"High-score study tag: {sum(1 for c in cards if c.get('high_score'))}.", ""]
+            top = [c for c in cards if c.get("high_score") or c.get("proven")][:15]
+            if top:
+                lines += ["| wallet | runners | trades | win_rate | pnl | months | proven |", "|---|---|---|---|---|---|---|"]
+                for c in top:
+                    w = (c.get("wallet") or "")[:8]
+                    lines.append(f"| {w}… | {c.get('runners')} | {c.get('trades')} | {c.get('win_rate')} | {c.get('pnl_usd')} | {c.get('months_active')} | {c.get('proven')} |")
+    except Exception as ex:
+        lines += [f"scorecard section error: {ex}"]
+    outp = os.path.join(WORK, f"weekly-{day}.md")
+    open(outp, "w").write("\n".join(lines) + "\n")
+    # also refresh research/runner-signals.md graduation section via analyze if labels exist
+    try:
+        import subprocess as sp
+        sp.run([sys.executable, os.path.join(ROOT, "research", "analyze.py"), "--data", WORK, "--provisional",
+                "--out", os.path.join(WORK, f"runner-signals-{day}.md")], capture_output=True, timeout=120)
+    except Exception:
+        pass
+    return {"wrote": outp, "day": day}
+
 
 def main():
     start = time.time(); restore(); reg = load_reg(); stats = {"rows_in": 0, "evm_new": 0, "followups": 0}
@@ -328,12 +394,21 @@ def main():
         t = time.time()
         stats["rows_in"] += ingest(reg)
         stats["evm_new"] += discover_evm(reg)
-        stats["followups"] += followups(reg, budget_s=max(5, 45 - (time.time() - t)))
+        # LOG-ONLY launchpad graduation feed (Pump.fun/Clanker/Zora + 1h/6h/24h/72h follow-ups)
+        try:
+            import graduations
+            gs = graduations.scan(budget_s=max(20, min(50, max(20, 55 - (time.time() - t)))))
+            for k, v in gs.items(): stats[k] = stats.get(k, 0) + (v if isinstance(v, int) else 0)
+            stats["grad_tracked"] = gs.get("grad_tracked", stats.get("grad_tracked"))
+        except Exception as ex: stats["grad_err"] = str(ex)[:80]
+        stats["followups"] += followups(reg, budget_s=max(5, 50 - (time.time() - t)))
         save_reg(reg)
         if os.environ.get("COLLECT_ONCE") == "1": break
         time.sleep(max(3, 60 - (time.time() - t)))
     try: stats["smart_added"] = smart_refresh(reg)
     except Exception as ex: stats["smart_err"] = str(ex)[:80]
+    try: stats["weekly"] = weekly_study()
+    except Exception as ex: stats["weekly_err"] = str(ex)[:80]
     prune(reg); save_reg(reg); provisional(reg)
     by = {}
     for e in reg["tokens"].values(): by[e["ch"]] = by.get(e["ch"], 0) + 1
